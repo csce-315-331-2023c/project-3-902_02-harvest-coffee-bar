@@ -1,0 +1,72 @@
+.CashierGUI {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.CashierGUI .menu {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    /* Adjust as needed */
+}
+
+.CashierGUI .menu h2 {
+    align-items: center;
+    justify-content: center;
+}
+
+.CashierGUI .menu ul li {
+    list-style-type: none;
+}
+
+.CashierGUI button.itemButtons {
+    display: block;
+    width: 100%;
+    /* Make all "item-buttons" the same width */
+    padding: 20px;
+    margin: 5px 0;
+    background-color: #ffffff;
+    color: #000;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.item-buttons:hover {
+    background-color: #0056b3;
+}
+
+.receipt {
+    width: 30%;
+    /* Adjust as needed */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+}
+
+.receipt h2 {
+    margin: 0;
+}
+
+
+/* Add any other styles you need */
+
+/* Define styles for your receipt items and remove button */
+.receipt_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.remove-button {
+    background-color: #ff5c5c;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

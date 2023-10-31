@@ -1,4 +1,4 @@
-.navBar ul {
+.NavBar ul {
     display: flex;
     flex-direction: row-reverse;
     list-style-type: none;
@@ -9,12 +9,12 @@
     opacity: 0.90;
 }
 
-.navBar li {
+.NavBar li {
     display: inline;
     float: right;
 }
 
-.navBar li a {
+.NavBar li a {
     display: block;
     color: white;
     text-align: center;
@@ -22,7 +22,7 @@
     text-decoration: none;
 }
 
-.navBar li a:hover {
+.NavBar li a:hover {
     background-color: #000000;
     opacity: 1;
 }

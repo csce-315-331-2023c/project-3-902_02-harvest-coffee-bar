@@ -1,10 +1,10 @@
 // components/NavBar.js
 import Link from 'next/link';
-import styles from './navBar.module.css'; // Create a CSS module for styling
+import styles from './NavBar.module.css'; // Create a CSS module for styling
 
 const NavBar = () => {
     return (
-        <nav className={styles.navBar}>
+        <nav className={styles.NavBar}>
             <ul>
                 <li><Link href="/customer"><a>Customer Page</a></Link></li>
                 <li><Link href="/cashier"><a>Cashier Page</a></Link></li>
