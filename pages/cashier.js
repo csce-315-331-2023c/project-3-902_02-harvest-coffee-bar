@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 // import './App.css';
 // import { Pool } from 'pg';
-import addOrders from './api/cashier_functions/addOrder.js';
+import AddOrder from './api/cashier_functions/addOrder.js';
 
 
 
