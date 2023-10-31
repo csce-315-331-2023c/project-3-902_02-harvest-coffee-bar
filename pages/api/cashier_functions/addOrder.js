@@ -39,4 +39,4 @@ async function AddOrder(total_price, customer_id, menu_item_ids) {
         await AddOrderedItem(connection, order_id, menu_item_ids[i]);
     }
 }
-export { addOrders };
+export { AddOrder };
