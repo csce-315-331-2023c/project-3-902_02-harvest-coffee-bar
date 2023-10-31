@@ -1,17 +1,13 @@
 import Link from 'next/link'
-// import Head from 'next/head'
+import Head from 'next/head'
+import NavBar from './components/navBar';
+import CoffeeBar from './components/harvestCoffeeBar';
 // import { Montserrat } from '@next/font/google'
 const Index = () => (
-	//<Head className={Montserrat.className}>
 	<div>
-		Hello World.{' '}
-		<ul>
-			<li><Link href="/customer"><a>Customer Page</a></Link></li>
-			<li><Link href="/cashier"><a>Cashier Page</a></Link></li>
-			<li><Link href="/manager"><a>Manager Page</a></Link></li>
-		</ul>
+		<NavBar />
+		<CoffeeBar />
 	</div>
-	//</Head>
 )
 
 export default Index;

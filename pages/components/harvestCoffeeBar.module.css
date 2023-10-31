@@ -1,0 +1,15 @@
+.coffeeBar {
+    text-align: center;
+    padding: 100px 0;
+    background-color: #f7f7f7;
+}
+
+.coffeeBar h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.coffeeBar p {
+    font-size: 18px;
+    margin-bottom: 30px;
+}
