@@ -2,10 +2,11 @@
 // export default Cashier;
 
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import './App.css';
 // import { Pool } from 'pg';
-import addOrder from './api/cashier_functions/addOrder.js';
+import addOrders from './api/cashier_functions/addOrder.js';
+
 
 
 const Cashier = () => {
@@ -28,20 +29,26 @@ const Cashier = () => {
       }
     };
 
-    fetchMenuItems();
+    useEffect(() => {
+      fetchMenuItems();
+    }, []);
 
-    const handleCheckout = () => {
+    async function handleCheckout() {
       const customerInput = prompt('Enter Customer ID:');
       
       if (customerInput !== null) {
-        // setCustomerId(customerInput);
+        try {
         const orderedItemIds = receipt.map(item => item.menu_item_id);
         const totalPrice = calculateTotal();
 
-        addOrder(totalPrice, customerInput, orderedItemIds);
+        await addOrders(totalPrice, customerInput, orderedItemIds);
 
         // Show a success message or perform other actions as needed
         alert('Checkout successful!');
+        } catch (error) {
+          alert("Checkout faild");
+        }
+      
       } else {
         // User canceled the prompt
         alert('Checkout canceled.');
