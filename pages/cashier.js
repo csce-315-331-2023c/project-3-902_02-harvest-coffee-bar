@@ -4,6 +4,8 @@
 
 import React, { useState } from 'react';
 // import './App.css';
+// import { Pool } from 'pg';
+import addOrder from './api/cashier_functions/addorder.js';
 
 
 const Cashier = () => {
@@ -27,6 +29,24 @@ const Cashier = () => {
     };
 
     fetchMenuItems();
+
+    const handleCheckout = () => {
+      const customerInput = prompt('Enter Customer ID:');
+      
+      if (customerInput !== null) {
+        // setCustomerId(customerInput);
+        const orderedItemIds = receipt.map(item => item.menu_item_id);
+        const totalPrice = calculateTotal();
+
+        addOrder(totalPrice, customerInput, orderedItemIds);
+
+        // Show a success message or perform other actions as needed
+        alert('Checkout successful!');
+      } else {
+        // User canceled the prompt
+        alert('Checkout canceled.');
+      }
+    };
   
 
   const addToReceipt = (item) => {
@@ -85,7 +105,7 @@ const Cashier = () => {
     </div>
     <div className='foot'>
     <h3>Total: ${calculateTotal()}</h3>
-      <button className="checkout-button" onClick={() => alert('Checkout successful!')}>
+      <button className="checkout-button" onClick={handleCheckout}>
         Checkout
       </button>
     </div>
