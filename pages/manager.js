@@ -9,7 +9,7 @@ function manager() {
         try {
 
             //attempt to fetch menu items
-            const response = await fetch('api/get_menu');
+            const response = await fetch('api/manager/get_menu');
 
             if (response.ok) {
                 const data = await response.json();
@@ -17,6 +17,7 @@ function manager() {
             } else {
                 console.error("Unable to fetch menu items.");
             }
+
         } catch (error) {
             console.error('Error:', error);
         }
