@@ -5,7 +5,7 @@
 import React, { useState } from 'react';
 // import './App.css';
 // import { Pool } from 'pg';
-import addOrder from './api/cashier_functions/addorder.js';
+import addOrder from './api/cashier_functions/addOrder.js';
 
 
 const Cashier = () => {
