@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import ItemIngredients from './ItemIngredients.js';
+import ItemIngredients from './itemIngredientsClass.js';
 
 async function UpdateIngredients(connection, menuItemID) {
     currItems = new ItemIngredients();

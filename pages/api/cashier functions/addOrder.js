@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import AddOrderedItem from './addOrderedItem.js';
 
 async function addOrder(connection, total_price, customer_id, menu_item_ids) {
     const order_id = await getOrderNumber(connection);
@@ -33,6 +34,6 @@ async function addOrder(connection, total_price, customer_id, menu_item_ids) {
 
     // Loop to add items to ordered items
     for (let i = 0; i < menu_item_ids.length; i++) {
-        await addOrderedItem(connection, order_id, menu_item_ids[i]);
+        await AddOrderedItem(connection, order_id, menu_item_ids[i]);
     }
 }

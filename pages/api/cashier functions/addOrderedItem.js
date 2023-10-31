@@ -1,6 +1,7 @@
 import { Pool } from 'pg';
+import UpdateIngredients from './updateIngredients.js';
 
-async function addOrderedItem(connection, order_id, menu_item_id) {
+async function AddOrderedItem(connection, order_id, menu_item_id) {
     const insertOrderedItem = `
         INSERT INTO
             ordered_items(ordered_id, menu_item_id, num_items)
@@ -19,7 +20,7 @@ async function addOrderedItem(connection, order_id, menu_item_id) {
         await preppedCommand.execute();
 
         // Assuming you have an updateIngredients function, call it here
-        await updateIngredients(connection, menu_item_id);
+        await UpdateIngredients(connection, menu_item_id);
 
     } catch (err) {
         console.log("An error has occurred.");
