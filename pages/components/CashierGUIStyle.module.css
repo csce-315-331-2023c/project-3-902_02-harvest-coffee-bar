@@ -1,3 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+/* TODO: Figure out how to implement fonts globally*/
+.CashierGUI * {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 .CashierGUI {
     background-color: #fff;
     border: 1px solid #ccc;
@@ -6,11 +16,18 @@
     border-radius: 5px;
 }
 
+.CashierGUI .mainScreen {
+    display: flex;
+    flex-direction: row;
+
+}
+
 .CashierGUI .menu {
     display: flex;
     flex-direction: column;
     width: 70%;
     /* Adjust as needed */
+    justify-content: center;
 }
 
 .CashierGUI .menu h2 {
@@ -18,11 +35,66 @@
     justify-content: center;
 }
 
+.CashierGUI .menu ul {
+    margin: 0;
+}
+
 .CashierGUI .menu ul li {
+    margin: 0;
     list-style-type: none;
 }
 
 .CashierGUI button.itemButtons {
+    display: block;
+    width: 100%;
+    /* Make all "item-buttons" the same width */
+    padding: 20px;
+    background-color: #ffffff;
+    color: #000;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.CashierGUI button.itemButtons:hover {
+    background-color: #8b8b8b;
+}
+
+.CashierGUI .receipt {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    /* Adjust as needed */
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+}
+
+.CashierGUI .receipt ul li {
+    list-style-type: none;
+}
+
+.CashierGUI .receiptItems {
+    display: flex;
+    justify-content: space-between;
+}
+
+.CashierGUI button.removeButton {
+    flex: -1;
+    background-color: #ff5c5c;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.CashierGUI button.checkoutButton {
+
     display: block;
     width: 100%;
     /* Make all "item-buttons" the same width */
@@ -33,40 +105,5 @@
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
-}
-
-.item-buttons:hover {
-    background-color: #0056b3;
-}
-
-.receipt {
-    width: 30%;
-    /* Adjust as needed */
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f2f2f2;
-}
-
-.receipt h2 {
-    margin: 0;
-}
-
-
-/* Add any other styles you need */
-
-/* Define styles for your receipt items and remove button */
-.receipt_item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.remove-button {
-    background-color: #ff5c5c;
-    color: #fff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+    font-size: large;
 }

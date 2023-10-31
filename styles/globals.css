@@ -1,9 +1,28 @@
-html {
-    height: 100%;
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+html,
+body {
+    padding: 0;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+    line-height: 1.6;
+    font-size: 18px;
+}
+
+* {
     box-sizing: border-box;
 }
 
-body {
-    font-family: 'Montserrat';
-    font-size: 22px;
+a {
+    color: #0070f3;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+img {
+    max-width: 100%;
+    display: block;
 }
