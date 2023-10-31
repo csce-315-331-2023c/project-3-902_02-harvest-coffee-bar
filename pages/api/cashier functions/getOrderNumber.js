@@ -1,6 +1,6 @@
 import { Pool } from 'pg';
 
-async function getOrderNumber(connection) {
+async function GetOrderNumber(connection) {
     const query = `
         SELECT order_id FROM orders
         ORDER BY order_id DESC

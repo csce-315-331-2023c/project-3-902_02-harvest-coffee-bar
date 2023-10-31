@@ -1,8 +1,9 @@
 import { Pool } from 'pg';
 import AddOrderedItem from './addOrderedItem.js';
+import GetOrderNumber from './getOrderNumber.js';
 
 async function addOrder(connection, total_price, customer_id, menu_item_ids) {
-    const order_id = await getOrderNumber(connection);
+    const order_id = await GetOrderNumber(connection);
     const currDateTime = new Date(); // Get the current date and time
 
     // Prepare SQL query
