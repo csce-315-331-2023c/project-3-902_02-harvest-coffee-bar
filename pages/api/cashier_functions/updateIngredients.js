@@ -33,4 +33,4 @@ async function UpdateIngredients(connection, menuItemID) {
 
     currItems.ingredientIDs = [];
     currItems.quantities = [];
-}
+} export { UpdateIngredients }

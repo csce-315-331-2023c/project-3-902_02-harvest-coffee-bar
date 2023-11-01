@@ -28,7 +28,7 @@ class ItemIngredients {
             console.error(err);
         }
     }
-}
+} export { ItemIngredients }
 
 
 
