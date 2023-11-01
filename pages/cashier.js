@@ -38,8 +38,14 @@ const Cashier = () => {
 	};
 
 	const handleCheckout = async () => {
-		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(receipt) });
-		//console.log(receipt);
+
+		var payload = {
+			total_price: calculateTotal(),
+			order_date: new Date().toISOString().split('.')[0],
+			ordered_items: receipt
+		}
+
+		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 	}
 
 	return (
