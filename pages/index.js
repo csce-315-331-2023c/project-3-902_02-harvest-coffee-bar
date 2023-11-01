@@ -1,12 +1,20 @@
-import Link from 'next/link'
-import Head from 'next/head'
-import NavBar from './components/NavBar';
-import CoffeeBar from './components/harvestCoffeeBar';
-// import { Montserrat } from '@next/font/google'
+import navStyles from './components/NavBar.module.css';
+import coffeeStyles from './components/harvestCoffeeBar.module.css';
+import Link from 'next/link';
+
 const Index = () => (
 	<div>
-		<NavBar />
-		<CoffeeBar />
+		<nav className={navStyles.NavBar}>
+			<ul>
+				<li><Link href="/customer"><a>Customer Page</a></Link></li>
+				<li><Link href="/cashier"><a>Cashier Page</a></Link></li>
+				<li><Link href="/manager"><a>Manager Page</a></Link></li>
+			</ul>
+		</nav>
+		<div className={coffeeStyles.coffeeBar}>
+			<h1>Welcome to Our Coffee Bar</h1>
+			<p>Discover the finest coffee experience in town.</p>
+		</div>
 	</div>
 )
 

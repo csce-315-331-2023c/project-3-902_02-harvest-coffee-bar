@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import styles from './components/CashierGUIStyle.module.css'
+import { server } from '../config';
 
 const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
 	const [view, setView] = useState('customer');
 	const [menuItems, setMenuItems] = useState([]);
 
-
 	const fetchMenuItems = async () => {
 		try {
-			const response = await fetch('api/manager/get_menu');
+			const response = await fetch(`${server}/api/manager/get_menu`);
 			if (response.ok) {
 				const data = await response.json();
 				setMenuItems(data);
@@ -22,7 +22,6 @@ const Cashier = () => {
 	};
 
 	fetchMenuItems();
-
 
 	const addToReceipt = (item) => {
 		setReceipt([...receipt, item]);

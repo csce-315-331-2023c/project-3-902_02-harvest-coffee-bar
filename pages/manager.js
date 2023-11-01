@@ -1,7 +1,7 @@
 // pages/manager.js
 
-
 import { useState } from 'react';
+import { server } from '../config';
 
 function manager() {
     const [menuItems, setMenuItems] = useState([]);
@@ -10,7 +10,7 @@ function manager() {
         try {
 
             //attempt to fetch menu items
-            const response = await fetch('api/manager/get_menu');
+            const response = await fetch(`${server}/api/manager/get_menu`);
 
             if (response.ok) {
                 const data = await response.json();
