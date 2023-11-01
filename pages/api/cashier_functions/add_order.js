@@ -8,17 +8,18 @@ export default async (req, res) => {
     }
 
     console.log('Request Recieved');
-    console.log(req.body);
+    (req.body).forEach(element => {
+        console.log(element.menu_item_name)
+    });
     res.status(200).send({ message: 'Request Recieved' });
 
-    //res.status(200).send(body);
     //push order to database
     // try {
     //     const statement = `
     //             INSERT INTO
     //                 orders(order_id, order_type, total_price, order_date, customer_id)
     //             SELECT
-    //                 MAX(order_id) + 1, $1, $2, $3, $4
+    //                 MAX(order_id) + 1, Dine-In, $1, $2, $3
     //             FROM
     //                 orders
     //             `;
