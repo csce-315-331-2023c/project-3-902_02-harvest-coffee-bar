@@ -5,7 +5,7 @@
 import React, { useState, useEffect } from 'react';
 // import './App.css';
 // import { Pool } from 'pg';
-import addOrders from './api/cashier_functions/addOrder.js';
+import AddOrder from './api/cashier_functions/addOrder.js';
 
 
 
@@ -41,7 +41,7 @@ const Cashier = () => {
         const orderedItemIds = receipt.map(item => item.menu_item_id);
         const totalPrice = calculateTotal();
 
-        await addOrders(totalPrice, customerInput, orderedItemIds);
+        await AddOrder(totalPrice, customerInput, orderedItemIds);
 
         // Show a success message or perform other actions as needed
         alert('Checkout successful!');

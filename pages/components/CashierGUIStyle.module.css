@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+/* TODO: Figure out how to implement fonts globally*/
+.CashierGUI * {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.CashierGUI {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.CashierGUI .mainScreen {
+    display: flex;
+    flex-direction: row;
+
+}
+
+.CashierGUI .menu {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    /* Adjust as needed */
+    justify-content: center;
+}
+
+.CashierGUI .menu h2 {
+    align-items: center;
+    justify-content: center;
+}
+
+.CashierGUI .menu ul {
+    margin: 0;
+}
+
+.CashierGUI .menu ul li {
+    margin: 0;
+    list-style-type: none;
+}
+
+.CashierGUI button.itemButtons {
+    display: block;
+    width: 100%;
+    /* Make all "item-buttons" the same width */
+    padding: 20px;
+    background-color: #ffffff;
+    color: #000;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.CashierGUI button.itemButtons:hover {
+    background-color: #8b8b8b;
+}
+
+.CashierGUI .receipt {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30%;
+    /* Adjust as needed */
+    margin-left: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f2f2f2;
+}
+
+.CashierGUI .receipt ul li {
+    list-style-type: none;
+}
+
+.CashierGUI .receiptItems {
+    display: flex;
+    justify-content: space-between;
+}
+
+.CashierGUI button.removeButton {
+    flex: -1;
+    background-color: #ff5c5c;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+
+}
+
+.CashierGUI button.checkoutButton {
+
+    display: block;
+    width: 100%;
+    /* Make all "item-buttons" the same width */
+    padding: 20px;
+    margin: 5px 0;
+    background-color: #ffffff;
+    color: #000;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    font-size: large;
+}
