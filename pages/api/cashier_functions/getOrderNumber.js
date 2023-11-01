@@ -25,4 +25,4 @@ async function GetOrderNumber(connection) {
     }
 
     return -1;
-}
+} export { GetOrderNumber }

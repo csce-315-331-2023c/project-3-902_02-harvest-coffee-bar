@@ -1,13 +1,14 @@
 import { Pool } from 'pg';
 import AddOrderedItem from './addOrderedItem.js';
 import GetOrderNumber from './getOrderNumber.js';
+import connection from '../../../backend/database.js'
 
-async function addOrder(connection, total_price, customer_id, menu_item_ids) {
+async function AddOrder(total_price, customer_id, menu_item_ids) {
     const order_id = await GetOrderNumber(connection);
     const currDateTime = new Date(); // Get the current date and time
 
     // Prepare SQL query
-    const addOrder = `
+    const orderQuery = `
         INSERT INTO
             orders(order_id, order_type, total_price, order_date, customer_id)
         VALUES
@@ -15,7 +16,7 @@ async function addOrder(connection, total_price, customer_id, menu_item_ids) {
     `;
 
     try {
-        const preparedStatement = await connection.prepare(addOrder);
+        const preparedStatement = await connection.prepare(orderQuery);
         await preparedStatement.setInt(1, order_id);
         await preparedStatement.setString(2, 'Dine-In'); // Set the order type
         await preparedStatement.setFloat(3, total_price); // Set the total price
@@ -38,3 +39,4 @@ async function addOrder(connection, total_price, customer_id, menu_item_ids) {
         await AddOrderedItem(connection, order_id, menu_item_ids[i]);
     }
 }
+export { AddOrder };

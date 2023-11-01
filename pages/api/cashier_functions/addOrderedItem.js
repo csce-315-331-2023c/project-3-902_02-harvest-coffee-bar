@@ -27,4 +27,4 @@ async function AddOrderedItem(connection, order_id, menu_item_id) {
         console.log("See full details below.");
         console.error(err);
     }
-}
+} export { AddOrderedItem };

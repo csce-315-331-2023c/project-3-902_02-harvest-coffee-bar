@@ -1,5 +1,6 @@
 // pages/manager.js
 
+
 import { useState } from 'react';
 
 function manager() {
