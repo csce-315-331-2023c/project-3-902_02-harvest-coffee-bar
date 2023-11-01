@@ -3,7 +3,8 @@ import AddOrderedItem from './addOrderedItem.js';
 import GetOrderNumber from './getOrderNumber.js';
 import connection from '../../../backend/database.js'
 
-async function addOrder(total_price, customer_id, menu_item_ids) {
+
+async function addOrders(total_price, customer_id, menu_item_ids) {
     const order_id = await GetOrderNumber(connection);
     const currDateTime = new Date(); // Get the current date and time
 
@@ -39,3 +40,4 @@ async function addOrder(total_price, customer_id, menu_item_ids) {
         await AddOrderedItem(connection, order_id, menu_item_ids[i]);
     }
 }
+export { addOrders };
