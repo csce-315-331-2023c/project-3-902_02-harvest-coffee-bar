@@ -37,51 +37,61 @@ const Cashier = () => {
 		return receipt.reduce((total, item) => total + item.price, 0);
 	};
 
+	const handleCheckout = async () => {
+		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(receipt) });
+		//console.log(receipt);
+	}
+
 	return (
-		<div className="App">
+		<div className={styles.CashierGUI}>
 
-			<div className="menu">
-				<div className="view-buttons">
-					<button className={view === 'customer' ? 'active' : ''} onClick={() => setView('customer')}>
-						Customer View
-					</button>
-					<button className={view === 'manager' ? 'active' : ''} onClick={() => setView('manager')}>
-						Manager View
-					</button>
-				</div>
-
-				<h2>Menu Items</h2>
-				<ul>
-					{menuItems.map((menuItem) => (
-						<li key={menuItem.menu_item_id}>
-							<button onClick={() => addToReceipt(menuItem)}>
-								{menuItem.menu_item_name} - ${menuItem.price}
-							</button>
-						</li>
-					))}
-				</ul>
-			</div>
-			<div className="receipt">
-				<h2>Receipt</h2>
-				<ul>
-					{receipt.map((item, index) => (
-						<li key={index}>
-							<div className='receipt_item'>
-								{item.menu_item_name} - ${item.price}
-								<button className="remove-button" onClick={() =>
-									removeFromReceipt(index)}>
-									X
-								</button>
-							</div>
-						</li>
-					))}
-				</ul>
-			</div>
-			<div className='foot'>
-				<h3>Total: ${calculateTotal()}</h3>
-				<button className="checkout-button" onClick={() => alert('Checkout successful!')}>
-					Checkout
+			<div className="view-buttons">
+				<button className={view === 'customer' ? 'active' : ''} onClick={() => setView('customer')}>
+					Customer View
 				</button>
+				<button className={view === 'manager' ? 'active' : ''} onClick={() => setView('manager')}>
+					Manager View
+				</button>
+			</div>
+
+			<div className={styles.mainScreen}>
+				<div className={styles.menu}>
+
+					<h2>Menu Items</h2>
+					<ul>
+						{menuItems.map((menuItem) => (
+							<li key={menuItem.menu_item_id}>
+								<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
+									{menuItem.menu_item_name} - ${menuItem.price}
+								</button>
+							</li>
+						))}
+					</ul>
+				</div>
+				<div className={styles.receipt}>
+					<div>
+						<h2>Receipt</h2>
+						<ul>
+							{receipt.map((item, index) => (
+								<li key={index}>
+									<div className={styles.receiptItems}>
+										{item.menu_item_name} - ${item.price}
+										<button className={styles.removeButton} onClick={() =>
+											removeFromReceipt(index)}>
+											X
+										</button>
+									</div>
+								</li>
+							))}
+						</ul>
+					</div>
+					<div className='foot'>
+						<h3>Total: ${calculateTotal()}</h3>
+						<button className={styles.checkoutButton} onClick={() => handleCheckout()}>
+							Checkout
+						</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	);
