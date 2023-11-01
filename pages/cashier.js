@@ -79,7 +79,7 @@ const Cashier = () => {
 			</div>
 			<div className='foot'>
 				<h3>Total: ${calculateTotal()}</h3>
-				<button className="checkout-button" onClick={handleCheckout}>
+				<button className="checkout-button" onClick={() => alert('Checkout successful!')}>
 					Checkout
 				</button>
 			</div>
