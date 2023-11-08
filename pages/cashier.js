@@ -46,6 +46,7 @@ const Cashier = () => {
 		}
 
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    setReceipt([]);
 	}
 
 	return (
@@ -91,7 +92,7 @@ const Cashier = () => {
 							))}
 						</ul>
 					</div>
-					<div className='foot'>
+					<div className={styles.foot}>
 						<h3>Total: ${calculateTotal()}</h3>
 						<button className={styles.checkoutButton} onClick={() => handleCheckout()}>
 							Checkout
