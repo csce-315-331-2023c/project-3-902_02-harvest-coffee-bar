@@ -1,21 +1,45 @@
-import navStyles from './components/NavBar.module.css';
-import coffeeStyles from './components/harvestCoffeeBar.module.css';
-import Link from 'next/link';
+import NavBar from './components/NavBar';
+import landingStyles from './components/LandingGUIStyle.module.css';
+import GenerateMenuItemPanel from './components/MenuItem';
+import React, { useState } from 'react';
+import { server } from '../config';
 
-const Index = () => (
-	<div>
-		<nav className={navStyles.NavBar}>
-			<ul>
-				<li><Link href="/customer"><a>Customer Page</a></Link></li>
-				<li><Link href="/cashier"><a>Cashier Page</a></Link></li>
-				<li><Link href="/manager"><a>Manager Page</a></Link></li>
-			</ul>
-		</nav>
-		<div className={coffeeStyles.coffeeBar}>
-			<h1>Welcome to Our Coffee Bar</h1>
-			<p>Discover the finest coffee experience in town.</p>
+const Index = () => {
+	const [menuItems, setMenuItems] = useState([]);
+
+	const fetchMenuItems = async () => {
+		try {
+			const response = await fetch(`${server}/api/manager/get_menu`);
+			if (response.ok) {
+				const data = await response.json();
+				setMenuItems(data);
+			} else {
+				console.error("Unable to fetch menu items.");
+			}
+		} catch (error) {
+			console.error('Error:', error);
+		}
+	};
+
+	fetchMenuItems();
+
+	return (
+		<div>
+			<NavBar />
+			<div className={landingStyles.header}>
+				<h1>Welcome to</h1>
+				<p>Harvest Coffee Bar</p>
+			</div>
+
+			<div className={landingStyles.menu}>
+				<ul>
+					{menuItems.map((menuItem) => (
+						<GenerateMenuItemPanel item={menuItem} />
+					))}
+				</ul>
+			</div>
 		</div>
-	</div>
-)
+	);
+}
 
 export default Index;

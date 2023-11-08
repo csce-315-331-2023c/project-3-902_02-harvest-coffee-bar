@@ -1,0 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@400;700;900&display=swap');
+
+.MenuItem {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    font-family: 'Encode Sans', sans-serif;
+}
+
+.nameAndPrice {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.desc {
+    font-style: oblique;
+}
