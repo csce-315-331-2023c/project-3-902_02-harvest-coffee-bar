@@ -2,55 +2,67 @@ import connection from '../../../backend/database'
 
 export default async (req, res) => {
 
+    // check if POST req
     if (req.method != 'POST') {
         res.status(405).send({ message: 'Invalid request: Only POST reqs allowed' });
         return;
     }
 
-    // console.log('Request Recieved');
-    // (req.body).forEach(element => {
-    //     console.log(element.menu_item_name)
-    // });
+    // uncomment to print json req to console
+    // console.log(req.body);
 
-    console.log(req.body);
+    // Here we handle all sql statements as a transaction so 
+    // can ensure that it is all handled as one unit
+    // to avoid race conditions
+
+    const client = await connection.connect();
 
     //push order to database
     try {
 
-        const query = await connection.query("SELECT MAX(order_id) + 1 as new_id FROM orders");
-        const newOrderID = query.rows[0].new_id;
+        await client.query('BEGIN;');
 
-        //push order to database
-        const orderStatement = `
+        // grab new order id
+        const newIdQuery = await connection.query("SELECT MAX(order_id) + 1 as new_id FROM orders;");
+        const newOrderID = newIdQuery.rows[0].new_id;
+
+        // push order to database
+        const insertOrderStatement = `
                 INSERT INTO
                     orders(order_id, order_type, total_price, order_date, customer_id)
-                SELECT
-                    $1, 'Dine-In', $2, $3, 777
-                FROM
-                    orders
+                VALUES 
+                    ($1, 'Dine-In', $2, $3, 777);
                 `;
+
         const orderParams = [newOrderID, req.body.total_price, req.body.order_date]
 
-        connection.query(orderStatement, orderParams);
+        client.query(insertOrderStatement, orderParams);
 
+        // associate items to an order
         const orderedItemStatement = `
                 INSERT INTO
                     ordered_items(ordered_id, menu_item_id, num_items)
                 VALUES
-                    ($1, $2, $3)
-        `
-        //associate items to order
-        req.body.ordered_items.forEach(element => {
-            orderedItemParams = [newOrderID, element.menu_item_id, 1]
-            connection.query(orderedItemStatement, orderedItemParams);
+                    ($1, $2, $3);
+        `;
 
-            console.log("Pushed item to order");
-        });
+        for (let i = 0; i < req.body.ordered_items.length; ++i) {
+            const orderedItemParams = [newOrderID, req.body.ordered_items[i].menu_item_id, 1];
+            client.query(orderedItemStatement, orderedItemParams);
+        }
 
+        // push statements to database
+        await client.query('COMMIT;');
         res.status(200).json({ message: "done" });
 
     } catch (error) {
-        res.status(500).json({ error: 'Unable to push order' });
 
+        // disregard if an error is caught
+        await client.query('ROLLBACK;');
+        throw (error);
+    } finally {
+
+        // release client back into the pool
+        client.release();
     }
 }
