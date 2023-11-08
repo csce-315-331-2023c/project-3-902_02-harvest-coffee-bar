@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './components/CashierGUIStyle.module.css'
+import styles from './components/CashierGUIStyle.module.css';
 import { server } from '../config';
 
 const Cashier = () => {
