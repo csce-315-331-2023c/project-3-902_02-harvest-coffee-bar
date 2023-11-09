@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import styles from './components/CashierGUIStyle.module.css'import { server } from '../config';
+import styles from './components/CashierGUIStyle.module.css';
+import { server } from '../config';
 
 const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
