@@ -27,7 +27,6 @@ function manager() {
     const addItemToMenu = async () => {
     
         // TODO: ADD PARAMETERS FROM INPUT
-
         var payload = {
             menu_item_name: "",
             menu_item_category: "",
@@ -41,12 +40,23 @@ function manager() {
     const deleteItemFromMenu = async () => {
 
         // TODO: ADD PARAMETERS FROM INPUT
-
         var payload = {
             menu_item_id: -1
         }
 
         await fetch(`${server}/api/manager/delete_item_from_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+    }
+
+    const editMenuItem = async () => {
+
+        // TODO: ADD PARAMETERS FROM INPUT
+        var payload = {
+            price: 0.0,
+            menu_item_id
+        }
+
+        await fetch(`${server}/api/manager/edit_menu_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
     }
 
