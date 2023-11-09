@@ -24,6 +24,32 @@ function manager() {
         }
     };
 
+    const addItemToMenu = async () => {
+    
+        // TODO: ADD PARAMETERS FROM INPUT
+
+        var payload = {
+            menu_item_name: "",
+            menu_item_category: "",
+            item_description: "",
+            price: 0.0
+        }
+
+        await fetch(`${server}/api/manager/add_item_to_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    }
+
+    const deleteItemFromMenu = async () => {
+
+        // TODO: ADD PARAMETERS FROM INPUT
+
+        var payload = {
+            menu_item_id: -1
+        }
+
+        await fetch(`${server}/api/manager/delete_item_from_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+    }
+
     return (
         <div>
             <h1>Menu Items</h1>
