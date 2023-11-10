@@ -1,9 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@700;900&display=swap');
 
+
 .header {
+    font-family: 'Encode Sans', sans-serif;
     text-align: center;
     align-content: center;
-    font-family: 'Encode Sans', sans-serif;
     padding: 100px 0;
     background-color: #ffffff;
 }
@@ -26,4 +27,8 @@
 .menu ul {
     display: grid;
     grid-template-columns: repeat(auto-fill, 50%);
+}
+
+.weather p {
+    font-family: 'Encode Sans', sans-serif;
 }
