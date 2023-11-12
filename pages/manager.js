@@ -15,6 +15,12 @@ function Manager() {
     const [inventoryItems, setInventoryItems] = useState([]);
     const [excessReports, setExcessReports] = useState([]);
     const [employeeSchedules, setEmployeeSchedules] = useState([]);
+
+    const [isMenuVisible, setIsMenuVisible] = useState(false); 
+    const toggleMenuVisibility = () => {
+        setIsMenuVisible(!isMenuVisible); 
+    };
+
     const fetchMenuItems = async () => {
         try {
 
@@ -62,16 +68,22 @@ function Manager() {
             <h1>Manager Dashboard</h1>
 
             {/* Menu Items List Section */}
-            <section>
-                <h2>Menu Items</h2>
-                <button onClick={fetchMenuItems}>Fetch Menu Items</button>
-                <ul>
-                    {menuItems.map((item) => (
-                        <li key={item.menu_item_id}>
-                            {item.menu_item_name} - ${item.price}
-                        </li>
-                    ))}
-                </ul>
+            <section className={managerStyles.menuItemsList}>
+                 <h2>Menu Items</h2>
+                <button onClick={toggleMenuVisibility}>
+                    {isMenuVisible ? 'Hide Menu Items' : 'Show Menu Items'}
+                </button>
+                {isMenuVisible && (
+                    <div className={managerStyles.scrollableContainer} >
+                    <ul>
+                        {menuItems.map((item) => (
+                            <li key={item.menu_item_id}>
+                                {item.menu_item_name} - ${item.price}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                )}
             </section>
 
             {/* Order Trends Section */}

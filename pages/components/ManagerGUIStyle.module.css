@@ -16,94 +16,58 @@
     border-radius: 5px;
 }
 
-.ManagerGUI .mainScreen {
-    display: flex;
-    flex-direction: row;
-
+.ManagerGUI h1 {
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.ManagerGUI .menu {
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    /* Adjust as needed */
-    justify-content: center;
+.ManagerGUI h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
 }
 
-.ManagerGUI .menu h2 {
-    align-items: center;
-    justify-content: center;
-}
-
-.ManagerGUI .menu ul {
-    margin: 0;
-}
-
-.ManagerGUI .menu ul li {
-    margin: 0;
-    list-style-type: none;
-}
-
-.ManagerGUI button.itemButtons {
-    display: block;
-    width: 100%;
-    /* Make all "item-buttons" the same width */
-    padding: 20px;
-    background-color: #ffffff;
-    color: #000;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-}
-
-.ManagerGUI button.itemButtons:hover {
-    background-color: #8b8b8b;
-}
-
-.ManagerGUI .receipt {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    width: 30%;
-    /* Adjust as needed */
-    margin-left: 10px;
-    padding: 10px;
+.ManagerGUI section {
     border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f2f2f2;
-}
-
-.ManagerGUI .receipt ul li {
-    list-style-type: none;
-}
-
-.ManagerGUI .receiptItems {
-    display: flex;
-    justify-content: space-between;
-}
-
-.ManagerGUI button.removeButton {
-    flex: -1;
-    background-color: #ff5c5c;
-    color: #fff;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-
-}
-
-.ManagerGUI button.checkoutButton {
-
-    display: block;
-    width: 100%;
-    /* Make all "item-buttons" the same width */
+    border-radius: 8px;
     padding: 20px;
-    margin: 5px 0;
-    background-color: #ffffff;
-    color: #000;
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: center;
-    font-size: large;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ManagerGUI section:hover {
+    border-color: #88888844;
+    background-color:#dadada6c;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.menuItemsList .scrollableContainer {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.menuItemsList ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 5;
+}
+
+.menuItemsList li {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-radius: 7px;
+}
+
+.menuItemsList li:hover {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: rgba(202, 202, 202, 0.685);
+    border-radius: 7px;
 }
