@@ -2,6 +2,9 @@
 
 import { useState } from 'react';
 import { server } from '../config';
+import Link from 'next/link';
+import navStyles from './components/NavBar.module.css';
+import managerStyles from './components/ManagerGUIStyle.module.css'
 
 function Manager() {
     const [menuItems, setMenuItems] = useState([]);
@@ -12,7 +15,6 @@ function Manager() {
     const [inventoryItems, setInventoryItems] = useState([]);
     const [excessReports, setExcessReports] = useState([]);
     const [employeeSchedules, setEmployeeSchedules] = useState([]);
-
     const fetchMenuItems = async () => {
         try {
 
@@ -46,8 +48,17 @@ function Manager() {
     const fetchEmployeeSchedules = () => { /* ... */ };
 
 
+    fetchMenuItems();
     return (
-        <div>
+        <div className={managerStyles.ManagerGUI}>
+            {/* Navi Section */}
+            <nav className={navStyles.NavBar}>
+			<ul>
+				<li><Link href="/customer"><a>Customer Page</a></Link></li>
+				<li><Link href="/cashier"><a>Cashier Page</a></Link></li>
+				<li><Link href="/manager"><a>Manager Page</a></Link></li>
+			</ul>
+		    </nav>
             <h1>Manager Dashboard</h1>
 
             {/* Menu Items List Section */}
@@ -128,10 +139,6 @@ function Manager() {
                 <table>
                     <thead>
                         <tr>
-                            <th>Employee</th>
-                            <th>Role</th>
-                            <th>Shift Start</th>
-                            <th>Shift End</th>
                         </tr>
                     </thead>
                     <tbody>
