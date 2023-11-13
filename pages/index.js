@@ -5,7 +5,8 @@ import React, { useEffect, useState } from 'react';
 import { server } from '../config';
 
 const Index = () => {
-	const [categories, setCategories] = useState([]);
+	const [menuCategories, setMenuCategories] = useState([]);
+	const [selectedCategory, setSelectedCategory] = useState(null);
 	const [menuItems, setMenuItems] = useState([]);
 	const [currTemperature, setCurrTemperature] = useState([]);
 
@@ -43,6 +44,20 @@ const Index = () => {
 
 		getTemp();
 
+		const getCategories = async () => {
+			try {
+				const response = await fetch(`${server}/api/cashier_functions/fetch_cats`);
+				if (response.ok) {
+					const data = await response.json();
+					setMenuCategories(data);
+				}
+			} catch (error) {
+				console.error('Error: ', error);
+			}
+		}
+
+		getCategories();
+
 	}, []); // called with an empty array to ensure that calls are only made once when loaded
 
 	return (
@@ -61,13 +76,27 @@ const Index = () => {
 				<p1>or check out our other options...</p1>
 			</div>
 
-			<div className={landingStyles.menu}>
+			<div className={landingStyles.category}>
 				<ul>
-					{menuItems.map((menuItem) => (
-						<GenerateMenuItemPanel item={menuItem} />
+					{menuCategories.map((category) => (
+						<div>
+							<h1 className={landingStyles.categoryHeader}>{category.menu_item_category}</h1>
+							<hr className={landingStyles.line}></hr>
+							<div className={landingStyles.items}>
+								<ul>
+									{menuItems.filter((menuItem) =>
+										menuItem.menu_item_category === category.menu_item_category).map((menuItem) => (
+											<GenerateMenuItemPanel item={menuItem} />
+										))}
+								</ul>
+							</div>
+						</div>
 					))}
 				</ul>
 			</div>
+
+
+
 		</div>
 	);
 }

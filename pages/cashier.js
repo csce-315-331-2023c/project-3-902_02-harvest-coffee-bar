@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from './components/CashierGUIStyle.module.css';
 import { server } from '../config';
-
+import NavBar from './components/NavBar.js'
 const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
 	const [view, setView] = useState('customer');
@@ -40,8 +40,8 @@ const Cashier = () => {
 		setSelectedCategory(category);
 	}
 
-	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) => 
-	menuItem.menu_item_category === selectedCategory) : [];
+	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) =>
+		menuItem.menu_item_category === selectedCategory) : [];
 
 	fetchMenuItems();
 	get_categories();
@@ -70,7 +70,7 @@ const Cashier = () => {
 		}
 
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    setReceipt([]);
+		setReceipt([]);
 	}
 
 
@@ -78,31 +78,20 @@ const Cashier = () => {
 	return (
 		<div className={styles.CashierGUI}>
 
-			<div className="view-buttons">
-				<button className={styles.changeView}>
-					Landing Page
-				</button>
-				<button className={styles.changeView}>
-					Customer View
-				</button>
-				<button className={styles.changeView}>
-					Manager View
-				</button>
-			</div>
-
+			<NavBar />
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
 					<h2>Place Orders</h2>
 					<div className={styles.catStyle}>
-							<ul>
-								{menuCats.map((menuCat) => (
-									<button key={menuCat.menu_item_category}
-									className={styles.catButtons} 
+						<ul>
+							{menuCats.map((menuCat) => (
+								<button key={menuCat.menu_item_category}
+									className={styles.catButtons}
 									onClick={() => displayCat(menuCat.menu_item_category)}>
 									<p>{menuCat.menu_item_category}</p>
-									</button> 
-								))}
-							</ul>
+								</button>
+							))}
+						</ul>
 					</div>
 					<hr className={styles.line}></hr>
 					<h2>Menu Items</h2>
