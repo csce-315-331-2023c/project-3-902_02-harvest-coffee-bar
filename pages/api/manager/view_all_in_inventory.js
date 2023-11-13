@@ -21,7 +21,7 @@ export default async (req, res) => {
         FROM
             ingredients_inventory
         ORDER BY
-            ingredient_id
+            ingredient_id;
         `;
 
         const result = await client.query(fetchInventoryQuery);
