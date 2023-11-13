@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './components/CashierGUIStyle.module.css';
 import { server } from '../config';
 import NavBar from './components/NavBar.js'
+
 const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
 	const [view, setView] = useState('customer');
@@ -9,32 +10,37 @@ const Cashier = () => {
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
 
-
-	const fetchMenuItems = async () => {
-		try {
-			const response = await fetch(`${server}/api/manager/get_menu`);
-			if (response.ok) {
-				const data = await response.json();
-				setMenuItems(data);
-			} else {
-				console.error("Unable to fetch menu items.");
+	useEffect(() => {
+		const fetchMenuItems = async () => {
+			try {
+				const response = await fetch(`${server}/api/manager/get_menu`);
+				if (response.ok) {
+					const data = await response.json();
+					setMenuItems(data);
+				} else {
+					console.error("Unable to fetch menu items.");
+				}
+			} catch (error) {
+				console.error('Error:', error);
 			}
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	};
+		};
 
-	const get_categories = async () => {
-		try {
-			const response = await fetch(`${server}/api/cashier_functions/fetch_cats`);
-			if (response.ok) {
-				const data = await response.json();
-				setMenuCats(data);
+		const get_categories = async () => {
+			try {
+				const response = await fetch(`${server}/api/cashier_functions/fetch_cats`);
+				if (response.ok) {
+					const data = await response.json();
+					setMenuCats(data);
+				}
+			} catch (error) {
+				console.error('Error: ', error);
 			}
-		} catch (error) {
-			console.error('Error: ', error);
 		}
-	}
+
+		fetchMenuItems();
+		get_categories();
+
+	}, []);
 
 	const displayCat = (category) => {
 		setSelectedCategory(category);
@@ -42,10 +48,6 @@ const Cashier = () => {
 
 	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) =>
 		menuItem.menu_item_category === selectedCategory) : [];
-
-	fetchMenuItems();
-	get_categories();
-
 
 	const addToReceipt = (item) => {
 		setReceipt([...receipt, item]);

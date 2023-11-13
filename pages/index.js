@@ -80,7 +80,10 @@ const Index = () => {
 				<ul>
 					{menuCategories.map((category) => (
 						<div>
-							<h1 className={landingStyles.categoryHeader}>{category.menu_item_category}</h1>
+							<div className={landingStyles.categoryHeader}>
+								<h1> {category.menu_item_category} </h1>
+							</div>
+
 							<hr className={landingStyles.line}></hr>
 							<div className={landingStyles.items}>
 								<ul>
