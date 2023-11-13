@@ -53,10 +53,29 @@ function manager() {
         // TODO: ADD PARAMETERS FROM INPUT
         var payload = {
             price: 0.0,
-            menu_item_id
+            menu_item_id: -1
         }
 
         await fetch(`${server}/api/manager/edit_menu_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+    }
+
+    const addIngredientsToMenuItem = async () => {
+
+        // TODO: ADD PARAMETERS FROM INPUT
+        var payload = {
+            menu_item_id: -1, 
+            ingredient_id: -1, 
+            num_ingredients: -1
+        }
+
+        await fetch(`${server}/api/manager/add_ingredients_in_menu_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+    }
+
+    const viewAllInInventory = async () => {
+
+        await fetch(`${server}/api/manager/view_all_in_inventory`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
 
     }
 
