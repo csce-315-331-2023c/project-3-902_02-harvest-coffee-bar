@@ -1,7 +1,7 @@
 import NavBar from './components/NavBar';
 import landingStyles from './components/LandingGUIStyle.module.css';
 import GenerateMenuItemPanel from './components/MenuItem';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { server } from '../config';
 
 const Index = () => {
@@ -9,38 +9,41 @@ const Index = () => {
 	const [menuItems, setMenuItems] = useState([]);
 	const [currTemperature, setCurrTemperature] = useState([]);
 
-	const fetchMenuItems = async () => {
-		try {
-			const response = await fetch(`${server}/api/manager/get_menu`);
-			if (response.ok) {
-				const data = await response.json();
-				//console.log(data);
-				setMenuItems(data);
-			} else {
-				console.error("Unable to fetch menu items.");
+	useEffect(() => {
+		const fetchMenuItems = async () => {
+			try {
+				const response = await fetch(`${server}/api/manager/get_menu`);
+				if (response.ok) {
+					const data = await response.json();
+					//console.log(data);
+					setMenuItems(data);
+				} else {
+					//console.error("Unable to fetch menu items.");
+				}
+			} catch (error) {
+				//console.error('Error:', error);
 			}
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	};
+		};
 
-	fetchMenuItems();
+		fetchMenuItems();
 
-	const getTemp = async () => {
-		try {
-			const response = await fetch('https://api.openweathermap.org/data/2.5/weather?lat=30.6013&lon=-96.3144&appid=41d12f4705a953076bb25c8e7fcb8d94&units=imperial');
-			if (response.ok) {
-				const data = await response.json();
-				setCurrTemperature(data.main.temp);
-			} else {
-				console.error("Unable to fetch weather data.");
+		const getTemp = async () => {
+			try {
+				const response = await fetch('https://api.openweathermap.org/data/2.5/weather?lat=30.6013&lon=-96.3144&appid=41d12f4705a953076bb25c8e7fcb8d94&units=imperial');
+				if (response.ok) {
+					const data = await response.json();
+					setCurrTemperature(data.main.temp);
+				} else {
+					console.error("Unable to fetch weather data.");
+				}
+			} catch (error) {
+				console.error('Error:', error);
 			}
-		} catch (error) {
-			console.error('Error:', error);
-		}
-	};
+		};
 
-	getTemp();
+		getTemp();
+
+	}, []); // called with an empty array to ensure that calls are only made once when loaded
 
 	return (
 		<div>
