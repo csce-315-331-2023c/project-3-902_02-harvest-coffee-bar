@@ -79,6 +79,18 @@ function manager() {
 
     }
 
+    const updateItemInInventory = async () => {
+
+        // TODO: ADD PARAMETERS FROM INPUT
+        var payload = {
+            ingredient_count: 0, 
+            ingredient_id: -1
+        }
+
+        await fetch(`${server}/api/manager/update_inventory_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+    }
+
     return (
         <div>
             <h1>Menu Items</h1>
