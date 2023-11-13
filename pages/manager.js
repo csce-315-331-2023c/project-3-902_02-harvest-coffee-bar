@@ -132,6 +132,23 @@ function manager() {
 
     }
 
+    const getLowStock = async () => {
+
+        const report = await fetch(`${server}/api/manager/get_low_stock`, { method: 'POST', headers: { 'Content-Type': 'applications/json' } });
+
+    }
+
+    const getWhatSellsTogether = async (start_time, end_time) => {
+
+        var payload = {
+            start_time: start_time,
+            end_time: end_time
+        }
+
+        const report = await fetch(`${server}/api/manager/get_what_sells_together`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
+
+    }
+
 
     return (
         <div>
