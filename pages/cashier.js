@@ -6,6 +6,9 @@ const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
 	const [view, setView] = useState('customer');
 	const [menuItems, setMenuItems] = useState([]);
+	const [menuCats, setMenuCats] = useState([]);
+	const [selectedCategory, setSelectedCategory] = useState(null);
+
 
 	const fetchMenuItems = async () => {
 		try {
@@ -21,7 +24,28 @@ const Cashier = () => {
 		}
 	};
 
+	const get_categories = async () => {
+		try {
+			const response = await fetch(`${server}/api/cashier_functions/fetch_cats`);
+			if (response.ok) {
+				const data = await response.json();
+				setMenuCats(data);
+			}
+		} catch (error) {
+			console.error('Error: ', error);
+		}
+	}
+
+	const displayCat = (category) => {
+		setSelectedCategory(category);
+	}
+
+	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) => 
+	menuItem.menu_item_category === selectedCategory) : [];
+
 	fetchMenuItems();
+	get_categories();
+
 
 	const addToReceipt = (item) => {
 		setReceipt([...receipt, item]);
@@ -46,34 +70,55 @@ const Cashier = () => {
 		}
 
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    setReceipt([]);
 	}
+
+
 
 	return (
 		<div className={styles.CashierGUI}>
 
 			<div className="view-buttons">
-				<button className={view === 'customer' ? 'active' : ''} onClick={() => setView('customer')}>
+				<button className={styles.changeView}>
+					Landing Page
+				</button>
+				<button className={styles.changeView}>
 					Customer View
 				</button>
-				<button className={view === 'manager' ? 'active' : ''} onClick={() => setView('manager')}>
+				<button className={styles.changeView}>
 					Manager View
 				</button>
 			</div>
 
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
-
+					<h2>Place Orders</h2>
+					<div className={styles.catStyle}>
+							<ul>
+								{menuCats.map((menuCat) => (
+									<button key={menuCat.menu_item_category}
+									className={styles.catButtons} 
+									onClick={() => displayCat(menuCat.menu_item_category)}>
+									<p>{menuCat.menu_item_category}</p>
+									</button> 
+								))}
+							</ul>
+					</div>
+					<hr className={styles.line}></hr>
 					<h2>Menu Items</h2>
-					<ul>
-						{menuItems.map((menuItem) => (
-							<li key={menuItem.menu_item_id}>
-								<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
-									{menuItem.menu_item_name} - ${menuItem.price}
-								</button>
-							</li>
-						))}
-					</ul>
+					<div className={styles.menuItemStyle}>
+						<ul>
+							{filteredMenuItems.map((menuItem) => (
+								<li key={menuItem.menu_item_id}>
+									<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
+										{menuItem.menu_item_name} - ${menuItem.price}
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
 				</div>
+
 				<div className={styles.receipt}>
 					<div>
 						<h2>Receipt</h2>
@@ -91,7 +136,7 @@ const Cashier = () => {
 							))}
 						</ul>
 					</div>
-					<div className='foot'>
+					<div className={styles.foot}>
 						<h3>Total: ${calculateTotal()}</h3>
 						<button className={styles.checkoutButton} onClick={() => handleCheckout()}>
 							Checkout

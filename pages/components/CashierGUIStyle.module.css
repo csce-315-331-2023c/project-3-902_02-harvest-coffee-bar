@@ -18,35 +18,82 @@
 
 .CashierGUI .mainScreen {
     display: flex;
-    flex-direction: row;
+}
 
+.CashierGUI .changeView {
+    background-color: white;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 10%;
+    padding: 5px;
+    margin-bottom: 30px;
 }
 
 .CashierGUI .menu {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap; 
     width: 70%;
     /* Adjust as needed */
-    justify-content: center;
+    justify-content: flex-start;
 }
 
-.CashierGUI .menu h2 {
+/* .CashierGUI .menu h2 {
     align-items: center;
     justify-content: center;
-}
+} */
 
 .CashierGUI .menu ul {
     margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
 }
-
+.CashierGUI .menu h2 {
+    text-align: center;
+}
 .CashierGUI .menu ul li {
     margin: 0;
     list-style-type: none;
+    width: 33.33%;
 }
+
 
 .CashierGUI button.itemButtons {
     display: block;
-    width: 100%;
+    width: 85%;
+    height: 80%;
+    padding: 30px;
+    background-color: #ffffff;
+    color: #000;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 5%;
+    margin-left: 6%;
+}
+
+.CashierGUI button.itemButtons:hover {
+    background-color: #8b8b8b;
+}
+
+.CashierGUI .line {
+    margin-bottom: 2%;
+}
+
+.CashierGUI .catStyle {
+    margin-bottom: 3%;
+}
+
+.CashierGUI .menuItemStyle {
+    margin-top: 1%;
+}
+
+.CashierGUI .catButtons {
+    margin-top: 5%;
+    display: block;
+    width: 20%;
+    margin-left: 2%;
     /* Make all "item-buttons" the same width */
     padding: 20px;
     background-color: #ffffff;
@@ -54,10 +101,7 @@
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
-}
-
-.CashierGUI button.itemButtons:hover {
-    background-color: #8b8b8b;
+    
 }
 
 .CashierGUI .receipt {
@@ -65,6 +109,9 @@
     flex-direction: column;
     justify-content: space-between;
     width: 30%;
+    height: 10%;
+    position: sticky;
+    top: 10px;
     /* Adjust as needed */
     margin-left: 10px;
     padding: 10px;
@@ -80,6 +127,7 @@
 .CashierGUI .receiptItems {
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 .CashierGUI button.removeButton {
@@ -106,4 +154,8 @@
     border-radius: 5px;
     text-align: center;
     font-size: large;
+}
+
+.CashierGUI .foot {
+    margin-top: 20px;
 }
