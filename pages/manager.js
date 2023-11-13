@@ -75,7 +75,7 @@ function manager() {
 
     const viewAllInInventory = async () => {
 
-        await fetch(`${server}/api/manager/view_all_in_inventory`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
+        const response = await fetch(`${server}/api/manager/view_all_in_inventory`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
 
     }
 
@@ -88,6 +88,19 @@ function manager() {
         }
 
         await fetch(`${server}/api/manager/update_inventory_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+    }
+
+    const addInventoryItem = async () => {
+
+        // TODO: ADD PARAMETERS FROM INPUT
+        var payload = {
+            ingredient_name: "",
+            ingredient_count: 0,
+            max_ingredient_count: 0
+        }
+
+        await fetch(`${server}/api/manager/add_inventory_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
     }
 
