@@ -49,12 +49,16 @@ const Index = () => {
 		<div>
 			<NavBar />
 			<div className={landingStyles.header}>
-				<h1>Welcome to</h1>
-				<p>Harvest Coffee Bar</p>
+				<div className={landingStyles.headerImage}></div>
+				<div className={landingStyles.headerText}>
+					<h1>Welcome to</h1>
+					<p>Harvest Coffee Bar</p>
+				</div>
 			</div>
 
 			<div className={landingStyles.weather}>
-				<p>It is currently {currTemperature}&deg;F</p>
+				<p>It is currently {currTemperature}&deg;F, come have a {currTemperature > 85 ? 'iced tea!' : 'hot coffee!'}</p>
+				<p1>or check out our other options...</p1>
 			</div>
 
 			<div className={landingStyles.menu}>
