@@ -118,7 +118,17 @@ function manager() {
             itemName: item_name
         }
 
-        await fetch(`${server}/api/manager/get_sales_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        const report = await fetch(`${server}/api/manager/get_sales_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+    }
+
+    const getExcessReport = async (start_date) => {
+
+        var payload = {
+            start_date: start_date
+        }
+
+        const report = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
 
     }
 
