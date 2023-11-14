@@ -1,10 +1,6 @@
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
-const { Pool } = require("pg");
-
-const pool = new Pool({
-  // Your database configuration
-});
+const { Pool } = require("../backend/database");
 
 passport.use(
   new GoogleStrategy(
