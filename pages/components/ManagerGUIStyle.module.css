@@ -77,7 +77,7 @@
     border-radius: 7px;
 }
 
-.menuItemsList .addButton, .editButton, .deleteButton {
+.menuItemsList .addItemButton, .addInventoryButton, .editButton, .deleteButton {
     margin: 7.5px;
     padding: 5px 10px;
     border: none;
@@ -86,7 +86,12 @@
     font-size: 0.9em;
 }
 
-.addButton {
+.addInventoryButton:hover, .editButton:hover, .deleteButton:hover {
+    background-color: rgba(255, 255, 255, 0.644);
+    color: black;
+}
+
+.addInventoryButton {
     background-color: #adadad;
     color: white;
 }

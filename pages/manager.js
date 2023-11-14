@@ -17,9 +17,11 @@ function Manager() {
     // const [employeeSchedules, setEmployeeSchedules] = useState([]);
 
     const [isMenuVisible, setIsMenuVisible] = useState(false); 
+    const [showAddForm, setShowAddForm] = useState(false);
     const toggleMenuVisibility = () => {
         setIsMenuVisible(!isMenuVisible); 
     };
+
 
     const fetchMenuItems = async () => {
         try {
@@ -47,9 +49,45 @@ function Manager() {
             price: price
         }
 
-        await fetch(`${server}/api/manager/add_item_to_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        await fetch(`${server}/api/manager/add_item_to_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });   
 
     }
+
+    const showAddItemForm = () => {
+
+        setShowAddForm(true);
+
+    };
+
+    const [newMenuItem, setNewMenuItem] = useState({
+
+        menu_item_name: '',
+        menu_item_category: '',
+        item_description: '',
+        price: 0,
+
+    });
+
+    const handleInputChange = (e) => {
+
+        setNewMenuItem({ ...newMenuItem, [e.target.name]: e.target.value });
+
+    };
+
+    const submitAddItemForm = async (e) => {
+
+        e.preventDefault();
+
+        await addItemToMenu(
+            newMenuItem.menu_item_name,
+            newMenuItem.menu_item_category,
+            newMenuItem.item_description,
+            newMenuItem.price
+        );
+
+        setShowAddForm(false);
+        fetchMenuItems();
+    };
 
     const deleteItemFromMenu = async (menu_item_id) => {
 
@@ -58,6 +96,7 @@ function Manager() {
         }
 
         await fetch(`${server}/api/manager/delete_item_from_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        // fetchMenuItems();
     }
 
     const editMenuItem = async (price, menu_item_id) => {
@@ -71,6 +110,18 @@ function Manager() {
 
     }
 
+    const handleEdit = (menu_item_id, currentPrice) => {
+
+        const newPrice = prompt(`Enter new price for the item (Current Price: $${currentPrice}):`, currentPrice);
+
+        if (newPrice !== null && newPrice !== '') {
+            editMenuItem(newPrice, menu_item_id);
+        }
+
+        fetchMenuItems();
+    };
+
+
     const addIngredientsToMenuItem = async (menu_item_id, ingredient_id, num_ingredients) => {
 
         var payload = {
@@ -80,7 +131,6 @@ function Manager() {
         }
 
         await fetch(`${server}/api/manager/add_ingredients_in_menu_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-
     }
 
     const viewAllInInventory = async () => {
@@ -141,7 +191,6 @@ function Manager() {
             endTime: end_time,
             itemName: item_name
         }
-
         try {
             const response = await fetch(`${server}/api/manager/get_sales_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
         
@@ -242,15 +291,77 @@ function Manager() {
                     {isMenuVisible ? 'Hide Menu Items' : 'Show Menu Items'}
                 </button>
                 {isMenuVisible && (
-                    <div className={managerStyles.scrollableContainer} >
+                    <div className={managerStyles.scrollableContainer}>  
+                    <button 
+                        className={managerStyles.addItemButton} 
+                        onClick={showAddItemForm}> 
+                        Add new item
+                    </button>
+
+                    {/* test */}
+                    {/* <button 
+                        className={managerStyles.addItemButton} 
+                        onClick={() => addItemToMenu("testname", "testcategory", "testdescription", "0")}> 
+                        Add new item
+                    </button> */}
+                    
+                    {showAddForm && (
+                        <form onSubmit={submitAddItemForm}>
+                            <div>
+                                <input
+                                    type="text"
+                                    name="menu_item_name"
+                                    placeholder="Item Name"
+                                    value={newMenuItem.menu_item_name}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div>
+                                <input
+                                    type="text"
+                                    name="menu_item_category"
+                                    placeholder="Item Category"
+                                    value={newMenuItem.menu_item_category}
+                                    onChange={handleInputChange}
+                                />
+                            </div>
+                            <div>
+                            <textarea
+                                name="item_description"
+                                placeholder="Item Description"
+                                value={newMenuItem.item_description}
+                                onChange={handleInputChange}
+                            />
+                            </div>
+                            <div>
+                            <input
+                                type="number"
+                                name="price"
+                                placeholder="Price"
+                                value={newMenuItem.price}
+                                onChange={handleInputChange}
+                            />
+                            </div>
+                            <button type="submit">Submit</button>
+                            <button onClick={() => setShowAddForm(false)}>Cancel</button>
+                        </form>
+                    )}
                     <ul>
                         {menuItems.map((item) => (
                             <li key={item.menu_item_id}>
-                                <span>{item.menu_item_name} - ${item.price}</span>
+                                <span> {item.menu_item_name} - ${item.price} </span>
                                 <div>
-                                <button className={managerStyles.addButton}>Add</button>
-                                <button className={managerStyles.editButton}>Edit</button>
-                                <button className={managerStyles.deleteButton}>X</button>
+                                <button className={managerStyles.addInventoryButton}> Add </button>
+                                <button 
+                                    className={managerStyles.editButton}
+                                    onClick={() => handleEdit(item.menu_item_id, item.price)}>
+                                    Edit
+                                </button>
+                                <button 
+                                    className={managerStyles.deleteButton} 
+                                    onClick={() => deleteItemFromMenu(item.menu_item_id)}>
+                                    X
+                                </button>
                                 </div>
                             </li>
                         ))}
@@ -281,7 +392,7 @@ function Manager() {
                         ))}
                     </select>
                 </label>
-                <button onClick={fetchSalesData}>Fetch Sales Data</button>
+                <button onClick={getSalesByTime}>Fetch Sales Data</button>
                 <ul>
                     {salesData.map((data, index) => (
                         <li key={index}>
@@ -307,7 +418,7 @@ function Manager() {
             {/* Excess Report Section */}
             <section>
                 <h2>Excess Reports</h2>
-                <button onClick={fetchExcessReports}>Fetch Excess Reports</button>
+                <button onClick={getExcessReport}>Fetch Excess Reports</button>
                 <ul>
                     {excessReports.map((report, index) => (
                         <li key={index}>
