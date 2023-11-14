@@ -79,6 +79,15 @@ function Manager() {
                         {menuItems.map((item) => (
                             <li key={item.menu_item_id}>
                                 {item.menu_item_name} - ${item.price}
+                                <button>
+									New
+								</button>
+                                <button>
+									Edit
+								</button>
+                                <button>
+									X
+								</button>
                             </li>
                         ))}
                     </ul>
