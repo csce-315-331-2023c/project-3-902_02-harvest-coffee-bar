@@ -34,6 +34,7 @@ function manager() {
         }
 
         await fetch(`${server}/api/manager/add_item_to_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
     }
 
     const deleteItemFromMenu = async (menu_item_id) => {
@@ -43,7 +44,6 @@ function manager() {
         }
 
         await fetch(`${server}/api/manager/delete_item_from_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-
     }
 
     const editMenuItem = async (price, menu_item_id) => {
@@ -71,8 +71,18 @@ function manager() {
 
     const viewAllInInventory = async () => {
 
-        const response = await fetch(`${server}/api/manager/view_all_in_inventory`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
-
+        try {
+            const response = await fetch(`${server}/api/manager/view_all_in_inventory`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
+        
+            if (response.ok) {
+                const data = await response.json();
+            } else {
+                console.error("Unable to view inventory.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+        
     }
 
     const updateItemInInventory = async (ingredient_count, ingredient_id) => {
@@ -118,8 +128,17 @@ function manager() {
             itemName: item_name
         }
 
-        const report = await fetch(`${server}/api/manager/get_sales_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-
+        try {
+            const response = await fetch(`${server}/api/manager/get_sales_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        
+            if (response.ok) {
+                const report = await response.json();
+            } else {
+                console.error("Unable to fetch sales report.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
 
     const getExcessReport = async (start_date) => {
@@ -127,15 +146,34 @@ function manager() {
         var payload = {
             start_date: start_date
         }
+        
+        try {
+            const response = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
+            
+            if (response.ok) {
+                const report = await response.json();
+            } else {
+                console.error("Unable to fetch excess report.");
+            }
 
-        const report = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
-
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
 
     const getLowStock = async () => {
 
-        const report = await fetch(`${server}/api/manager/get_low_stock`, { method: 'POST', headers: { 'Content-Type': 'applications/json' } });
-
+        try {
+            const response = await fetch(`${server}/api/manager/get_low_stock`, { method: 'POST', headers: { 'Content-Type': 'applications/json' } });
+            
+            if (response.ok) {
+                const report = await response.json();
+            } else {
+                console.error("Unable to fetch low stock items.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
 
     const getWhatSellsTogether = async (start_time, end_time) => {
@@ -145,8 +183,17 @@ function manager() {
             end_time: end_time
         }
 
-        const report = await fetch(`${server}/api/manager/get_what_sells_together`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
-
+        try {
+            const response = await fetch(`${server}/api/manager/get_what_sells_together`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
+        
+            if (response.ok) {
+                const report = await response.json();
+            } else {
+                console.error("Unable to get paired item trend report.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
     }
 
 
