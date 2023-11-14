@@ -60,6 +60,16 @@
     margin-bottom: 10px;
 }
 
+.menuItemsList .addItemInput {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.menuItemsList .addItemFormButton {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
 .menuItemsList ul {
     list-style-type: none;
     padding: 0;

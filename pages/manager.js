@@ -282,11 +282,11 @@ function Manager() {
 				<li><Link href="/manager"><a>Manager Page</a></Link></li>
 			</ul>
 		    </nav>
-            <h1>Manager Dashboard</h1>
+            <h1> Manager Dashboard </h1>
 
             {/* Menu Items List Section */}
             <section className={managerStyles.menuItemsList}>
-                 <h2>Menu Items</h2>
+                 <h2> Menu Items </h2>
                 <button onClick={toggleMenuVisibility}>
                     {isMenuVisible ? 'Hide Menu Items' : 'Show Menu Items'}
                 </button>
@@ -296,7 +296,7 @@ function Manager() {
                     <button 
                         className={managerStyles.addItemButton} 
                         onClick={showAddItemForm}> 
-                        Add new item
+                            Add new item
                     </button>
 
                     {/* test */}
@@ -343,8 +343,16 @@ function Manager() {
                                 onChange={handleInputChange}
                             />
                             </div>
-                            <button type="submit">Submit</button>
-                            <button onClick={() => setShowAddForm(false)}>Cancel</button>
+                            <button 
+                                className={managerStyles.addItemFormButton} 
+                                type="submit"> 
+                                    Submit 
+                            </button>
+                            <button 
+                                className={managerStyles.addItemFormButton} 
+                                onClick={() => setShowAddForm(false)}>
+                                    Cancel
+                            </button>
                         </form>
                     )}
                     </div>
@@ -357,12 +365,12 @@ function Manager() {
                                 <button 
                                     className={managerStyles.editButton}
                                     onClick={() => handleEdit(item.menu_item_id, item.price)}>
-                                    Edit
+                                        Edit
                                 </button>
                                 <button 
                                     className={managerStyles.deleteButton} 
                                     onClick={() => deleteItemFromMenu(item.menu_item_id)}>
-                                    X
+                                        X
                                 </button>
                                 </div>
                             </li>
