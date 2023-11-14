@@ -144,7 +144,7 @@ function Manager() {
                 </ul>
             </section>
             
-            {/* Employee Schedules Section */}
+            {/* Employee Schedules Section
             <section>
                 <h2>Employee Schedules</h2>
                 <button onClick={fetchEmployeeSchedules}>Fetch Schedules</button>
@@ -164,7 +164,7 @@ function Manager() {
                         ))}
                     </tbody>
                 </table>
-            </section>            
+            </section>             */}
         </div>
     );
 }
