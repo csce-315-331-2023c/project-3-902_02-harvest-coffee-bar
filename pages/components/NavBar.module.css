@@ -1,18 +1,21 @@
 /*TODO: Apply globally*/
 .NavBar ul {
     display: flex;
-    flex-direction: row-reverse;
+    /* flex-direction: row; */
     list-style-type: none;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    /* overflow: hidden; */
     background-color: #333;
     opacity: 0.90;
 }
 
 .NavBar li {
-    display: inline;
-    float: right;
+    margin-right: 10px; /* Push items to the right */
+}
+
+.NavBar li.login {
+    margin-right: auto; /* Push the Login to the left */
 }
 
 .NavBar li a {

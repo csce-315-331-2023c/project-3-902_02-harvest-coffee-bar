@@ -7,6 +7,7 @@ const Index = () => (
 	<div>
 		<nav className={navStyles.NavBar}>
 			<ul>
+				<li className={`${navStyles.li} ${navStyles.login}`}><Link href="/login"><a className={loginStyles.LoginLink}>Login</a></Link></li>
 				<li><Link href="/customer"><a>Customer Page</a></Link></li>
 				<li><Link href="/cashier"><a>Cashier Page</a></Link></li>
 				<li><Link href="/manager"><a>Manager Page</a></Link></li>
@@ -16,10 +17,10 @@ const Index = () => (
 			<h1>Welcome to Our Coffee Bar</h1>
 			<p>Discover the finest coffee experience in town.</p>
 		</div>
-		<div className={loginStyles.loginContainer}> {/* Use the login styles here */}
-			<h1 className={loginStyles.loginTitle}>Please Login</h1>
-			<a href="/auth/google" className={loginStyles.googleButton}>Sign in with Google</a>
-		</div>
+		{/* <div className={loginStyles.logincontainer}> {/* Use the login styles here */}
+			{/*<h1 className={loginStyles.logintitle}>Please Login</h1>*/}
+			{/*<a href="/auth/google" className={loginStyles.googleButton}>Sign in with Google</a>*/}
+		{/*</div>*/}
 	</div>
 )
 
