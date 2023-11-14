@@ -292,6 +292,7 @@ function Manager() {
                 </button>
                 {isMenuVisible && (
                     <div className={managerStyles.scrollableContainer}>  
+                    <div className={managerStyles.addItemForm}>
                     <button 
                         className={managerStyles.addItemButton} 
                         onClick={showAddItemForm}> 
@@ -307,7 +308,7 @@ function Manager() {
                     
                     {showAddForm && (
                         <form onSubmit={submitAddItemForm}>
-                            <div>
+                            <div className={managerStyles.addItemInput}>
                                 <input
                                     type="text"
                                     name="menu_item_name"
@@ -316,7 +317,7 @@ function Manager() {
                                     onChange={handleInputChange}
                                 />
                             </div>
-                            <div>
+                            <div className={managerStyles.addItemInput}>
                                 <input
                                     type="text"
                                     name="menu_item_category"
@@ -325,7 +326,7 @@ function Manager() {
                                     onChange={handleInputChange}
                                 />
                             </div>
-                            <div>
+                            <div className={managerStyles.addItemInput}>
                             <textarea
                                 name="item_description"
                                 placeholder="Item Description"
@@ -333,7 +334,7 @@ function Manager() {
                                 onChange={handleInputChange}
                             />
                             </div>
-                            <div>
+                            <div className={managerStyles.addItemInput}>
                             <input
                                 type="number"
                                 name="price"
@@ -346,6 +347,7 @@ function Manager() {
                             <button onClick={() => setShowAddForm(false)}>Cancel</button>
                         </form>
                     )}
+                    </div>
                     <ul>
                         {menuItems.map((item) => (
                             <li key={item.menu_item_id}>

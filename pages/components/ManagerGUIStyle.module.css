@@ -54,6 +54,12 @@
     
 }
 
+.menuItemsList .addItemForm {
+    border-radius: 7px;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+}
+
 .menuItemsList ul {
     list-style-type: none;
     padding: 0;
