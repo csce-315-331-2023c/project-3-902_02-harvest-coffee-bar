@@ -18,16 +18,15 @@
 
 .CashierGUI .mainScreen {
     display: flex;
-    flex-direction: row;
-
 }
 
 .CashierGUI .menu {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap; 
     width: 70%;
     /* Adjust as needed */
-    justify-content: center;
+    justify-content: flex-start;
 }
 
 .CashierGUI .menu h2 {
@@ -37,12 +36,17 @@
 
 .CashierGUI .menu ul {
     margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
 }
 
 .CashierGUI .menu ul li {
     margin: 0;
     list-style-type: none;
+    width: 33.33%;
 }
+
 
 .CashierGUI button.itemButtons {
     display: block;
@@ -65,6 +69,9 @@
     flex-direction: column;
     justify-content: space-between;
     width: 30%;
+    height: 10%;
+    position: sticky;
+    top: 10px;
     /* Adjust as needed */
     margin-left: 10px;
     padding: 10px;
@@ -80,6 +87,7 @@
 .CashierGUI .receiptItems {
     display: flex;
     justify-content: space-between;
+    margin-top: 10px;
 }
 
 .CashierGUI button.removeButton {
@@ -106,4 +114,8 @@
     border-radius: 5px;
     text-align: center;
     font-size: large;
+}
+
+.CashierGUI .foot {
+    margin-top: 20px;
 }
