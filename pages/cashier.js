@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './components/CashierGUIStyle.module.css';
 import { server } from '../config';
+import Link from 'next/link';
 
 const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
@@ -8,7 +9,6 @@ const Cashier = () => {
 	const [menuItems, setMenuItems] = useState([]);
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
-
 
 	const fetchMenuItems = async () => {
 		try {
@@ -23,7 +23,7 @@ const Cashier = () => {
 			console.error('Error:', error);
 		}
 	};
-
+	
 	const get_categories = async () => {
 		try {
 			const response = await fetch(`${server}/api/cashier_functions/fetch_cats`);
@@ -43,8 +43,9 @@ const Cashier = () => {
 	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) => 
 	menuItem.menu_item_category === selectedCategory) : [];
 
+	useEffect(() => {
 	fetchMenuItems();
-	get_categories();
+	get_categories(); }, []);
 
 
 	const addToReceipt = (item) => {
@@ -62,33 +63,34 @@ const Cashier = () => {
 	};
 
 	const handleCheckout = async () => {
-
+		const customerID = prompt("Please enter the customer ID");
+		const tip = prompt("Please enter a tip")
 		var payload = {
-			total_price: calculateTotal(),
+			total_price: calculateTotal() + tip,
 			order_date: new Date().toISOString().split('.')[0],
-			ordered_items: receipt
+			ordered_items: receipt,
+			cusomter_id: customerID
 		}
 
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     setReceipt([]);
 	}
 
-
+	// useEffect(() => {
+	// 	document.body.style.overflow = "hidden";
+	// 	return () => {
+	// 		document.body.style.overflow = "scroll"
+	// 	};
+	// }, []);
 
 	return (
+		
 		<div className={styles.CashierGUI}>
-
-			<div className="view-buttons">
-				<button className={styles.changeView}>
-					Landing Page
-				</button>
-				<button className={styles.changeView}>
-					Customer View
-				</button>
-				<button className={styles.changeView}>
-					Manager View
-				</button>
-			</div>
+			<ul className={styles.links}>
+				<li><Link href="/customer"><a className={styles.orderButton}>Order Online</a></Link></li>
+				<li><Link href="/cashier"><a>Cashier Page</a></Link></li>
+				<li><Link href="/manager"><a>Manager Page</a></Link></li>
+			</ul>
 
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
@@ -105,7 +107,7 @@ const Cashier = () => {
 							</ul>
 					</div>
 					<hr className={styles.line}></hr>
-					<h2>Menu Items</h2>
+					<h2>{selectedCategory}</h2>
 					<div className={styles.menuItemStyle}>
 						<ul>
 							{filteredMenuItems.map((menuItem) => (

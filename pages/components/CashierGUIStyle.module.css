@@ -6,10 +6,39 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    justify-content: center;
+    color: white;
 }
 
+.links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content:flex-start; /* Adjust as needed */
+    align-items: center;
+    height: 50px; /* Set a fixed height for the navigation bar */
+    
+}
+  
+  .links li {
+    display: inline;
+    margin-right: 20px;
+    background-color: rgb(113, 123, 111);
+    padding: 10px;
+    /* border: rgb(140, 140, 140) 3px solid; */
+    border-radius: 5px;
+  }
+  
+  .links a {
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 14px;
+  } 
+
 .CashierGUI {
-    background-color: #fff;
+    background-color: #5f726b;
     border: 1px solid #ccc;
     padding: 20px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -17,7 +46,9 @@
 }
 
 .CashierGUI .mainScreen {
+    margin-top: 20px;
     display: flex;
+    overflow: scroll;
 }
 
 .CashierGUI .changeView {
@@ -36,6 +67,7 @@
     width: 70%;
     /* Adjust as needed */
     justify-content: flex-start;
+    overflow-y: scroll;
 }
 
 /* .CashierGUI .menu h2 {
@@ -64,8 +96,8 @@
     width: 85%;
     height: 80%;
     padding: 30px;
-    background-color: #ffffff;
-    color: #000;
+    background-color: #424d42;
+    color: #ffffff;
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
@@ -96,8 +128,8 @@
     margin-left: 2%;
     /* Make all "item-buttons" the same width */
     padding: 20px;
-    background-color: #ffffff;
-    color: #000;
+    background-color: #424d42;
+    color: #ffffff;
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
@@ -117,7 +149,8 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: #f2f2f2;
+    background-color: #424d42;
+    color: #ffffff;
 }
 
 .CashierGUI .receipt ul li {
@@ -133,7 +166,7 @@
 .CashierGUI button.removeButton {
     flex: -1;
     background-color: #ff5c5c;
-    color: #fff;
+    color: #000000;
     padding: 5px 10px;
     border: none;
     border-radius: 5px;
@@ -148,8 +181,8 @@
     /* Make all "item-buttons" the same width */
     padding: 20px;
     margin: 5px 0;
-    background-color: #ffffff;
-    color: #000;
+    background-color: #51544e;
+    color: #ffffff;
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
