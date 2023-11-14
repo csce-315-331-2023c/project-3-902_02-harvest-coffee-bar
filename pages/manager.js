@@ -78,16 +78,12 @@ function Manager() {
                     <ul>
                         {menuItems.map((item) => (
                             <li key={item.menu_item_id}>
-                                {item.menu_item_name} - ${item.price}
-                                <button>
-									New
-								</button>
-                                <button>
-									Edit
-								</button>
-                                <button>
-									X
-								</button>
+                                <span>{item.menu_item_name} - ${item.price}</span>
+                                <div>
+                                <button className={managerStyles.addButton}>Add</button>
+                                <button className={managerStyles.editButton}>Edit</button>
+                                <button className={managerStyles.deleteButton}>X</button>
+                                </div>
                             </li>
                         ))}
                     </ul>

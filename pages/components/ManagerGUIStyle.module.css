@@ -42,6 +42,7 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+
 .menuItemsList .scrollableContainer {
     max-height: 500px; 
     overflow-y: auto;
@@ -50,12 +51,13 @@
     margin-top: 10px;
     border-radius: 4px;
     background-color: #f9f9f9;
+    
 }
 
 .menuItemsList ul {
     list-style-type: none;
     padding: 0;
-    margin: 5;
+    margin: 5; 
 }
 
 .menuItemsList li {
@@ -63,6 +65,9 @@
     padding: 5px;
     background-color: #f0f0f0;
     border-radius: 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; 
 }
 
 .menuItemsList li:hover {
@@ -71,3 +76,29 @@
     background-color: rgba(202, 202, 202, 0.685);
     border-radius: 7px;
 }
+
+.menuItemsList .addButton, .editButton, .deleteButton {
+    margin: 7.5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.addButton {
+    background-color: #adadad;
+    color: white;
+}
+
+.editButton {
+    background-color: #adadad;
+    color: rgb(255, 255, 255);
+}
+
+.deleteButton {
+    background-color: #F44336;
+    color: white;
+}
+
+
