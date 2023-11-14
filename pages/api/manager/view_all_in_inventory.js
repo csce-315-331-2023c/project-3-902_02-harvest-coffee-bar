@@ -16,12 +16,12 @@ export default async (req, res) => {
         await client.query('BEGIN;');
 
         const fetchInventoryQuery = `
-        SELECT
-            *
-        FROM
-            ingredients_inventory
-        ORDER BY
-            ingredient_id;
+            SELECT
+                *
+            FROM
+                ingredients_inventory
+            ORDER BY
+                ingredient_id;
         `;
 
         const result = await client.query(fetchInventoryQuery);

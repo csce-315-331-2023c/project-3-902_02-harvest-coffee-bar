@@ -16,13 +16,15 @@ export default async (req, res) => {
         await client.query('BEGIN;');
 
         const deleteItemFromMenuQuery = `
-        DELETE FROM
-            menu_items
-        WHERE
-            menu_item_id = ?;
+            DELETE FROM
+                menu_items
+            WHERE
+                menu_item_id = $1;
         `;
 
-        const itemParameter = [req.menu_item_id];
+        const itemParameter = [
+            req.body.menu_item_id
+        ];
 
         client.query(deleteItemFromMenuQuery, itemParameter);
 

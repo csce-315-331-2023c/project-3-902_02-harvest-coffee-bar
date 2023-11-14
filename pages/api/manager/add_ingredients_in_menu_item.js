@@ -16,13 +16,17 @@ export default async (req, res) => {
         await client.query('BEGIN;');
 
         const addMenuItemQuery = `
-        INSERT INTO
-            menu_ingredients (menu_item_id, ingredient_id, num_ingredients)
-        VALUES
-            (?, ?, ?);
+            INSERT INTO
+                menu_ingredients (menu_item_id, ingredient_id, num_ingredients)
+            VALUES
+                ($1, $2, $3);
         `;
 
-        const itemParameters = [req.menu_item_id, req.ingredient_id, req.num_ingredients];
+        const itemParameters = [
+            req.body.menu_item_id,
+            req.body.ingredient_id,
+            req.body.num_ingredients
+        ];
 
         client.query(addMenuItemQuery, itemParameters);
 

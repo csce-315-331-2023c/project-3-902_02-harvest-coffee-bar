@@ -19,12 +19,15 @@ export default async (req, res) => {
         UPDATE
             ingredients_inventory
         SET
-            ingredient_count = ?
+            ingredient_count = $1
         WHERE
-            ingredient_id = ?;
+            ingredient_id = $2;
         `;
 
-        const itemParameters = [req.ingredient_count, req.ingredient_id];
+        const itemParameters = [
+            req.body.ingredient_count,
+            req.body.ingredient_id
+        ];
 
         client.query(updateInventoryItemQuery, itemParameters);
 

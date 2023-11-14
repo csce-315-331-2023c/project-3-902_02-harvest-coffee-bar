@@ -16,15 +16,19 @@ export default async (req, res) => {
         await client.query('BEGIN;');
 
         const addInventoryItemQuery = `
-        INSERT INTO
-            ingredients_inventory(ingredient_id, ingredient_name, ingredient_count, max_ingredient_count)
-        SELECT
-            MAX(ingredient_id) + 1, ?, ?, ?
-        FROM
-            ingredients_inventory;
+            INSERT INTO
+                ingredients_inventory(ingredient_id, ingredient_name, ingredient_count, max_ingredient_count)
+            SELECT
+                MAX(ingredient_id) + 1, $1, $2, $3
+            FROM
+                ingredients_inventory;
         `;
 
-        const itemParameters = [req.ingredient_name, req.ingredient_count, req.max_ingredient_count];
+        const itemParameters = [
+            req.body.ingredient_name,
+            req.body.ingredient_count,
+            req.body.max_ingredient_count
+        ];
 
         client.query(addInventoryItemQuery, itemParameters);
 
