@@ -24,7 +24,12 @@ export default async (req, res) => {
             menu_items;
         `;
 
-        const itemParameters = [req.menu_item_name, req.menu_item_category, req.item_description, req.item_price];
+        const itemParameters = [
+            req.menu_item_name,
+            req.menu_item_category,
+            req.item_description,
+            req.price
+        ];
 
         client.query(addMenuItemQuery, itemParameters);
 
