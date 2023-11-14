@@ -5,10 +5,10 @@ import NavBar from './components/NavBar.js'
 
 const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
-	const [view, setView] = useState('customer');
 	const [menuItems, setMenuItems] = useState([]);
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
+	const [view, setView] = useState('customer');
 
 	useEffect(() => {
 		const fetchMenuItems = async () => {

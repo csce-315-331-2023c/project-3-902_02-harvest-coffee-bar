@@ -1,4 +1,5 @@
 import NavBar from './components/NavBar';
+import FooterBar from './components/Footer';
 import landingStyles from './components/LandingGUIStyle.module.css';
 import GenerateMenuItemPanel from './components/MenuItem';
 import React, { useEffect, useState } from 'react';
@@ -75,7 +76,6 @@ const Index = () => {
 				<p>It is currently {currTemperature}&deg;F, come have a {currTemperature > 85 ? 'iced tea!' : 'hot coffee!'}</p>
 				<p1>or check out our other options...</p1>
 			</div>
-
 			<div className={landingStyles.category}>
 				<ul>
 					{menuCategories.map((category) => (
@@ -83,7 +83,6 @@ const Index = () => {
 							<div className={landingStyles.categoryHeader}>
 								<h1> {category.menu_item_category} </h1>
 							</div>
-
 							<hr className={landingStyles.line}></hr>
 							<div className={landingStyles.items}>
 								<ul>
@@ -98,8 +97,7 @@ const Index = () => {
 				</ul>
 			</div>
 
-
-
+			<FooterBar />
 		</div>
 	);
 }
