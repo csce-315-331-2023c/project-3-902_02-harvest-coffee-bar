@@ -162,6 +162,16 @@ const Customer = () => {
 					</div>
 				</div>
 			</div>
+			<hr className={styles.line}></hr>
+			<div className={styles.footer}>
+			<h3>Hours</h3>
+			<br></br>
+			<pre>
+				{'                          Open Daily from 7am - 6pm\n1037 University Dr - Suite 109,College Station, TX 77840\n                                    (979) 599-3236'}
+			</pre>
+
+
+			</div>
 		</div>
 	);
 }
