@@ -1,5 +1,9 @@
+// import React, { useState } from 'react';
+// import styles from './components.login.module.css';
+// import { server } from '../config';
+
 const express = require("express");
-const passport = require("../auth").passport;
+const passport = require("./auth").passport;
 const { pool } = require("../backend/database");
 const session = require("express-session");
 const dotenv = require("dotenv").config();
@@ -41,3 +45,5 @@ app.get("/", (req, res) => {
 app.listen(port, () => {
   console.log(`App listening at http://localhost:${port}`);
 });
+
+
