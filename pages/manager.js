@@ -407,8 +407,10 @@ function Manager() {
                         {menuItems.map((item) => (
                             <li key={item.menu_item_id}>
                                 <div className={managerStyles.firstlineList} 
+                                        // Back-end implement neede - dummy function of inventory for selected item
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}>
                                     <span 
+                                        // Back-end implement neede - dummy function of inventory for selected item
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}> 
                                         {item.menu_item_name} - ${item.price} 
                                     </span>
@@ -457,8 +459,12 @@ function Manager() {
                                     <ul className={managerStyles.inventoryList}>
                                         {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
                                             <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
+                                                
+                                                {/* Back-end implement needed - list out inventory for selected Item  */}
                                                 {inventoryItem.name} - Quantity: {inventoryItem.quantity}
                                                 <div className={managerStyles.inventoryListButton}>
+                                                
+
                                                 {/* <button 
                                                     className={managerStyles.editButton}
                                                     onClick={() => handleEdit(item.menu_item_id, item.price)}>
@@ -484,6 +490,7 @@ function Manager() {
             {/* Order Trends Section */}
             <section className={managerStyles.OrderTrends}>
                 <h2>Order Trends</h2>
+                <div className={managerStyles.firstlineList}>
                 <label>
                     Start Date:
                     <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
@@ -509,11 +516,14 @@ function Manager() {
                 </button>
                 <ul>
                     {salesData.map((data, index) => (
+                        //Back-end implement needed - list out sales. 
                         <li key={index}>
-                            {data.itemName}: {data.totalSales}
+                            {data.menu_item_name}: {data.totalSales}
                         </li>
                     ))}
                 </ul>
+                </div>        
+                
             </section>
 
             {/* Inventory List Section */}
