@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+
+/* TODO: Figure out how to implement fonts globally*/
+.ManagerGUI * {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.ManagerGUI {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.ManagerGUI h1 {
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.ManagerGUI h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.ManagerGUI section {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ManagerGUI section:hover {
+    border-color: #88888844;
+    background-color:#dadada6c;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+
+.menuItemsList .scrollableContainer {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    
+}
+
+.menuItemsList .addItemForm {
+    border-radius: 7px;
+    background-color: #f0f0f0;
+    margin-bottom: 10px;
+}
+
+.menuItemsList .addItemInput {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.menuItemsList .addItemFormButton {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.menuItemsList ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 5; 
+}
+
+.menuItemsList li {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-radius: 7px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.menuItemsList li:hover {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: rgba(124, 124, 124, 0.685);
+    border-radius: 7px;
+}
+
+
+.menuItemsList .firstlineList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.menuItemsList .inventoryList {
+    width: 100%;
+}
+
+.menuItemsList .inventoryListItem {
+    background-color:#d8d8d8;
+}
+
+.menuItemsList .inventoryListItem:hover {
+    background-color:#d8d8d8;
+}
+
+.menuItemsList .addItemButton, .addInventoryButton, .editButton, .deleteButton {
+    margin: 7.5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.addInventoryButton:hover, .editButton:hover, .deleteButton:hover {
+    background-color: rgba(255, 255, 255, 0.644);
+    color: black;
+}
+
+.addInventoryButton {
+    background-color: #adadad;
+    color: white;
+}
+
+.editButton {
+    background-color: #adadad;
+    color: rgb(255, 255, 255);
+}
+
+.deleteButton {
+    background-color: #F44336;
+    color: white;
+}
+
+
