@@ -31,10 +31,10 @@ export default async (req, res) => {
                 INSERT INTO
                     orders(order_id, order_type, total_price, order_date, customer_id)
                 VALUES 
-                    ($1, 'Dine-In', $2, $3, 777);
+                    ($1, 'Dine-In', $2, $3, $4);
                 `;
 
-        const orderParams = [newOrderID, req.body.total_price, req.body.order_date]
+        const orderParams = [newOrderID, req.body.total_price, req.body.order_date, req.body.customer_id]
 
         client.query(insertOrderStatement, orderParams);
 
