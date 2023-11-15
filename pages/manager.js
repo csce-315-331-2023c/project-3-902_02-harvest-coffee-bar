@@ -30,10 +30,18 @@ function Manager() {
     });
 
     //order trends section state
+    const [selectedItem, setSelectedItem] = useState('All');
     const [salesData, setSalesData] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
-    const [selectedItem, setSelectedItem] = useState('All');
+
+    const [popularPairsData, setPairsData] = useState([]);
+    const [PopularPairstartDate, setPopularPairStartDate] = useState('');
+    const [PopularPairendDate, setPopularPairEndDate] = useState('');
+    
+
+
+
 
 
 
@@ -301,6 +309,7 @@ function Manager() {
 
             if (response.ok) {
                 const report = await response.json();
+                setPairsData(report);
             } else {
                 console.error("Unable to get paired item trend report.");
             }
@@ -494,9 +503,10 @@ function Manager() {
             </section>
 
             {/* Order Trends Section */}
-            <section className={managerStyles.OrderTrends}>
+            <section className={managerStyles.orderTrends}>
                 <h2>Order Trends</h2>
-                <div className={managerStyles.firstlineList}>
+                <div className={managerStyles.salesData}>
+                    <h3>Sales Report: </h3>
                     <label>
                         Start Date:
                         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
@@ -517,19 +527,35 @@ function Manager() {
                         </select>
                     </label>
                     <button
-                        onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
-                        View Sales
-                </button>
-                <ul>
-                    {salesData.map((data, index) => (
-                        //Need Back-end implement - list out sales. 
-                        <li key={index}>
-                            {data.menu_item_name}: {data.totalSales}
-                        </li>
-                    ))}
-                </ul>
-                </div>        
-                
+                        onClick = {() => getSalesByTime(startDate, endDate, selectedItem)}>
+                            View Sales
+                    </button>
+                    <ul>
+                        {salesData.map((data, index) => (
+                            //Need Back-end implement - list out sales. 
+                            <li key={index}>
+                                {data.menu_item_name}: {data.totalSales}
+                            </li>
+                        ))}
+                    </ul>
+                </div>      
+                <br></br>
+                <div className={managerStyles.popularPairs}>
+                    <h3>Popular Item Pairs: </h3>
+                    <label>
+                        Start Date:
+                        <input type="date" value={PopularPairstartDate} onChange={(e) => setPopularPairStartDate(e.target.value)} />
+                    </label>
+                    <label>
+                        End Date:
+                        <input type="date" value={PopularPairendDate} onChange={(e) => setPopularPairEndDate(e.target.value)} />
+                    </label>
+                    <button
+                        onClick = {() => getWhatSellsTogether(PopularPairstartDate, PopularPairendDate)}>
+                            View Pairs
+                    </button>
+                    
+                </div>
             </section>
 
             {/* Inventory List Section */}
