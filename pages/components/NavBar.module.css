@@ -7,7 +7,7 @@
 
 .NavBar ul {
     display: flex;
-    /* flex-direction: row; */
+    flex-direction: row;
     list-style-type: none;
     padding: 0;
     overflow: hidden;
@@ -18,8 +18,9 @@
 }
 
 .NavBar li {
-    margin-right: 10px;
-    /* Push items to the right */
+    display: inline;
+    justify-content: center;
+    float: right;
 }
 
 .NavBar li.login {
@@ -43,7 +44,6 @@
 }
 
 .NavBar li.login button {
-    font-family: 'Times New Roman', sans-serif;
     font-size: 16px;
     background-color: transparent;
     display: block;

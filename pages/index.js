@@ -64,11 +64,6 @@ const Index = () => {
 	return (
 		<div>
 			<NavBar />
-			<li className={`${navStyles.li} ${navStyles.login}`}>
-				<button onClick={() => signIn('google')} className={`${loginStyles.LoginLink} ${navStyles.button}`}>
-					<a className={loginStyles.LoginLink}>Login</a>
-				</button>
-			</li>
 			<div className={landingStyles.header}>
 				<div className={landingStyles.headerImage}></div>
 				<div className={landingStyles.headerText}>
