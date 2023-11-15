@@ -73,7 +73,7 @@ const Customer = () => {
 			ordered_items: receipt,
 			cusomter_id: customerID
 		}
-
+		{setReceiptVisible(!receiptVisible)};
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     setReceipt([]);
 	}
