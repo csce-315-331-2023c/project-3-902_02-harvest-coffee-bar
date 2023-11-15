@@ -46,16 +46,14 @@ function Manager() {
 
 
     //dummy function for inventory of given menu item
-    const handleMenuItemClick = (itemId) => {
-        // Mock inventory data 
-        const mockInventory = {
-            [itemId]: [
-                { id: 1, name: "Inventory Item 1", quantity: 10 },
-                { id: 2, name: "Inventory Item 2", quantity: 5 }
-            ]
-        };
-    
-        setSelectedItemInventory(mockInventory);
+    const handleMenuItemClick = async (itemId) => {
+        try {
+            const inventoryData = await getInventoryByItem(itemId);
+            const updatedInventory = { [itemId]: inventoryData };
+            setSelectedItemInventory(updatedInventory);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     const addItemToMenu = async (item_name, item_category, description, item_price) => {
@@ -227,9 +225,9 @@ function Manager() {
     const getSalesByTime = async (start_time, end_time, item_name) => {
 
         var payload = {
-            startTime: start_time,
-            endTime: end_time,
-            itemName: item_name
+            start_time: start_time,
+            end_time: end_time,
+            item_name: item_name
         }
         try {
             const response = await fetch(`${server}/api/manager/get_sales_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -427,8 +425,8 @@ function Manager() {
                                 {selectedItemInventory[item.menu_item_id] && (
                                     <ul className={managerStyles.inventoryList}>
                                         {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
-                                            <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
-                                                {inventoryItem.name} - Quantity: {inventoryItem.quantity}
+                                            <li className={managerStyles.inventoryListItem} key={inventoryItem.ingredient_id}>
+                                                {inventoryItem.ingredient_name} - Quantity: {inventoryItem.num_ingredients}
                                             </li>
                                         ))}
                                     </ul>
