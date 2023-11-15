@@ -82,15 +82,35 @@
     background-color: #f0f0f0;
     border-radius: 7px;
     display: flex;
-    align-items: center;
-    justify-content: space-between; 
+    align-items: flex-start;
+    flex-direction: column;
 }
 
 .menuItemsList li:hover {
     margin-bottom: 10px;
     padding: 5px;
-    background-color: rgba(202, 202, 202, 0.685);
+    background-color: rgba(124, 124, 124, 0.685);
     border-radius: 7px;
+}
+
+
+.menuItemsList .firstlineList {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.menuItemsList .inventoryList {
+    width: 100%;
+}
+
+.menuItemsList .inventoryListItem {
+    background-color:#d8d8d8;
+}
+
+.menuItemsList .inventoryListItem:hover {
+    background-color:#d8d8d8;
 }
 
 .menuItemsList .addItemButton, .addInventoryButton, .editButton, .deleteButton {

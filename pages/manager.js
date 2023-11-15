@@ -7,7 +7,15 @@ import navStyles from './components/NavBar.module.css';
 import managerStyles from './components/ManagerGUIStyle.module.css'
 
 function Manager() {
+    //menu item list section state
     const [menuItems, setMenuItems] = useState([]);
+    const [isMenuVisible, setIsMenuVisible] = useState(false); 
+    const [showAddForm, setShowAddForm] = useState(false);
+    const toggleMenuVisibility = () => {
+        setIsMenuVisible(!isMenuVisible); 
+    };
+    const [selectedItemInventory, setSelectedItemInventory] = useState({});
+
     const [salesData, setSalesData] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
@@ -15,12 +23,7 @@ function Manager() {
     const [inventoryItems, setInventoryItems] = useState([]);
     const [excessReports, setExcessReports] = useState([]);
     // const [employeeSchedules, setEmployeeSchedules] = useState([]);
-
-    const [isMenuVisible, setIsMenuVisible] = useState(false); 
-    const [showAddForm, setShowAddForm] = useState(false);
-    const toggleMenuVisibility = () => {
-        setIsMenuVisible(!isMenuVisible); 
-    };
+    
 
 
     const fetchMenuItems = async () => {
@@ -40,6 +43,19 @@ function Manager() {
         }
     };
 
+    //dummy function for inventory of given menu item
+    const handleMenuItemClick = (itemId) => {
+        // Mock inventory data 
+        const mockInventory = {
+            [itemId]: [
+                { id: 1, name: "Inventory Item 1", quantity: 10 },
+                { id: 2, name: "Inventory Item 2", quantity: 5 }
+            ]
+        };
+    
+        setSelectedItemInventory(mockInventory);
+    };
+
     const addItemToMenu = async (menu_item_name, menu_item_category, item_description, price) => {
     
         var payload = {
@@ -53,6 +69,7 @@ function Manager() {
 
     }
 
+    //Front-end handling function for addItemToMenu {
     const showAddItemForm = () => {
 
         setShowAddForm(true);
@@ -88,6 +105,7 @@ function Manager() {
         setShowAddForm(false);
         fetchMenuItems();
     };
+    //}
 
     const deleteItemFromMenu = async (menu_item_id) => {
 
@@ -110,6 +128,7 @@ function Manager() {
 
     }
 
+    //Front-end handling function for editMenuItem {
     const handleEdit = (menu_item_id, currentPrice) => {
 
         const newPrice = prompt(`Enter new price for the item (Current Price: $${currentPrice}):`, currentPrice);
@@ -120,7 +139,7 @@ function Manager() {
 
         fetchMenuItems();
     };
-
+    //}
 
     const addIngredientsToMenuItem = async (menu_item_id, ingredient_id, num_ingredients) => {
 
@@ -359,20 +378,38 @@ function Manager() {
                     <ul>
                         {menuItems.map((item) => (
                             <li key={item.menu_item_id}>
-                                <span> {item.menu_item_name} - ${item.price} </span>
-                                <div>
-                                <button className={managerStyles.addInventoryButton}> Add </button>
-                                <button 
-                                    className={managerStyles.editButton}
-                                    onClick={() => handleEdit(item.menu_item_id, item.price)}>
-                                        Edit
-                                </button>
-                                <button 
-                                    className={managerStyles.deleteButton} 
-                                    onClick={() => deleteItemFromMenu(item.menu_item_id)}>
-                                        X
-                                </button>
+                                <div className={managerStyles.firstlineList}>
+                                    <span  
+                                        onClick={() => handleMenuItemClick(item.menu_item_id)}> 
+                                        {item.menu_item_name} - ${item.price} 
+                                    </span>
+                                    <div className={managerStyles.buttonContainer}>
+                                        <button 
+                                            className={managerStyles.addInventoryButton}> 
+                                                Add 
+                                        </button>
+                                        <button 
+                                            className={managerStyles.editButton}
+                                            onClick={() => handleEdit(item.menu_item_id, item.price)}>
+                                                Edit
+                                        </button>
+                                        <button 
+                                            className={managerStyles.deleteButton} 
+                                            onClick={() => deleteItemFromMenu(item.menu_item_id)}>
+                                                X
+                                        </button>
+                                    </div>
                                 </div>
+                                {/* Display inventory for given menu item */}
+                                {selectedItemInventory[item.menu_item_id] && (
+                                    <ul className={managerStyles.inventoryList}>
+                                        {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
+                                            <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
+                                                {inventoryItem.name} - Quantity: {inventoryItem.quantity}
+                                            </li>
+                                        ))}
+                                    </ul>
+                                )}
                             </li>
                         ))}
                     </ul>
