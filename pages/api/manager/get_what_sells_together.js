@@ -30,13 +30,12 @@ export default async (req, res) => {
                 JOIN
                     orders o ON oi1.ordered_id = o.order_id
                 WHERE
-                    o.order_date BETWEEN CAST($1 AS TIMESTAMP) AND CAST($2 AS TIMESTAMP)
+                    o.order_date BETWEEN $1 AND $2
                 GROUP BY
                     oi1.menu_item_id,
                     oi2.menu_item_id
             )
 
-            -- GROUP BY FREQ
             SELECT
                 ip.i1_id AS i1_id,
                 mi1.menu_item_name AS i1_name,
@@ -57,13 +56,12 @@ export default async (req, res) => {
             req.body.start_time,
             req.body.end_time
         ];
-
         const result = await client.query(pairSalesQuery, timeParameters);
         const pairSalesData = result.rows; // Extract the rows from the result
 
         // push statements to database
         await client.query('COMMIT;');
-        res.status(200).json({ message: "done", data: pairSalesData });
+        res.status(200).json(pairSalesData);
 
     } catch (error) {
 

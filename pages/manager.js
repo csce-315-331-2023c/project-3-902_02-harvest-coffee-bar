@@ -38,7 +38,7 @@ function Manager() {
     const [popularPairsData, setPairsData] = useState([]);
     const [PopularPairstartDate, setPopularPairStartDate] = useState('');
     const [PopularPairendDate, setPopularPairEndDate] = useState('');
-    
+
 
 
 
@@ -305,7 +305,7 @@ function Manager() {
         }
 
         try {
-            const response = await fetch(`${server}/api/manager/get_what_sells_together`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
+            const response = await fetch(`${server}/api/manager/get_what_sells_together`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
             if (response.ok) {
                 const report = await response.json();
@@ -469,16 +469,16 @@ function Manager() {
                                             </form>
                                         )}
                                     </div>
-                                {/* Display inventory for given menu item */}
-                                {selectedItemInventory[item.menu_item_id] && (
-                                    <ul className={managerStyles.inventoryList}>
-                                        {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
-                                            <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
-                                                
-                                                {/* Need Back-end implement  - list out inventory for selected Item  */}
-                                                {inventoryItem.name} - Quantity: {inventoryItem.quantity}
-                                                <div className={managerStyles.inventoryListButton}>
-                                                
+                                    {/* Display inventory for given menu item */}
+                                    {selectedItemInventory[item.menu_item_id] && (
+                                        <ul className={managerStyles.inventoryList}>
+                                            {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
+                                                <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
+
+                                                    {/* Need Back-end implement  - list out inventory for selected Item  */}
+                                                    {inventoryItem.name} - Quantity: {inventoryItem.quantity}
+                                                    <div className={managerStyles.inventoryListButton}>
+
 
                                                         {/* <button 
                                                     className={managerStyles.editButton}
@@ -527,18 +527,18 @@ function Manager() {
                         </select>
                     </label>
                     <button
-                        onClick = {() => getSalesByTime(startDate, endDate, selectedItem)}>
-                            View Sales
+                        onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
+                        View Sales
                     </button>
                     <ul>
                         {salesData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
                             <li key={index}>
-                                {data.menu_item_name}: {data.totalSales}
+                                {data.item}: {data.total_sales}
                             </li>
                         ))}
                     </ul>
-                </div>      
+                </div>
                 <br></br>
                 <div className={managerStyles.popularPairs}>
                     <h3>Popular Item Pairs: </h3>
@@ -551,10 +551,17 @@ function Manager() {
                         <input type="date" value={PopularPairendDate} onChange={(e) => setPopularPairEndDate(e.target.value)} />
                     </label>
                     <button
-                        onClick = {() => getWhatSellsTogether(PopularPairstartDate, PopularPairendDate)}>
-                            View Pairs
+                        onClick={() => getWhatSellsTogether(PopularPairstartDate, PopularPairendDate)}>
+                        View Pairs
                     </button>
-                    
+                    <ul>
+                        {popularPairsData.map((data, index) => (
+                            //Need Back-end implement - list out sales. 
+                            <li key={index}>
+                                {data.i1_name} : {data.i2_name} - {data.frequency}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
             </section>
 
