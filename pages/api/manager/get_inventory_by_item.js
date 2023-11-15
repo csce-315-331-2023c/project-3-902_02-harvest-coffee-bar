@@ -22,6 +22,7 @@ export default async (req, res) => {
         const fetchInventoryQuery = `
             SELECT
                 mii.menu_item_id,
+                ii.ingredient_id,
                 ii.ingredient_name AS ingredient_name,
                 mii.num_ingredients
             FROM
