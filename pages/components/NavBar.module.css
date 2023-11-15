@@ -7,7 +7,7 @@
 
 .NavBar ul {
     display: flex;
-    flex-direction: row-reverse;
+    /* flex-direction: row; */
     list-style-type: none;
     padding: 0;
     overflow: hidden;
@@ -18,9 +18,13 @@
 }
 
 .NavBar li {
-    display: inline;
-    justify-content: center;
-    float: right;
+    margin-right: 10px;
+    /* Push items to the right */
+}
+
+.NavBar li.login {
+    margin-right: auto;
+    /* Push the Login to the left */
 }
 
 .NavBar li a {
@@ -35,6 +39,22 @@
 
 .NavBar li a:hover {
     color: #82DFAA;
+    opacity: 1;
+}
+
+.NavBar li.login button {
+    font-family: 'Times New Roman', sans-serif;
+    font-size: 16px;
+    background-color: transparent;
+    display: block;
+    border: none;
+    text-align: center;
+    padding: none;
+    cursor: pointer;
+}
+
+.NavBar li.login button:hover {
+    background-color: transparent;
     opacity: 1;
 }
 
