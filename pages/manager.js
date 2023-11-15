@@ -130,6 +130,25 @@ function Manager() {
 
     }
 
+    const getInventoryByItem = async (menu_item_id) => {
+
+        var payload = {
+            menu_item_id: menu_item_id
+        }
+
+        try {
+            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
+        
+            if (response.ok) {
+                const data = await response.json();
+            } else {
+                console.error("Unable to view inventory.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
     //Front-end handling function for editMenuItem {
     const handleEdit = (menu_item_id, currentPrice) => {
 
