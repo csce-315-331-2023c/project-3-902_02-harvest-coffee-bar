@@ -413,8 +413,10 @@ function Manager() {
                             {menuItems.map((item) => (
                                 <li key={item.menu_item_id}>
                                     <div className={managerStyles.firstlineList}
+                                        // Need Back-end implement - dummy function of inventory for selected item
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}>
                                         <span
+                                            // Need Back-end implement - dummy function of inventory for selected item
                                             onClick={() => handleMenuItemClick(item.menu_item_id)}>
                                             {item.menu_item_name} - ${item.price}
                                         </span>
@@ -463,8 +465,12 @@ function Manager() {
                                         <ul className={managerStyles.inventoryList}>
                                             {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
                                                 <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
+
+                                                    {/* Need Back-end implement  - list out inventory for selected Item  */}
                                                     {inventoryItem.name} - Quantity: {inventoryItem.quantity}
                                                     <div className={managerStyles.inventoryListButton}>
+
+
                                                         {/* <button 
                                                     className={managerStyles.editButton}
                                                     onClick={() => handleEdit(item.menu_item_id, item.price)}>
@@ -490,36 +496,40 @@ function Manager() {
             {/* Order Trends Section */}
             <section className={managerStyles.OrderTrends}>
                 <h2>Order Trends</h2>
-                <label>
-                    Start Date:
-                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                </label>
-                <label>
-                    End Date:
-                    <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                </label>
-                <label>
-                    Item:
-                    <select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
-                        <option value="All">All Items</option>
-                        {menuItems.map((item) => (
-                            <option key={item.menu_item_id} value={item.menu_item_name}>
-                                {item.menu_item_name}
-                            </option>
+                <div className={managerStyles.firstlineList}>
+                    <label>
+                        Start Date:
+                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                    </label>
+                    <label>
+                        End Date:
+                        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    </label>
+                    <label>
+                        Item:
+                        <select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
+                            <option value="All">All Items</option>
+                            {menuItems.map((item) => (
+                                <option key={item.menu_item_id} value={item.menu_item_name}>
+                                    {item.menu_item_name}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                    <button
+                        onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
+                        View Sales
+                    </button>
+                    <ul>
+                        {salesData.map((data, index) => (
+                            //Need Back-end implement - list out sales. 
+                            <li key={index}>
+                                {data.item}: {data.total_sales}
+                            </li>
                         ))}
-                    </select>
-                </label>
-                <button
-                    onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
-                    View Sales
-                </button>
-                <ul>
-                    {salesData.map((data, index) => (
-                        <li key={index}>
-                            {data.item}: {data.total_sales}
-                        </li>
-                    ))}
-                </ul>
+                    </ul>
+                </div>
+
             </section>
 
             {/* Inventory List Section */}
