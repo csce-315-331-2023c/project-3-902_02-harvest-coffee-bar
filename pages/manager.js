@@ -231,9 +231,9 @@ function Manager() {
     const getSalesByTime = async (start_time, end_time, item_name) => {
         setSalesData([]);
         var payload = {
-            startTime: start_time,
-            endTime: end_time,
-            itemName: item_name
+            start_time: start_time,
+            end_time: end_time,
+            item_name: item_name
         }
         try {
             const response = await fetch(`${server}/api/manager/get_sales_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -454,6 +454,7 @@ function Manager() {
                                             </form>
                                         )}
                                     </div>
+
                                 {/* Display inventory for given menu item */}
                                 {selectedItemInventory[item.menu_item_id] && (
                                     <ul className={managerStyles.inventoryList}>
@@ -516,9 +517,9 @@ function Manager() {
                 </button>
                 <ul>
                     {salesData.map((data, index) => (
-                        //Need Back-end implement - list out sales. 
+                        //Need Back-end impletement - list out sales. 
                         <li key={index}>
-                            {data.menu_item_name}: {data.totalSales}
+                            {data.item}: {data.total_sales}
                         </li>
                     ))}
                 </ul>

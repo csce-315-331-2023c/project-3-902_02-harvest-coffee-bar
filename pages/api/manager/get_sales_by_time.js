@@ -76,7 +76,7 @@ export default async (req, res) => {
 
         // push statements to database
         await client.query('COMMIT;');
-        res.status(200).json({ message: "done", data: salesData });
+        res.status(200).json(salesData);
 
     } catch (error) {
 
