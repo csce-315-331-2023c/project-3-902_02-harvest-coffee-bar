@@ -1,6 +1,6 @@
 // pages/manager.js
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { server } from '../config';
 import Link from 'next/link';
 import navStyles from './components/NavBar.module.css';
@@ -9,10 +9,10 @@ import managerStyles from './components/ManagerGUIStyle.module.css'
 function Manager() {
     //menu item list section state
     const [menuItems, setMenuItems] = useState([]);
-    const [isMenuVisible, setIsMenuVisible] = useState(false); 
+    const [isMenuVisible, setIsMenuVisible] = useState(false);
     const [showAddForm, setShowAddForm] = useState(false);
     const toggleMenuVisibility = () => {
-        setIsMenuVisible(!isMenuVisible); 
+        setIsMenuVisible(!isMenuVisible);
     };
     const [newMenuItem, setNewMenuItem] = useState({
 
@@ -34,13 +34,13 @@ function Manager() {
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
     const [selectedItem, setSelectedItem] = useState('All');
-    
+
 
 
     const [inventoryItems, setInventoryItems] = useState([]);
     const [excessReports, setExcessReports] = useState([]);
     // const [employeeSchedules, setEmployeeSchedules] = useState([]);
-    
+
 
 
     const fetchMenuItems = async () => {
@@ -71,12 +71,12 @@ function Manager() {
                 { id: 2, name: "Inventory Item 2", quantity: 5 }
             ]
         };
-    
+
         setSelectedItemInventory(mockInventory);
     };
 
     const addItemToMenu = async (item_name, item_category, description, item_price) => {
-    
+
         var payload = {
             menu_item_name: item_name,
             menu_item_category: item_category,
@@ -84,7 +84,7 @@ function Manager() {
             price: item_price
         }
 
-        await fetch(`${server}/api/manager/add_item_to_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });   
+        await fetch(`${server}/api/manager/add_item_to_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
     }
 
@@ -154,8 +154,8 @@ function Manager() {
     const addIngredientsToMenuItem = async (menu_item_id, ingredient_id, num_ingredients) => {
 
         var payload = {
-            menu_item_id: menu_item_id, 
-            ingredient_id: ingredient_id, 
+            menu_item_id: menu_item_id,
+            ingredient_id: ingredient_id,
             num_ingredients: num_ingredients
         }
 
@@ -170,7 +170,7 @@ function Manager() {
     const submitAddIngredientsForm = async (e, menu_item_id) => {
         e.preventDefault();
         await addIngredientsToMenuItem(menu_item_id, addIngredients.ingredient_id, addIngredients.num_ingredients);
-  
+
         setAddIngredients({ ingredient_id: '', num_ingredients: '' });
         setShowAddIngredientsForm(null);
         //refresh the inventorylist -- need further implement
@@ -180,8 +180,8 @@ function Manager() {
     const viewAllInInventory = async () => {
 
         try {
-            const response = await fetch(`${server}/api/manager/view_all_in_inventory`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
-        
+            const response = await fetch(`${server}/api/manager/view_all_in_inventory`, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
+
             if (response.ok) {
                 const data = await response.json();
             } else {
@@ -190,13 +190,13 @@ function Manager() {
         } catch (error) {
             console.error('Error:', error);
         }
-        
+
     }
 
     const updateItemInInventory = async (ingredient_count, ingredient_id) => {
 
         var payload = {
-            ingredient_count: ingredient_count, 
+            ingredient_count: ingredient_count,
             ingredient_id: ingredient_id
         }
 
@@ -230,14 +230,18 @@ function Manager() {
 
     const getSalesByTime = async (start_time, end_time, item_name) => {
         setSalesData([]);
+
         var payload = {
             start_time: start_time,
             end_time: end_time,
             item_name: item_name
         }
+
+        console.log(payload);
+
         try {
             const response = await fetch(`${server}/api/manager/get_sales_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        
+
             if (response.ok) {
                 const report = await response.json();
                 setSalesData(report);
@@ -255,10 +259,10 @@ function Manager() {
         var payload = {
             start_date: start_date
         }
-        
+
         try {
             const response = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
-            
+
             if (response.ok) {
                 const report = await response.json();
             } else {
@@ -274,7 +278,7 @@ function Manager() {
 
         try {
             const response = await fetch(`${server}/api/manager/get_low_stock`, { method: 'POST', headers: { 'Content-Type': 'applications/json' } });
-            
+
             if (response.ok) {
                 const report = await response.json();
             } else {
@@ -294,7 +298,7 @@ function Manager() {
 
         try {
             const response = await fetch(`${server}/api/manager/get_what_sells_together`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
-        
+
             if (response.ok) {
                 const report = await response.json();
             } else {
@@ -317,122 +321,124 @@ function Manager() {
     //Back-end implement needed
     const fetchEmployeeSchedules = () => { /* ... */ };
 
+    useEffect(() => {
 
-    fetchMenuItems();
+        fetchMenuItems();
+    }, []);
     return (
         <div className={managerStyles.ManagerGUI}>
             {/* Navi Section */}
             <nav className={navStyles.NavBar}>
-			<ul>
-				<li><Link href="/customer">Customer Page</Link></li>
-				<li><Link href="/cashier">Cashier Page</Link></li>
-				<li><Link href="/manager">Manager Page</Link></li>
-			</ul>
-		    </nav>
+                <ul>
+                    <li><Link href="/customer">Customer Page</Link></li>
+                    <li><Link href="/cashier">Cashier Page</Link></li>
+                    <li><Link href="/manager">Manager Page</Link></li>
+                </ul>
+            </nav>
             <h1> Manager Dashboard </h1>
 
             {/* Menu Items List Section */}
             <section className={managerStyles.menuItemsList}>
-                 <h2> Menu Items </h2>
+                <h2> Menu Items </h2>
                 <button onClick={toggleMenuVisibility}>
                     {isMenuVisible ? 'Hide Menu Items' : 'Show Menu Items'}
                 </button>
                 {isMenuVisible && (
-                    <div className={managerStyles.scrollableContainer}>  
-                    <div className={managerStyles.addItemForm}>
-                    <button 
-                        className={managerStyles.addItemButton} 
-                        onClick={showAddItemForm}> 
-                            Add new item
-                    </button>
+                    <div className={managerStyles.scrollableContainer}>
+                        <div className={managerStyles.addItemForm}>
+                            <button
+                                className={managerStyles.addItemButton}
+                                onClick={showAddItemForm}>
+                                Add new item
+                            </button>
 
-                    {/* test */}
-                    {/* <button 
+                            {/* test */}
+                            {/* <button 
                         className={managerStyles.addItemButton} 
                         onClick={() => addItemToMenu("testname", "testcategory", "testdescription", "0")}> 
                         Add new item
                     </button> */}
-                    
-                    {showAddForm && (
-                        <form onSubmit={submitAddItemForm}>
-                            <div className={managerStyles.addItemInput}>
-                                <input
-                                    type="text"
-                                    name="menu_item_name"
-                                    placeholder="Item Name"
-                                    value={newMenuItem.menu_item_name}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div className={managerStyles.addItemInput}>
-                                <input
-                                    type="text"
-                                    name="menu_item_category"
-                                    placeholder="Item Category"
-                                    value={newMenuItem.menu_item_category}
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                            <div className={managerStyles.addItemInput}>
-                            <textarea
-                                name="item_description"
-                                placeholder="Item Description"
-                                value={newMenuItem.item_description}
-                                onChange={handleInputChange}
-                            />
-                            </div>
-                            <div className={managerStyles.addItemInput}>
-                            <input
-                                type="number"
-                                name="price"
-                                placeholder="Price"
-                                value={newMenuItem.price}
-                                onChange={handleInputChange}
-                            />
-                            </div>
-                            <button 
-                                className={managerStyles.addItemFormButton} 
-                                type="submit"> 
-                                    Submit 
-                            </button>
-                            <button 
-                                className={managerStyles.addItemFormButton} 
-                                onClick={() => setShowAddForm(false)}>
-                                    Cancel
-                            </button>
-                        </form>
-                    )}
-                    </div>
-                    <ul>
-                        {menuItems.map((item) => (
-                            <li key={item.menu_item_id}>
-                                <div className={managerStyles.firstlineList} 
+
+                            {showAddForm && (
+                                <form onSubmit={submitAddItemForm}>
+                                    <div className={managerStyles.addItemInput}>
+                                        <input
+                                            type="text"
+                                            name="menu_item_name"
+                                            placeholder="Item Name"
+                                            value={newMenuItem.menu_item_name}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div className={managerStyles.addItemInput}>
+                                        <input
+                                            type="text"
+                                            name="menu_item_category"
+                                            placeholder="Item Category"
+                                            value={newMenuItem.menu_item_category}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div className={managerStyles.addItemInput}>
+                                        <textarea
+                                            name="item_description"
+                                            placeholder="Item Description"
+                                            value={newMenuItem.item_description}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <div className={managerStyles.addItemInput}>
+                                        <input
+                                            type="number"
+                                            name="price"
+                                            placeholder="Price"
+                                            value={newMenuItem.price}
+                                            onChange={handleInputChange}
+                                        />
+                                    </div>
+                                    <button
+                                        className={managerStyles.addItemFormButton}
+                                        type="submit">
+                                        Submit
+                                    </button>
+                                    <button
+                                        className={managerStyles.addItemFormButton}
+                                        onClick={() => setShowAddForm(false)}>
+                                        Cancel
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                        <ul>
+                            {menuItems.map((item) => (
+                                <li key={item.menu_item_id}>
+                                    <div className={managerStyles.firstlineList}
                                         // Need Back-end implement - dummy function of inventory for selected item
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}>
-                                    <span 
-                                        // Need Back-end implement - dummy function of inventory for selected item
-                                        onClick={() => handleMenuItemClick(item.menu_item_id)}> 
-                                        {item.menu_item_name} - ${item.price} 
-                                    </span>
-                                    <div className={managerStyles.buttonContainer}>
-                                        <button 
-                                            className={managerStyles.addInventoryButton}
-                                            onClick={() => setShowAddIngredientsForm(item.menu_item_id)}> 
+                                        <span
+                                            // Need Back-end implement - dummy function of inventory for selected item
+                                            onClick={() => handleMenuItemClick(item.menu_item_id)}>
+                                            {item.menu_item_name} - ${item.price}
+                                        </span>
+                                        <div className={managerStyles.buttonContainer}>
+                                            <button
+                                                className={managerStyles.addInventoryButton}
+                                                onClick={() => setShowAddIngredientsForm(item.menu_item_id)}>
                                                 Add new inventory
-                                        </button>
-                                        <button 
-                                            className={managerStyles.editButton}
-                                            onClick={() => handleEdit(item.menu_item_id, item.price)}>
+                                            </button>
+                                            <button
+                                                className={managerStyles.editButton}
+                                                onClick={() => handleEdit(item.menu_item_id, item.price)}>
                                                 Edit price
-                                        </button>
-                                        <button 
-                                            className={managerStyles.deleteButton} 
-                                            onClick={() => deleteItemFromMenu(item.menu_item_id)}>
+                                            </button>
+                                            <button
+                                                className={managerStyles.deleteButton}
+                                                onClick={() => deleteItemFromMenu(item.menu_item_id)}>
                                                 X
-                                        </button>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className={managerStyles.addIngredientsToMenuItemForm}>
+                                    <div className={managerStyles.addIngredientsToMenuItemForm}>
                                         {showAddIngredientsForm === item.menu_item_id && (
                                             <form onSubmit={(e) => submitAddIngredientsForm(e, item.menu_item_id)}>
                                                 <input
@@ -454,7 +460,6 @@ function Manager() {
                                             </form>
                                         )}
                                     </div>
-
                                 {/* Display inventory for given menu item */}
                                 {selectedItemInventory[item.menu_item_id] && (
                                     <ul className={managerStyles.inventoryList}>
@@ -466,7 +471,7 @@ function Manager() {
                                                 <div className={managerStyles.inventoryListButton}>
                                                 
 
-                                                {/* <button 
+                                                        {/* <button 
                                                     className={managerStyles.editButton}
                                                     onClick={() => handleEdit(item.menu_item_id, item.price)}>
                                                         Edit price
@@ -476,15 +481,15 @@ function Manager() {
                                                     onClick={() => deleteItemFromMenu(item.menu_item_id)}>
                                                         X
                                                 </button> */}
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 )}
             </section>
 
@@ -492,34 +497,34 @@ function Manager() {
             <section className={managerStyles.OrderTrends}>
                 <h2>Order Trends</h2>
                 <div className={managerStyles.firstlineList}>
-                <label>
-                    Start Date:
-                    <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
-                </label>
-                <label>
-                    End Date:
-                    <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
-                </label>
-                <label>
-                    Item:
-                    <select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
-                        <option value="All">All Items</option>
-                        {menuItems.map((item) => (
-                            <option key={item.menu_item_id} value={item.menu_item_name}>
-                                {item.menu_item_name}
-                            </option>
-                        ))}
-                    </select>
-                </label>
-                <button 
-                    onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
+                    <label>
+                        Start Date:
+                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                    </label>
+                    <label>
+                        End Date:
+                        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    </label>
+                    <label>
+                        Item:
+                        <select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
+                            <option value="All">All Items</option>
+                            {menuItems.map((item) => (
+                                <option key={item.menu_item_id} value={item.menu_item_name}>
+                                    {item.menu_item_name}
+                                </option>
+                            ))}
+                        </select>
+                    </label>
+                    <button
+                        onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
                         View Sales
                 </button>
                 <ul>
                     {salesData.map((data, index) => (
-                        //Need Back-end impletement - list out sales. 
+                        //Need Back-end implement - list out sales. 
                         <li key={index}>
-                            {data.item}: {data.total_sales}
+                            {data.menu_item_name}: {data.totalSales}
                         </li>
                     ))}
                 </ul>
@@ -539,7 +544,7 @@ function Manager() {
                     ))}
                 </ul>
             </section>
-            
+
             {/* Excess Report Section */}
             <section>
                 <h2>Excess Reports</h2>
@@ -552,7 +557,7 @@ function Manager() {
                     ))}
                 </ul>
             </section>
-            
+
             {/* Employee Schedules Section
             <section>
                 <h2>Employee Schedules</h2>
