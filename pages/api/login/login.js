@@ -2,6 +2,14 @@ import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import styles from './login.module.css';
 
+const script = document.createElement('script');
+script.src = 'https://apis.google.com/js/platform.js';
+script.async = true;
+script.defer = true;
+document.body.appendChild(script);
+
+document.head.insertAdjacentHTML('beforeend', `<meta name="google-signin-client_id" content="122918420851-fk99jiamqafbov1rd3godvipp6mur69b.apps.googleusercontent.com.apps.googleusercontent.com">`);
+
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
