@@ -407,10 +407,10 @@ function Manager() {
                         {menuItems.map((item) => (
                             <li key={item.menu_item_id}>
                                 <div className={managerStyles.firstlineList} 
-                                        // Back-end implement neede - dummy function of inventory for selected item
+                                        // Need Back-end implement - dummy function of inventory for selected item
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}>
                                     <span 
-                                        // Back-end implement neede - dummy function of inventory for selected item
+                                        // Need Back-end implement - dummy function of inventory for selected item
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}> 
                                         {item.menu_item_name} - ${item.price} 
                                     </span>
@@ -460,7 +460,7 @@ function Manager() {
                                         {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
                                             <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
                                                 
-                                                {/* Back-end implement needed - list out inventory for selected Item  */}
+                                                {/* Need Back-end implement  - list out inventory for selected Item  */}
                                                 {inventoryItem.name} - Quantity: {inventoryItem.quantity}
                                                 <div className={managerStyles.inventoryListButton}>
                                                 
@@ -516,7 +516,7 @@ function Manager() {
                 </button>
                 <ul>
                     {salesData.map((data, index) => (
-                        //Back-end implement needed - list out sales. 
+                        //Need Back-end implement - list out sales. 
                         <li key={index}>
                             {data.menu_item_name}: {data.totalSales}
                         </li>
