@@ -39,13 +39,11 @@ function Manager() {
     const [PopularPairstartDate, setPopularPairStartDate] = useState('');
     const [PopularPairendDate, setPopularPairEndDate] = useState('');
     
-
-
-
-
-
-
+    //Inventory List section state
     const [inventoryItems, setInventoryItems] = useState([]);
+
+
+
     const [excessReports, setExcessReports] = useState([]);
     // const [employeeSchedules, setEmployeeSchedules] = useState([]);
 
@@ -192,6 +190,7 @@ function Manager() {
 
             if (response.ok) {
                 const data = await response.json();
+                setInventoryItems(data.data);
             } else {
                 console.error("Unable to view inventory.");
             }
@@ -318,15 +317,6 @@ function Manager() {
         }
     }
 
-    //Back-end implement needed
-    const fetchSalesData = () => {
-        // Mock data
-        const mockSalesData = [
-            { itemName: 'Pizza', totalSales: 20 },
-            { itemName: 'Burger', totalSales: 15 },
-        ];
-        setSalesData(mockSalesData);
-    };
     //Back-end implement needed
     const fetchEmployeeSchedules = () => { /* ... */ };
 
@@ -503,38 +493,39 @@ function Manager() {
             </section>
 
             {/* Order Trends Section */}
-            <section className={managerStyles.orderTrends}>
+            <section className = {managerStyles.orderTrends}>
                 <h2>Order Trends</h2>
-                <div className={managerStyles.salesData}>
+                <div className = {managerStyles.salesData}>
                     <h3>Sales Report: </h3>
-                    <label>
+                    <label className = {managerStyles.salesDataLabel}>
                         Start Date:
-                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                        <input type = "date" value = {startDate} onChange = {(e) => setStartDate(e.target.value)} />
                     </label>
-                    <label>
+                    <label className = {managerStyles.salesDataLabel}>
                         End Date:
-                        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                        <input type = "date" value = {endDate} onChange ={ (e) => setEndDate(e.target.value)} />
                     </label>
-                    <label>
+                    <label className = {managerStyles.salesDataLabel}>
                         Item:
-                        <select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
+                        <select value = {selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
                             <option value="All">All Items</option>
                             {menuItems.map((item) => (
-                                <option key={item.menu_item_id} value={item.menu_item_name}>
+                                <option key = {item.menu_item_id} value = {item.menu_item_name}>
                                     {item.menu_item_name}
                                 </option>
                             ))}
                         </select>
                     </label>
                     <button
+                        className = {managerStyles.salesDataButton}
                         onClick = {() => getSalesByTime(startDate, endDate, selectedItem)}>
                             View Sales
                     </button>
-                    <ul>
+                    <ul className={managerStyles.salesDataList}>
                         {salesData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
-                            <li key={index}>
-                                {data.menu_item_name}: {data.totalSales}
+                            <li key = {index} className = {managerStyles.salesDataListItem}>
+                                {data.item}: {data.total_sales}, total profit: {data.total_profit}
                             </li>
                         ))}
                     </ul>
@@ -559,9 +550,11 @@ function Manager() {
             </section>
 
             {/* Inventory List Section */}
-            <section>
+            <section className = {managerStyles.InventoryList}> 
                 <h2>Inventory List</h2>
-                <button onClick={viewAllInInventory}>view All In Inventory</button>
+                <button onClick={viewAllInInventory}>
+                    {isMenuVisible ? 'Hide Inventory' : 'View All Inventory'}
+                </button>
                 <ul>
                     {inventoryItems.map((item, index) => (
                         <li key={index}>

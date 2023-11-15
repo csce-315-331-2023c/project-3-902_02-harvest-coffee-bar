@@ -51,7 +51,6 @@
     margin-top: 10px;
     border-radius: 4px;
     background-color: #f9f9f9;
-    
 }
 
 .menuItemsList .addItemForm {
@@ -127,19 +126,52 @@
     color: black;
 }
 
-.addInventoryButton {
+.menuItemsList .addInventoryButton {
     background-color: #adadad;
     color: white;
 }
 
-.editButton {
+.menuItemsList .editButton {
     background-color: #adadad;
     color: rgb(255, 255, 255);
 }
 
-.deleteButton {
+.menuItemsList .deleteButton {
     background-color: #F44336;
     color: white;
 }
 
+.orderTrends h3 {
+    margin : 10px;
+}
+.orderTrends .salesData {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
 
+.orderTrends .salesDataLabel {
+    margin: 10px;
+}
+
+.orderTrends .salesDataButton {
+    margin: 10px;
+}
+
+.orderTrends .salesDataList {
+    list-style-type: none;
+}
+
+.orderTrends .salesDataListItem {
+    margin: 10px;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-radius: 7px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
