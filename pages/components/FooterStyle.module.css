@@ -22,30 +22,27 @@
     float: right;
 }
 
-.FooterBar li a {
+.FooterBar li p {
     display: block;
     color: #ffffff;
     text-align: center;
     font-size: 20px;
     font-weight: 700;
-    padding: 14px 16px;
     text-decoration: none;
 }
 
-.FooterBar li a:hover {
-    color: #82DFAA;
-    opacity: 1;
+.PoweredBy {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
 }
 
-.FooterBar li a.orderButton {
-    display: block;
-    margin: 5px;
-    line-height: 18px;
-    border-radius: 30px;
-    background-color: #82DFAA;
-}
-
-.FooterBar li a.orderButton:hover {
-    color: #82DFAA;
-    background-color: #575757;
+.PoweredBy p {
+    color: #ffffff;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+    margin: 2px;
 }

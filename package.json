@@ -11,14 +11,27 @@
     "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@fortawesome/react-fontawesome": "^0.2.0",
     "@next/font": "^14.0.1",
+    "axios": "^1.6.1",
+    "cookie-session": "^2.0.0",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "jsdoc": "^4.0.2",
     "net": "^1.0.2",
     "next": "^11.1.1",
+    "next-auth": "^4.24.5",
     "next-google-fonts": "^2.2.0",
+    "node-fetch": "^3.3.2",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0",
     "pg": "^8.11.3",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-modal": "^3.16.1"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  }
 }

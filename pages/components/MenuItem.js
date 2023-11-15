@@ -5,7 +5,7 @@ import styles from './MenuItemStyle.module.css';
 //className={styles.desc}
 
 export default function GenerateMenuItemPanel({ item }) {
-    return (
+    return item ? (
         <div>
             <div className={styles.MenuItem}>
                 <div className={styles.nameAndPrice}>
@@ -17,5 +17,5 @@ export default function GenerateMenuItemPanel({ item }) {
                 </div>
             </div>
         </div>
-    );
+    ) : <h1>Loading...</h1>;
 }

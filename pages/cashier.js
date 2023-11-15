@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styles from './components/CashierGUIStyle.module.css';
 import { server } from '../config';
-import Link from 'next/link';
+import NavBar from './components/NavBar.js'
 
 const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
-	const [view, setView] = useState('customer');
 	const [menuItems, setMenuItems] = useState([]);
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
@@ -23,7 +22,7 @@ const Cashier = () => {
 			console.error('Error:', error);
 		}
 	};
-	
+
 	const get_categories = async () => {
 		try {
 			const response = await fetch(`${server}/api/cashier_functions/fetch_cats`);
@@ -40,12 +39,13 @@ const Cashier = () => {
 		setSelectedCategory(category);
 	}
 
-	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) => 
-	menuItem.menu_item_category === selectedCategory) : [];
+	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) =>
+		menuItem.menu_item_category === selectedCategory) : [];
 
 	useEffect(() => {
-	fetchMenuItems();
-	get_categories(); }, []);
+		fetchMenuItems();
+		get_categories();
+	}, []);
 
 
 	const addToReceipt = (item) => {
@@ -73,7 +73,7 @@ const Cashier = () => {
 		}
 
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    setReceipt([]);
+		setReceipt([]);
 	}
 
 	// useEffect(() => {
@@ -84,27 +84,23 @@ const Cashier = () => {
 	// }, []);
 
 	return (
-		
-		<div className={styles.CashierGUI}>
-			<ul className={styles.links}>
-				<li><Link href="/customer"><a className={styles.orderButton}>Order Online</a></Link></li>
-				<li><Link href="/cashier"><a>Cashier Page</a></Link></li>
-				<li><Link href="/manager"><a>Manager Page</a></Link></li>
-			</ul>
 
+		<div className={styles.CashierGUI}>
+
+			<NavBar />
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
 					<h2>Place Orders</h2>
 					<div className={styles.catStyle}>
-							<ul>
-								{menuCats.map((menuCat) => (
-									<button key={menuCat.menu_item_category}
-									className={styles.catButtons} 
+						<ul>
+							{menuCats.map((menuCat) => (
+								<button key={menuCat.menu_item_category}
+									className={styles.catButtons}
 									onClick={() => displayCat(menuCat.menu_item_category)}>
 									<p>{menuCat.menu_item_category}</p>
-									</button> 
-								))}
-							</ul>
+								</button>
+							))}
+						</ul>
 					</div>
 					<hr className={styles.line}></hr>
 					<h2>{selectedCategory}</h2>
@@ -113,7 +109,7 @@ const Cashier = () => {
 							{filteredMenuItems.map((menuItem) => (
 								<li key={menuItem.menu_item_id}>
 									<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
-										{menuItem.menu_item_name} - ${menuItem.price} 
+										{menuItem.menu_item_name} - ${menuItem.price}
 									</button>
 								</li>
 							))}

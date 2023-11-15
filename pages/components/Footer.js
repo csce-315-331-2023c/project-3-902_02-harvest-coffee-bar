@@ -6,12 +6,12 @@ export default function FooterBar() {
         <nav className={styles.FooterBar}>
             <div>
                 <ul>
-                    <li><Link href="/customer"><a className={styles.orderButton}>Order Online</a></Link></li>
-                    <li><Link href="/cashier"><a>Cashier Page</a></Link></li>
-                    <li><Link href="/manager"><a>Contact Us!</a></Link></li>
+                    <li><p>Contact Us!</p></li>
                 </ul>
                 <hr></hr>
-                <p>Powered by Kirkland Signature Developers</p>
+                <div className={styles.PoweredBy}>
+                    <p>Powered by Kirkland Signature Developers</p>
+                </div>
             </div>
         </nav>
     );
