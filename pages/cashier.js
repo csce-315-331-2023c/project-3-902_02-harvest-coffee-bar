@@ -113,7 +113,7 @@ const Cashier = () => {
 							{filteredMenuItems.map((menuItem) => (
 								<li key={menuItem.menu_item_id}>
 									<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
-										{menuItem.menu_item_name} - ${menuItem.price}
+										{menuItem.menu_item_name} - ${menuItem.price} 
 									</button>
 								</li>
 							))}
