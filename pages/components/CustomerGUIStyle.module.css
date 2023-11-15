@@ -165,6 +165,7 @@ button.removeButton {
 .CustomerGUI .mainScreen {
     margin-top: 20px;
     display: flex;
+    margin-bottom: 40px;
 }
 
 .CustomerGUI .changeView {
@@ -235,7 +236,7 @@ button.removeButton {
 
 .CustomerGUI .menuItemStyle {
     margin-top: -4%;
-    /* overflow-y: scroll; */
+    margin-bottom: 10px;
 }
 
 .CustomerGUI .catButtons {
