@@ -380,8 +380,9 @@ function Manager() {
                     <ul>
                         {menuItems.map((item) => (
                             <li key={item.menu_item_id}>
-                                <div className={managerStyles.firstlineList}>
-                                    <span  
+                                <div className={managerStyles.firstlineList} 
+                                        onClick={() => handleMenuItemClick(item.menu_item_id)}>
+                                    <span 
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}> 
                                         {item.menu_item_name} - ${item.price} 
                                     </span>
@@ -402,6 +403,7 @@ function Manager() {
                                         </button>
                                     </div>
                                 </div>
+
                                 {/* Display inventory for given menu item */}
                                 {selectedItemInventory[item.menu_item_id] && (
                                     <ul className={managerStyles.inventoryList}>
