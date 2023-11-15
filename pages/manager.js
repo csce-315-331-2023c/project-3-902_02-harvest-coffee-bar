@@ -296,9 +296,9 @@ function Manager() {
             {/* Navi Section */}
             <nav className={navStyles.NavBar}>
 			<ul>
-				<li><Link href="/customer"><a>Customer Page</a></Link></li>
-				<li><Link href="/cashier"><a>Cashier Page</a></Link></li>
-				<li><Link href="/manager"><a>Manager Page</a></Link></li>
+				<li><Link href="/customer">Customer Page</Link></li>
+				<li><Link href="/cashier">Cashier Page</Link></li>
+				<li><Link href="/manager">Manager Page</Link></li>
 			</ul>
 		    </nav>
             <h1> Manager Dashboard </h1>
