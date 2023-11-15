@@ -18,7 +18,7 @@ export default async (req, res) => {
 
         await client.query('BEGIN;');
 
-        if (req.body.item_name !== null && req.body.item_name !== '') {
+        if (req.body.item_name !== null && req.body.item_name !== 'All') {
             salesParameters = [
                 req.body.start_time,
                 req.body.end_time,
