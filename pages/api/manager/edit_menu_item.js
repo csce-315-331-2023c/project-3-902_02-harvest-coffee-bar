@@ -16,15 +16,18 @@ export default async (req, res) => {
         await client.query('BEGIN;');
 
         const editItemQuery = `
-        UPDATE
-            menu_items
-        SET
-            price = ?
-        WHERE
-            menu_item_id = ?;
+            UPDATE
+                menu_items
+            SET
+                price = $1
+            WHERE
+                menu_item_id = $2;
         `;
 
-        const itemParameters = [req.price, req.menu_item_id];
+        const itemParameters = [
+            req.body.price,
+            req.body.menu_item_id
+        ];
 
         client.query(editItemQuery, itemParameters);
 

@@ -18,8 +18,12 @@ export default async (req, res) => {
 
         await client.query('BEGIN;');
 
-        if (req.item_name !== null && req.item_name !== '') {
-            salesParameters = [req.start_time, req.end_time, req.item_name];
+        if (req.body.item_name !== null && req.body.item_name !== '') {
+            salesParameters = [
+                req.body.start_time,
+                req.body.end_time,
+                req.body.item_name
+            ];
 
             salesQuery = `
                 SELECT
@@ -33,8 +37,8 @@ export default async (req, res) => {
                 JOIN
                     menu_items ON ordered_items.menu_item_id = menu_items.menu_item_id
                 WHERE
-                    orders.order_date BETWEEN ? AND ?
-                    AND menu_items.menu_item_name = ?
+                    orders.order_date BETWEEN $1 AND $2
+                    AND menu_items.menu_item_name = $3
                 GROUP BY
                     menu_items.menu_item_name
                 ORDER BY
@@ -42,7 +46,10 @@ export default async (req, res) => {
             `;
 
         } else {
-            salesParameters = [req.start_time, req.end_time];
+            salesParameters = [
+                req.body.start_time,
+                req.body.end_time
+            ];
 
             salesQuery = `
                 SELECT
@@ -56,7 +63,7 @@ export default async (req, res) => {
                 JOIN
                     menu_items ON ordered_items.menu_item_id = menu_items.menu_item_id
                 WHERE
-                    orders.order_date BETWEEN ? AND ?
+                    orders.order_date BETWEEN $1 AND $2
                 GROUP BY
                     menu_items.menu_item_name
                 ORDER BY

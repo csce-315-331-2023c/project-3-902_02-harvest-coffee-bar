@@ -30,7 +30,7 @@ export default async (req, res) => {
                 JOIN
                     orders o ON oi1.ordered_id = o.order_id
                 WHERE
-                    o.order_date BETWEEN CAST('%s' AS TIMESTAMP) AND CAST('%s' AS TIMESTAMP)
+                    o.order_date BETWEEN CAST($1 AS TIMESTAMP) AND CAST($2 AS TIMESTAMP)
                 GROUP BY
                     oi1.menu_item_id,
                     oi2.menu_item_id
@@ -53,7 +53,10 @@ export default async (req, res) => {
                 ip.freq DESC;
         `;
 
-        const timeParameters = [req.start_time, req.end_time];
+        const timeParameters = [
+            req.body.start_time,
+            req.body.end_time
+        ];
 
         const result = await client.query(pairSalesQuery, timeParameters);
         const pairSalesData = result.rows; // Extract the rows from the result

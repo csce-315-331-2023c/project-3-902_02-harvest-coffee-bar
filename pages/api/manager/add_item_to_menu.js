@@ -16,15 +16,20 @@ export default async (req, res) => {
         await client.query('BEGIN;');
 
         const addMenuItemQuery = `
-        INSERT INTO
-            menu_items(menu_item_id, menu_item_name, menu_item_category, item_description, price)
-        SELECT
-            MAX(menu_item_id) + 1, $1, $2, $3, $4
-        FROM
-            menu_items;
+            INSERT INTO
+                menu_items(menu_item_id, menu_item_name, menu_item_category, item_description, price)
+            SELECT
+                MAX(menu_item_id) + 1, $1, $2, $3, $4
+            FROM
+                menu_items;
         `;
 
-        const itemParameters = [req.menu_item_name, req.menu_item_category, req.item_description, req.item_price];
+        const itemParameters = [
+            req.body.menu_item_name,
+            req.body.menu_item_category,
+            req.body.item_description,
+            req.body.price
+        ];
 
         client.query(addMenuItemQuery, itemParameters);
 

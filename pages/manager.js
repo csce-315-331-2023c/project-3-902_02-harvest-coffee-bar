@@ -43,6 +43,8 @@ function Manager() {
         }
     };
 
+
+
     //dummy function for inventory of given menu item
     const handleMenuItemClick = (itemId) => {
         // Mock inventory data 
@@ -56,13 +58,13 @@ function Manager() {
         setSelectedItemInventory(mockInventory);
     };
 
-    const addItemToMenu = async (menu_item_name, menu_item_category, item_description, price) => {
+    const addItemToMenu = async (item_name, item_category, description, item_price) => {
     
         var payload = {
-            menu_item_name: menu_item_name,
-            menu_item_category: menu_item_category,
-            item_description: item_description,
-            price: price
+            menu_item_name: item_name,
+            menu_item_category: item_category,
+            item_description: description,
+            price: item_price
         }
 
         await fetch(`${server}/api/manager/add_item_to_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });   

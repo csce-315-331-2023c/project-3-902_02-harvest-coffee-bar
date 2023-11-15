@@ -16,13 +16,15 @@ export default async (req, res) => {
         await client.query('BEGIN;');
 
         const deleteInventoryItemQuery = `
-        DELETE FROM
-            ingredients_inventory
-        WHERE
-            ingredient_id = ?
+            DELETE FROM
+                ingredients_inventory
+            WHERE
+                ingredient_id = $1
         `;
 
-        const itemParameters = [req.ingredient_id];
+        const itemParameters = [
+            req.body.ingredient_id
+        ];
 
         client.query(deleteInventoryItemQuery, itemParameters);
 
