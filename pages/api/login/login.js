@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import styles from './login.module.css';
+import styles from '../../components/login.module.css';
 
 const script = document.createElement('script');
 script.src = 'https://apis.google.com/js/platform.js';

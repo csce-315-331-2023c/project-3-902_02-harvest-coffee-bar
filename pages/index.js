@@ -14,16 +14,16 @@ const Index = () => {
 	useEffect(() => {
 		const fetchMenuItems = async () => {
 			try {
-				const response = await fetch(`${server}/api/manager/get_menu`);
+				const response = await fetch(`${server}/api/manager/get_menu`, { method: 'GET', headers: { 'Access-Control-Allow-Origin': `${server}` } });
 				if (response.ok) {
 					const data = await response.json();
 					//console.log(data);
 					setMenuItems(data);
 				} else {
-					//console.error("Unable to fetch menu items.");
+					console.error("Unable to fetch menu items.");
 				}
 			} catch (error) {
-				//console.error('Error:', error);
+				console.error('Error:', error);
 			}
 		};
 
