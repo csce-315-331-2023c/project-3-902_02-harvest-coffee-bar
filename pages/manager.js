@@ -69,16 +69,14 @@ function Manager() {
 
 
     //dummy function for inventory of given menu item
-    const handleMenuItemClick = (itemId) => {
-        // Mock inventory data 
-        const mockInventory = {
-            [itemId]: [
-                { id: 1, name: "Inventory Item 1", quantity: 10 },
-                { id: 2, name: "Inventory Item 2", quantity: 5 }
-            ]
-        };
-
-        setSelectedItemInventory(mockInventory);
+    const handleMenuItemClick = async (itemId) => {
+        try {
+            const inventoryData = await getInventoryByItem(itemId);
+            const updatedInventory = { [itemId]: inventoryData };
+            setSelectedItemInventory(updatedInventory);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     const addItemToMenu = async (item_name, item_category, description, item_price) => {
@@ -142,6 +140,25 @@ function Manager() {
 
         await fetch(`${server}/api/manager/edit_menu_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
+    }
+
+    const getInventoryByItem = async (menu_item_id) => {
+
+        var payload = {
+            menu_item_id: menu_item_id
+        }
+
+        try {
+            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
+        
+            if (response.ok) {
+                const data = await response.json();
+            } else {
+                console.error("Unable to view inventory.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
 
     //Front-end handling function for editMenuItem {
