@@ -7,6 +7,10 @@ import navStyles from './components/NavBar.module.css';
 import managerStyles from './components/ManagerGUIStyle.module.css'
 
 function Manager() {
+    ////////////////////////
+    // Defalt State Below //
+    ////////////////////////
+
     //menu item list section state
     const [menuItems, setMenuItems] = useState([]);
     const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -37,7 +41,7 @@ function Manager() {
     const [PopularPairstartDate, setPopularPairStartDate] = useState('');
     const [PopularPairendDate, setPopularPairEndDate] = useState('');
     
-    //Inventory List section state
+    //inventory list section state
     const [inventoryItems, setInventoryItems] = useState([]);
     const [isInventoryVisible, setIsInventoryVisible] = useState(false);
     const toggleInventoryVisibility = () => {
@@ -50,11 +54,14 @@ function Manager() {
         max_ingredient_count: 0
     });
 
-
+    //stock report section state
     const [excessReports, setExcessReports] = useState([]);
-    // const [employeeSchedules, setEmployeeSchedules] = useState([]);
+    const [excessReportstartDate, setExcessReportstartDate] = useState('');
+    const [lowStock, setLowStock] = useState([]);
 
-
+    /////////////////////////////
+    // back-end function below //
+    /////////////////////////////
 
     const fetchMenuItems = async () => {
         try {
@@ -355,6 +362,7 @@ function Manager() {
 
             if (response.ok) {
                 const report = await response.json();
+                getLowStock (report.data);
             } else {
                 console.error("Unable to fetch low stock items.");
             }
@@ -388,9 +396,9 @@ function Manager() {
     const fetchEmployeeSchedules = () => { /* ... */ };
 
 
-    /////////////////////////////
-    //Front-end Implement Below//
-    /////////////////////////////
+    ///////////////////////////////
+    // Front-end Implement Below //
+    ///////////////////////////////
     useEffect(() => {
 
         fetchMenuItems();
@@ -712,14 +720,19 @@ function Manager() {
                 {/* Excess Reports Div */}
                 <div className = {managerStyles.excessReports}>
                     <h3>Excess Reports: </h3>
+                    <label className = {managerStyles.excessReportsLabel}>
+                            Start Date:
+                        <input type = "date" value = {excessReportstartDate} onChange = {(e) => setExcessReportstartDate(e.target.value)} />
+                    </label>
                     <button 
-                        onClick={getExcessReport}>
+                        className={managerStyles.excessReportsButton}
+                        onClick={() => getExcessReport(excessReportstartDate)}>
                             View Reports
                     </button>
                     <ul>
                         {excessReports.map((report, index) => (
                             <li key={index}>
-                                {report.date}: {report.item} - Excess: {report.quantity}
+                               {report.ingredient_name} - Excess: {report.ingredient_count}
                             </li>
                         ))}
                     </ul>
@@ -734,10 +747,10 @@ function Manager() {
                             View Alarm
                     </button>
                     <ul>
-                        {popularPairsData.map((data, index) => (
+                        {lowStock.map((report, index) => (
                             //Need Back-end implement - list out sales. 
                             <li key={index}>
-                                {data.i1_name} : {data.i2_name} - {data.frequency}
+                                {report.ingredient_name} - Current Count: {data.ingredient_count}
                             </li>
                         ))}
                     </ul>
