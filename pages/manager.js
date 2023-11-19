@@ -559,16 +559,20 @@ function Manager() {
             {/* Inventory List Section */}
             <section className = {managerStyles.InventoryList}> 
                 <h2>Inventory List</h2>
-                <button onClick={viewAllInInventory}>
+                <button 
+                className={managerStyles.viewListButton}
+                onClick={viewAllInInventory}>
                     {isMenuVisible ? 'Hide Inventory' : 'View All Inventory'}
                 </button>
-                <ul>
-                    {inventoryItems.map((item, index) => (
-                        <li key={index}>
-                            {item.name} - Quantity: {item.quantity}
-                        </li>
-                    ))}
-                </ul>
+                <div className={managerStyles.InventoryListDiv}>
+                    <ul>
+                        {inventoryItems.map((item, index) => (
+                            <li key={index}>
+                                {item.ingredient_name} (ID: {item.ingredient_id}) - Quantity: {item.ingredient_count}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </section>
 
             {/* Excess Report Section */}

@@ -144,6 +144,7 @@
 .orderTrends h3 {
     margin : 10px;
 }
+
 .orderTrends .salesData {
     max-height: 500px; 
     overflow-y: auto;
@@ -154,19 +155,58 @@
     background-color: #f9f9f9;
 }
 
-.orderTrends .salesDataLabel {
+.orderTrends .popularPairs {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.orderTrends Label {
     margin: 10px;
 }
 
-.orderTrends .salesDataButton {
+.orderTrends Button {
     margin: 10px;
 }
 
-.orderTrends .salesDataList {
+.orderTrends ul {
     list-style-type: none;
 }
 
-.orderTrends .salesDataListItem {
+.orderTrends li {
+    margin: 10px;
+    padding: 5px;
+    background-color: #f0f0f0;
+    border-radius: 7px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.InventoryList .InventoryListDiv {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+.InventoryList .viewListButton {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.InventoryList ul {
+    list-style-type: none;
+}
+
+.InventoryList li {
     margin: 10px;
     padding: 5px;
     background-color: #f0f0f0;
