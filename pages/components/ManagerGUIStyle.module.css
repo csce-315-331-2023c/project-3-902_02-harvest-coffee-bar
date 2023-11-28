@@ -203,6 +203,9 @@
 
 .InventoryList ul {
     list-style-type: none;
+    padding: 0;
+    margin: 5; 
+    
 }
 
 .InventoryList li {
@@ -211,6 +214,31 @@
     background-color: #f0f0f0;
     border-radius: 7px;
     display: flex;
-    align-items: flex-start;
-    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.InventoryList .editButton, .deleteButton {
+    margin: 7.5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+}
+
+.InventoryList .editButton {
+    background-color: #adadad;
+    color: rgb(255, 255, 255);
+}
+
+.InventoryList .deleteButton {
+    background-color: #F44336;
+    color: white;
+}
+
+.editButton:hover, .deleteButton:hover {
+    background-color: rgba(255, 255, 255, 0.644);
+    color: black;
 }

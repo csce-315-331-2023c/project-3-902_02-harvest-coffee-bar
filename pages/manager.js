@@ -694,8 +694,10 @@ function Manager() {
                         <ul>
                             {inventoryItems.map((item, index) => (
                                 <li key={index}>
-                                    {item.ingredient_name} (ID: {item.ingredient_id}) - Quantity: {item.ingredient_count}
-                                    <div className={managerStyles.buttonContainer}>
+                                        <span>
+                                            {item.ingredient_name} (ID: {item.ingredient_id}) - Quantity: {item.ingredient_count}
+                                        </span>
+                                        <div className={managerStyles.buttonContainer}>
                                             <button
                                                 className={managerStyles.editButton}
                                                 onClick={() => handleUpdate(item.ingredient_count, item.ingredient_id)}>
