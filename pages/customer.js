@@ -78,6 +78,23 @@ const Customer = () => {
     setReceipt([]);
 	}
 
+	const displayIngredients = async (menuItem) => {
+		addToReceipt(menuItem);
+		// var payload = {
+		// 	menu_item_id: menuItem.menu_item_id
+		// }
+		// try {
+		// 	console.log(menuItem.menu_item_id);
+		// 	const response = await fetch(`${server}/api/cashier_functions/get_ingredients`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+		// 	if (response.ok) {
+		// 		const data = await response.json();
+		// 	}
+		// } catch (error) {
+		// 	console.error('Error: ', error);
+		// }
+
+	}
+
 	// useEffect(() => {
 	// 	document.body.style.overflow = "hidden";
 	// 	return () => {
@@ -98,38 +115,6 @@ const Customer = () => {
 				    <li><Link href="/cashier"><a>Cashier Page</a></Link></li>
 				    <li><Link href="/manager"><a>Manager Page</a></Link></li>
 			    </ul>
-                <button className={styles.checkout} onClick={ReceiptPopup}>Checkout</button>
-				{ receiptVisible && (
-					<div className={styles.overlay}>
-                    	<div className={styles.popup}>
-							<div className={styles.receipt}>
-								<div>
-									<h2>Receipt</h2>
-									<hr className={styles.line}></hr>
-									<button className={styles.closebtn} onClick={ReceiptPopup}>X</button>
-									<ul>
-										{receipt.map((item, index) => (
-											<li key={index}>
-												<div className={styles.receiptItems}>
-													{item.menu_item_name} - ${item.price}
-													<button className={styles.removeButton} onClick={() => removeFromReceipt(index)}>
-														X
-													</button>
-												</div>
-											</li>
-										))}
-									</ul>
-								</div>
-							</div>
-							<div className={styles.foot}>
-								<h3 className={styles.total}>Total: ${calculateTotal()}</h3>
-								<button className={styles.checkoutButton} onClick={handleCheckout}>
-									Place Order
-								</button>
-							</div>
-                    	</div>
-					</div>
-				)}
             </div>
 
 
@@ -153,12 +138,39 @@ const Customer = () => {
 						<ul>
 							{filteredMenuItems.map((menuItem) => (
 								<li key={menuItem.menu_item_id}>
-									<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
-										{menuItem.menu_item_name} - ${menuItem.price} {menuItem.item_description}
+									<button className={styles.itemButtons} onClick={() => displayIngredients(menuItem)}>
+										<div className={styles.itemNameStyle}>
+											{menuItem.menu_item_name} - ${menuItem.price}	
+										</div>
+										{menuItem.item_description}
 									</button>
 								</li>
 							))}
 						</ul>
+					</div>
+				</div>
+				<div className={styles.receipt}>
+					<div>
+						<h2>Receipt</h2>
+						<ul>
+							{receipt.map((item, index) => (
+								<li key={index}>
+									<div className={styles.receiptItems}>
+										{item.menu_item_name} - ${item.price}
+										<button className={styles.removeButton} onClick={() =>
+											removeFromReceipt(index)}>
+											X
+										</button>
+									</div>
+								</li>
+							))}
+						</ul>
+					</div>
+					<div className={styles.foot}>
+						<h3>Total: ${calculateTotal()}</h3>
+						<button className={styles.checkoutButton} onClick={() => handleCheckout()}>
+							Checkout
+						</button>
 					</div>
 				</div>
 			</div>
@@ -167,7 +179,7 @@ const Customer = () => {
 			<h3>Hours</h3>
 			<br></br>
 			<pre>
-				{'                          Open Daily from 7am - 6pm\n1037 University Dr - Suite 109,College Station, TX 77840\n                                    (979) 599-3236'}
+				{'                          Open Daily from 7am - 6pm\n1037 University Dr - Suite 109, College Station, TX 77840\n                                    (979) 599-3236'}
 			</pre>
 
 
@@ -177,3 +189,4 @@ const Customer = () => {
 }
 
 export default Customer;
+ 
