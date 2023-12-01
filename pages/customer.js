@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './components/CustomerGUIStyle.module.css';
 import { server } from '../config';
 import Link from 'next/link';
+import NavBar from './components/NavBar.js'
 
 const Customer = () => {
 	const [receipt, setReceipt] = useState([]);
@@ -10,6 +11,7 @@ const Customer = () => {
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
 	const [receiptVisible, setReceiptVisible] = useState(false);
+	const [accessibilityMode, setAccessibilityMode] = useState(false);
 
 	const fetchMenuItems = async () => {
 		try {
@@ -80,18 +82,18 @@ const Customer = () => {
 
 	const displayIngredients = async (menuItem) => {
 		addToReceipt(menuItem);
-		// var payload = {
-		// 	menu_item_id: menuItem.menu_item_id
-		// }
-		// try {
-		// 	console.log(menuItem.menu_item_id);
-		// 	const response = await fetch(`${server}/api/cashier_functions/get_ingredients`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-		// 	if (response.ok) {
-		// 		const data = await response.json();
-		// 	}
-		// } catch (error) {
-		// 	console.error('Error: ', error);
-		// }
+		var payload = {
+			menu_item_id: menuItem.menu_item_id
+		}
+		try {
+			console.log(menuItem.menu_item_id);
+			const response = await fetch(`${server}/api/cashier_functions/get_ingredients`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+			if (response.ok) {
+				const data = await response.json();
+			}
+		} catch (error) {
+			console.error('Error: ', error);
+		}
 
 	}
 
@@ -107,20 +109,23 @@ const Customer = () => {
         setReceiptVisible(!receiptVisible);
     };
 
+	const toggleAccessibilityMode = () => {
+		setAccessibilityMode(!accessibilityMode);
+	  };
+
 	return (
-		<div className={styles.CustomerGUI}>
-            <div className={styles.header}>
-                <ul className={styles.links}>
-				    <li><Link href="/customer"><a className={styles.orderButton}>Order Online</a></Link></li>
-				    <li><Link href="/cashier"><a>Cashier Page</a></Link></li>
-				    <li><Link href="/manager"><a>Manager Page</a></Link></li>
-			    </ul>
-            </div>
+		<div className={`${styles.CustomerGUI} ${accessibilityMode ? styles.accessibilityMode : ''}`}>
+			<NavBar />
 
 
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
-					<h2>Order Online</h2>
+					<div className={styles.header2}>
+						<h2>Order Online</h2>
+						<button  onClick={toggleAccessibilityMode}>
+							{accessibilityMode ? 'Disable Accessibility Mode' : 'Enable Accessibility Mode'}
+						</button>
+					</div>
 					<div className={styles.catStyle}>
 							<ul>
 								{menuCats.map((menuCat) => (
@@ -174,7 +179,7 @@ const Customer = () => {
 					</div>
 				</div>
 			</div>
-			<hr className={styles.line}></hr>
+			<hr className={styles.line2}></hr>
 			<div className={styles.footer}>
 			<h3>Hours</h3>
 			<br></br>

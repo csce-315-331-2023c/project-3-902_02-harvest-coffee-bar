@@ -7,15 +7,15 @@
     padding: 0;
     box-sizing: border-box;
     justify-content: center;
-    color: black;
+    /* color: black; */
 }
 
-.receipt h2 {
-    color: rgb(0, 0, 0);
+.CustomerGUI .receipt h2 {
+    color: #575757;
     margin-bottom: 10px;
 }
-.receipt h3 {
-    color: rgb(0, 0, 0);
+.CustomerGUI .receipt h3 {
+    color: #575757;
 }
 
 .CustomerGUI .receipt {
@@ -31,10 +31,10 @@
     margin-left: 3%;
     margin-right: -100px;
     padding: 10px;
-    border: 1px solid #ccc;
+    border: 2px solid #82DFAA;
     border-radius: 5px;
-    background-color: #ffffff;
-    color: #000000;
+    background-color: #f5f5f5bf;
+    color: #575757;
 }
 
 .CustomerGUI .receipt ul li {
@@ -45,10 +45,10 @@
     display: flex;
     justify-content: space-between;
     margin-top: 10px;
-    color: rgb(0, 0, 0);
+    color: #575757;
 }
 
-button.removeButton {
+.CustomerGUI button.removeButton {
     flex: -1;
     background-color: #ff5c5c;
     color: #ffffff;
@@ -64,61 +64,22 @@ button.removeButton {
     /* Make all "item-buttons" the same width */
     padding: 20px;
     margin: 5px 0;
-    background-color: #51544e;
-    color: #ffffff;
+    background-color: #82DFAA;
+    color: black;
     cursor: pointer;
     border-radius: 5px;
     text-align: center;
     font-size: large;
 }
 
+.CustomerGUI button.checkoutButton:hover {
+    background-color:rgb(149, 250, 184)
+}
+
 .CustomerGUI .foot {
     margin-top: 20px;
 }
 
-/* Popup ended */
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px; /* Add padding as needed */
-}
-
-.header .links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    justify-content: flex-start; /* Adjust as needed */
-    align-items: center;
-    height: 50px; /* Set a fixed height for the navigation bar */
-}
-
-.links li {
-    margin-right: 20px;
-    background-color: rgb(113, 123, 111);
-    padding: 10px;
-    border-radius: 5px;
-}
-
-.links a {
-    text-decoration: none;
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    font-size: 14px;
-}
-
-.header .checkout {
-    /* Move the checkout button to the right */
-    background-color: rgb(113, 123, 111);
-    padding: 10px;
-    width: 20%;
-    border-radius: 5px;
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    font-size: 14px;
-}
 
 .CustomerGUI {
     background-color: white;
@@ -177,7 +138,7 @@ button.removeButton {
     width: 100%;
     height: 80%;
     padding: 30px;
-    background-color: #ffffff;
+    background-color: #f5f5f5bf;
     color: #000000;
     cursor: pointer;
     border-radius: 5px;
@@ -187,13 +148,15 @@ button.removeButton {
 }
 
 .CustomerGUI button.itemButtons:hover {
-    background-color: #8b8b8b;
+    background-color: #82DFAA;
 }
 
 .CustomerGUI .line {
     margin-bottom: 2%;
     width: 117%;
     margin-left: -15%;
+    height: 3px;
+    background-color: #82DFAA;
 }
 
 .CustomerGUI .menuItemStyle {
@@ -216,9 +179,7 @@ button.removeButton {
     display: -moz-box;
     display: flex;
     flex-wrap: nowrap;
-
     width: 70%;
-    
 }
 
 
@@ -228,7 +189,7 @@ button.removeButton {
     margin-left: 2%;
     padding: 5px;
     background-color: white;
-    color: black;
+    /* color: black; */
     cursor: pointer;
     /* border-radius: 5px; */
     text-align: center;
@@ -238,7 +199,8 @@ button.removeButton {
 }
 
 .CustomerGUI button.catButtons:hover {
-    background-color:#8b8b8b;
+    background-color:#f5f5f5bf;
+    color: #82DFAA;
     border-radius: 5px;
 }
 
@@ -253,4 +215,316 @@ button.removeButton {
     margin-bottom: 5%;
     font-size: 16px;
     font-weight: bolder;
+}
+
+.CustomerGUI .line2 {
+    background-color: #82DFAA;
+    height: 3px;
+    margin-bottom: 2%;
+}
+
+.CustomerGUI .header2 {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    /* justify-content: space-between; Put space between the items */
+    margin-left: 40%;
+}
+  
+.CustomerGUI .header2 h2 {
+    margin-right: 15%; /* Adjust the margin between h2 and button */
+}
+
+.CustomerGUI .header2 button {
+    background-color: #f5f5f5bf; /* Green background color */
+    color: black; /* White text color */
+    width: 50%;
+    border-color: #82DFAA;
+    padding: 10px 20px; 
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bolder;
+    cursor: pointer;
+    border-radius: 5px; 
+    transition: background-color 0.3s ease; 
+    
+}
+  
+.CustomerGUI .header2 button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+  
+/* ------------------ Accesilibity mode starts here ------------------------- */
+
+.accessibilityMode *{
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    justify-content: center;
+    /* color: black; */
+}
+
+.accessibilityMode .receipt h2 {
+    color: #ffffff;
+    margin-bottom: 10px;
+}
+.accessibilityMode .receipt h3 {
+    color: #ffffff;
+}
+
+.accessibilityMode .receipt {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 25%;
+    height: 10%;
+    position: sticky;
+    top: 10px;
+    /* Adjust as needed */
+    /* margin-left: 0px; */
+    margin-left: 3%;
+    margin-right: -100px;
+    padding: 10px;
+    border: 2px solid #82DFAA;
+    border-radius: 5px;
+    background-color: #1e1e1ebf;
+    color: #ffffff;
+}
+
+.accessibilityMode .receipt ul li {
+    list-style-type: none;
+}
+
+.accessibilityMode .receiptItems {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    color: #ffffff;
+}
+
+.accessibilityMode button.removeButton {
+    flex: -1;
+    background-color: #ffffff;
+    color: #000000;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.accessibilityMode button.checkoutButton {
+    display: block;
+    width: 100%;
+    /* Make all "item-buttons" the same width */
+    padding: 20px;
+    margin: 5px 0;
+    background-color: #414744;
+    color: rgb(255, 255, 255);
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    font-size: large;
+}
+
+.accessibilityMode button.checkoutButton:hover {
+    background-color:rgb(149, 250, 184)
+}
+
+.accessibilityMode .foot {
+    margin-top: 20px;
+}
+
+
+.accessibilityMode .header .checkout {
+    /* Move the checkout button to the right */
+    background-color: rgb(113, 123, 111);
+    padding: 10px;
+    width: 20%;
+    border-radius: 5px;
+    color: rgb(255, 255, 255);
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.accessibilityMode {
+    background-color: rgb(62, 62, 62);
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    /* min-height: 100vh; */
+}
+
+.accessibilityMode .mainScreen {
+    margin-top: 20px;
+    display: flex;
+    margin-bottom: 40px;
+}
+
+.accessibilityMode .changeView {
+    background-color: white;
+    border-radius: 5px;
+    margin-right: 10px;
+    width: 10%;
+    padding: 5px;
+    margin-bottom: 30px;
+}
+
+.accessibilityMode .menu {
+    display: block;
+    flex-direction: column;
+    /* flex-wrap: wrap;  */
+    width: 60%;
+    margin-left: 0px;
+    /* Adjust as needed */
+    justify-content: flex-start;
+    /* overflow-y: auto; */
+}
+
+.accessibilityMode .menu ul {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+}
+.accessibilityMode .menu h2 {
+    text-align: center;
+    color:white;
+}
+
+.accessibilityMode .menu ul li {
+    margin-left: 20px;
+    list-style-type: none;
+    width: 40%;
+}
+
+.accessibilityMode button.itemButtons {
+    display: block;
+    width: 100%;
+    height: 80%;
+    padding: 30px;
+    background-color: #1e1e1ebf;
+    border-color: #82DFAA;
+    color: #ffffff;
+    font-size: larger;
+    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    margin-top: 5%;
+    margin-left: 6%;
+    margin-bottom: 10%;
+}
+
+.accessibilityMode button.itemButtons:hover {
+    background-color: #000000;
+}
+
+.accessibilityMode .line {
+    margin-bottom: 2%;
+    width: 117%;
+    margin-left: -15%;
+    height: 3px;
+    background-color: #82DFAA;
+}
+
+.accessibilityMode .menuItemStyle {
+    margin-bottom: 10px;
+    margin-left: -8%;
+}
+
+.accessibilityMode .catStyle {
+    margin-bottom: 3%;
+    display:flex;
+    flex-wrap: nowrap;
+    margin-left: -130px;
+    /* justify-content: space-between; */
+    /* overflow-y: scroll; */
+}
+
+.accessibilityMode .catStyle ul {
+    margin: 0;
+    padding: 0;
+    display: -moz-box;
+    display: flex;
+    flex-wrap: nowrap;
+    width: 70%;
+    
+}
+
+.accessibilityMode .catButtons {
+    margin-top: 5%;
+    width: 100%;
+    margin-left: 2%;
+    padding: 5px;
+    background-color: #1e1e1ebf;
+    border-radius: 5px;
+    border-color: #82DFAA;
+    color: white;
+    cursor: pointer;
+    /* border-radius: 5px; */
+    text-align: center;
+    border: none;
+    font-weight: 1000;
+    font-size: 16px;
+}
+
+.accessibilityMode button.catButtons:hover {
+    background-color:#000000bf;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
+.accessibilityMode .footer {
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+}
+
+.accessibilityMode .itemNameStyle {
+    margin-bottom: 5%;
+    font-size: 16px;
+    font-weight: bolder;
+}
+
+.accessibilityMode .line2 {
+    background-color: #82DFAA;
+    height: 3px;
+    margin-bottom: 2%;
+}
+
+.accessibilityMode .header2 {
+    display: flex;
+    align-items: center; /* Align items vertically in the center */
+    /* justify-content: space-between; Put space between the items */
+    margin-left: 40%;
+}
+  
+.accessibilityMode .header2 h2 {
+    margin-right: 15%; /* Adjust the margin between h2 and button */
+}
+
+.accessibilityMode .header2 button {
+    background-color: #f5f5f5bf; /* Green background color */
+    color: black; /* White text color */
+    width: 50%;
+    border-color: #82DFAA;
+    padding: 10px 20px; 
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bolder;
+    cursor: pointer;
+    border-radius: 5px; 
+    transition: background-color 0.3s ease; 
+    
+}
+  
+.accessibilityMode .header2 button:hover {
+    background-color: #45a049; /* Darker green on hover */
 }
