@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './components/CustomerGUIStyle.module.css';
 import { server } from '../config';
 import Link from 'next/link';
+import NavBar from './components/NavBar.js'
 
 const Customer = () => {
 	const [receipt, setReceipt] = useState([]);
@@ -10,6 +11,7 @@ const Customer = () => {
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
 	const [receiptVisible, setReceiptVisible] = useState(false);
+	const [accessibilityMode, setAccessibilityMode] = useState(false);
 
 	const fetchMenuItems = async () => {
 		try {
@@ -73,9 +75,26 @@ const Customer = () => {
 			ordered_items: receipt,
 			cusomter_id: customerID
 		}
-
+		{setReceiptVisible(!receiptVisible)};
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     setReceipt([]);
+	}
+
+	const displayIngredients = async (menuItem) => {
+		addToReceipt(menuItem);
+		var payload = {
+			menu_item_id: menuItem.menu_item_id
+		}
+		try {
+			console.log(menuItem.menu_item_id);
+			const response = await fetch(`${server}/api/cashier_functions/get_ingredients`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+			if (response.ok) {
+				const data = await response.json();
+			}
+		} catch (error) {
+			console.error('Error: ', error);
+		}
+
 	}
 
 	// useEffect(() => {
@@ -90,52 +109,23 @@ const Customer = () => {
         setReceiptVisible(!receiptVisible);
     };
 
+	const toggleAccessibilityMode = () => {
+		setAccessibilityMode(!accessibilityMode);
+	  };
+
 	return (
-		<div className={styles.CustomerGUI}>
-            <div className={styles.header}>
-                <ul className={styles.links}>
-				    <li><Link href="/customer"><a className={styles.orderButton}>Order Online</a></Link></li>
-				    <li><Link href="/cashier"><a>Cashier Page</a></Link></li>
-				    <li><Link href="/manager"><a>Manager Page</a></Link></li>
-			    </ul>
-                <button className={styles.checkout} onClick={ReceiptPopup}>Checkout</button>
-				{ receiptVisible && (
-					<div className={styles.overlay}>
-                    	<div className={styles.popup}>
-							<div className={styles.receipt}>
-								<div>
-									<h2>Receipt</h2>
-									<hr className={styles.line}></hr>
-									<button className={styles.closebtn} onClick={ReceiptPopup}>X</button>
-									<ul>
-										{receipt.map((item, index) => (
-											<li key={index}>
-												<div className={styles.receiptItems}>
-													{item.menu_item_name} - ${item.price}
-													<button className={styles.removeButton} onClick={() => removeFromReceipt(index)}>
-														X
-													</button>
-												</div>
-											</li>
-										))}
-									</ul>
-								</div>
-							</div>
-							<div className={styles.foot}>
-								<h3 className={styles.total}>Total: ${calculateTotal()}</h3>
-								<button className={styles.checkoutButton} onClick={handleCheckout}>
-									Place Order
-								</button>
-							</div>
-                    	</div>
-					</div>
-				)}
-            </div>
+		<div className={`${styles.CustomerGUI} ${accessibilityMode ? styles.accessibilityMode : ''}`}>
+			<NavBar />
 
 
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
-					<h2>Order Online</h2>
+					<div className={styles.header2}>
+						<h2>Order Online</h2>
+						<button  onClick={toggleAccessibilityMode}>
+							{accessibilityMode ? 'Disable Accessibility Mode' : 'Enable Accessibility Mode'}
+						</button>
+					</div>
 					<div className={styles.catStyle}>
 							<ul>
 								{menuCats.map((menuCat) => (
@@ -153,17 +143,55 @@ const Customer = () => {
 						<ul>
 							{filteredMenuItems.map((menuItem) => (
 								<li key={menuItem.menu_item_id}>
-									<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
-										{menuItem.menu_item_name} - ${menuItem.price} {menuItem.item_description}
+									<button className={styles.itemButtons} onClick={() => displayIngredients(menuItem)}>
+										<div className={styles.itemNameStyle}>
+											{menuItem.menu_item_name} - ${menuItem.price}	
+										</div>
+										{menuItem.item_description}
 									</button>
 								</li>
 							))}
 						</ul>
 					</div>
 				</div>
+				<div className={styles.receipt}>
+					<div>
+						<h2>Receipt</h2>
+						<ul>
+							{receipt.map((item, index) => (
+								<li key={index}>
+									<div className={styles.receiptItems}>
+										{item.menu_item_name} - ${item.price}
+										<button className={styles.removeButton} onClick={() =>
+											removeFromReceipt(index)}>
+											X
+										</button>
+									</div>
+								</li>
+							))}
+						</ul>
+					</div>
+					<div className={styles.foot}>
+						<h3>Total: ${calculateTotal()}</h3>
+						<button className={styles.checkoutButton} onClick={() => handleCheckout()}>
+							Checkout
+						</button>
+					</div>
+				</div>
+			</div>
+			<hr className={styles.line2}></hr>
+			<div className={styles.footer}>
+			<h3>Hours</h3>
+			<br></br>
+			<pre>
+				{'                          Open Daily from 7am - 6pm\n1037 University Dr - Suite 109, College Station, TX 77840\n                                    (979) 599-3236'}
+			</pre>
+
+
 			</div>
 		</div>
 	);
 }
 
 export default Customer;
+ 
