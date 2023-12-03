@@ -9,40 +9,43 @@
 }
 
 .ManagerGUI {
-    background-color: #fff;
+    background-color: #5f726b; /* Adjusted to match reference */
     border: 1px solid #ccc;
     padding: 20px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
+    color: white; /* Text color adjusted */
+    border-color: #537e53;
 }
 
-.ManagerGUI h1 {
+.ManagerGUI h1, .ManagerGUI h2 {
     margin-bottom: 10px;
-    color: #333;
+    color: #ffffff; /* Text color adjusted */
 }
 
-.ManagerGUI h2 {
-    margin-top: 0;
+.ManagerGUI button {
+    margin-left: 10px;
     margin-bottom: 10px;
-    color: #333;
+    margin-top: 5px;
 }
 
+/* Section Styles */
 .ManagerGUI section {
-    border: 1px solid #ccc;
+    border: 1px solid #424d42; /* Border color adjusted */
     border-radius: 8px;
     padding: 20px;
     margin-bottom: 20px;
-    background-color: #f9f9f9;
+    background-color: #424d42; /* Background color adjusted */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .ManagerGUI section:hover {
-    border-color: #88888844;
-    background-color:#dadada6c;
+    /* border-color: #537e53;
+    background-color: #354635; Hover background color adjusted */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-
+/* Menu Items List Section */
 .menuItemsList .scrollableContainer {
     max-height: 500px; 
     overflow-y: auto;
@@ -50,12 +53,13 @@
     padding: 10px;
     margin-top: 10px;
     border-radius: 4px;
-    background-color: #f9f9f9;
+    background-color:#5f726b; 
+    border-color: #537e53;
 }
 
 .menuItemsList .addItemForm {
     border-radius: 7px;
-    background-color: #f0f0f0;
+    background-color: #424d42;
     margin-bottom: 10px;
 }
 
@@ -65,8 +69,13 @@
 }
 
 .menuItemsList .addItemFormButton {
-    margin-left: 10px;
-    margin-bottom: 10px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+    background-color: #51544e;
+    color: white; 
 }
 
 .menuItemsList ul {
@@ -78,7 +87,7 @@
 .menuItemsList li {
     margin-bottom: 10px;
     padding: 5px;
-    background-color: #f0f0f0;
+    background-color: #424d42; 
     border-radius: 7px;
     display: flex;
     align-items: flex-start;
@@ -88,8 +97,10 @@
 .menuItemsList li:hover {
     margin-bottom: 10px;
     padding: 5px;
-    background-color: rgba(124, 124, 124, 0.685);
+    background-color: rgba(93, 172, 129, 0.685);
     border-radius: 7px;
+    border-color: rgb(86, 97, 86);
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -98,6 +109,7 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
+    
 }
 
 .menuItemsList .inventoryList {
@@ -105,11 +117,11 @@
 }
 
 .menuItemsList .inventoryListItem {
-    background-color:#d8d8d8;
+    background-color: #d8d8d8;
 }
 
 .menuItemsList .inventoryListItem:hover {
-    background-color:#d8d8d8;
+    background-color: #d8d8d8;
 }
 
 .menuItemsList .addItemButton, .addInventoryButton, .editButton, .deleteButton {
@@ -119,26 +131,57 @@
     border-radius: 7px;
     cursor: pointer;
     font-size: 0.9em;
+    
 }
 
-.addInventoryButton:hover, .editButton:hover, .deleteButton:hover {
-    background-color: rgba(255, 255, 255, 0.644);
-    color: black;
+.menuItemsList .addItemButton {
+    background-color: #51544e;
+    color: white; 
 }
 
 .menuItemsList .addInventoryButton {
-    background-color: #adadad;
+    background-color: #51544e;
     color: white;
 }
 
 .menuItemsList .editButton {
-    background-color: #adadad;
+    background-color:#51544e;
     color: rgb(255, 255, 255);
 }
 
 .menuItemsList .deleteButton {
-    background-color: #F44336;
+    background-color: #f87167;
     color: white;
+}
+
+.menuItemsList .addItemButton:hover {
+    background-color: #47523c;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menuItemsList .addInventoryButton:hover {
+    background-color: #45503b;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menuItemsList .editButton:hover {
+    background-color: #4c5543;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menuItemsList .deleteButton:hover {
+    background-color: #f54a4a;
+    border-color: #f0f0f0; 
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menuItemsList .addItemFormButton:hover {
+    background-color: #4c5543;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
 .orderTrends h3 {
@@ -152,7 +195,8 @@
     padding: 10px;
     margin-top: 10px;
     border-radius: 4px;
-    background-color: #f9f9f9;
+    background-color:#5f726b; 
+    border-color: #537e53;
 }
 
 .orderTrends .popularPairs {
@@ -162,7 +206,8 @@
     padding: 10px;
     margin-top: 10px;
     border-radius: 4px;
-    background-color: #f9f9f9;
+    background-color:#5f726b; 
+    border-color: #537e53;
 }
 
 .orderTrends Label {
@@ -175,12 +220,14 @@
 
 .orderTrends ul {
     list-style-type: none;
+    padding: 0;
+    margin: 5; 
 }
 
 .orderTrends li {
     margin: 10px;
     padding: 5px;
-    background-color: #f0f0f0;
+    background-color: #424d42; 
     border-radius: 7px;
     display: flex;
     align-items: flex-start;
@@ -194,24 +241,45 @@
     padding: 10px;
     margin-top: 10px;
     border-radius: 4px;
-    background-color: #f9f9f9;
+    background-color:#5f726b; 
+    border-color: #537e53;
 }
 
 .InventoryList .viewListButton {
     margin-bottom: 10px;
 }
 
+.InventoryList .addInventoryForm {
+    border-radius: 7px;
+    background-color: #424d42;
+    margin-bottom: 10px;
+}
+
+.InventoryList .addInventoryInput {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
+
+.InventoryList .addInventoryFormButton {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+    background-color: #51544e;
+    color: white; 
+}
+
 .InventoryList ul {
     list-style-type: none;
     padding: 0;
     margin: 5; 
-    
 }
 
 .InventoryList li {
-    margin: 10px;
+    margin-bottom: 10px;
     padding: 5px;
-    background-color: #f0f0f0;
+    background-color: #424d42; 
     border-radius: 7px;
     display: flex;
     justify-content: space-between;
@@ -219,7 +287,7 @@
     width: 100%;
 }
 
-.InventoryList .editButton, .deleteButton {
+.InventoryList .addInventoryButton .editButton, .deleteButton {
     margin: 7.5px;
     padding: 5px 10px;
     border: none;
@@ -229,16 +297,41 @@
 }
 
 .InventoryList .editButton {
-    background-color: #adadad;
-    color: rgb(255, 255, 255);
+    background-color: #51544e;
+    color: white; 
 }
 
 .InventoryList .deleteButton {
-    background-color: #F44336;
+    background-color: #f87167;
     color: white;
 }
 
-.editButton:hover, .deleteButton:hover {
-    background-color: rgba(255, 255, 255, 0.644);
-    color: black;
+.InventoryList .addInventoryButton {
+    background-color: #51544e;
+    color: white; 
 }
+
+.InventoryList .editButton:hover{
+    background-color: #45503b;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.InventoryList .addInventoryButton:hover {
+    background-color: #45503b;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.InventoryList .addInventoryFormButton:hover {
+    background-color: #45503b;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.InventoryList .deleteButton:hover {
+    background-color: #f54a4a;
+    border-color: #f0f0f0; 
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+

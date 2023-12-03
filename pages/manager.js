@@ -660,7 +660,7 @@ function Manager() {
                                             onChange={handleInventoryInputChange}
                                         />
                                     </div>
-                                    <div className={managerStyles.addItemInput}>
+                                    <div className={managerStyles.addInventoryInput}>
                                         <input
                                             type="number"
                                             name="ingredient_count"
@@ -669,7 +669,7 @@ function Manager() {
                                             onChange={handleInventoryInputChange}
                                         />
                                     </div>
-                                    <div className={managerStyles.addItemInput}>
+                                    <div className={managerStyles.addInventoryInput}>
                                         <input
                                             type="number" 
                                             name="max_ingredient_count"
