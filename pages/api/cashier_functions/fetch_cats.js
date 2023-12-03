@@ -8,7 +8,7 @@ export default async (req, res) => {
     // Here we handle all sql statements as a transaction so 
     // can ensure that it is all handled as one unit
     // to avoid race conditions
-    
+
     const client = await connection.connect();
 
     //push order to database
@@ -16,7 +16,7 @@ export default async (req, res) => {
 
         await client.query('BEGIN;');
 
-        const selectCategories = await connection.query(`SELECT DISTINCT menu_item_category FROM menu_items;`);
+        const selectCategories = await connection.query(`SELECT DISTINCT menu_item_category FROM menu_items WHERE is_active = true;`);
 
         // push statements to database
         await client.query('COMMIT;');
