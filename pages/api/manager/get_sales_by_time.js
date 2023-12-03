@@ -13,12 +13,14 @@ export default async (req, res) => {
     let salesQuery;
     let salesParameters;
 
+    //console.log(req);
     // add item to menu
     try {
 
         await client.query('BEGIN;');
 
         if (req.body.item_name !== null && req.body.item_name !== 'All') {
+
             salesParameters = [
                 req.body.start_time,
                 req.body.end_time,
@@ -76,7 +78,7 @@ export default async (req, res) => {
 
         // push statements to database
         await client.query('COMMIT;');
-        res.status(200).json({ message: "done", data: salesData });
+        res.status(200).json(salesData);
 
     } catch (error) {
 
