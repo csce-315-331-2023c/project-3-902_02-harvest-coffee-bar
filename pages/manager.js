@@ -1,6 +1,6 @@
 // pages/manager.js
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { server } from '../config';
 import Link from 'next/link';
 import navStyles from './components/NavBar.module.css';
@@ -48,9 +48,11 @@ function Manager() {
     //dummy function for inventory of given menu item
     const handleMenuItemClick = async (itemId) => {
         try {
-            const inventoryData = await getInventoryByItem(itemId);
-            const updatedInventory = { [itemId]: inventoryData };
-            setSelectedItemInventory(updatedInventory);
+            getInventoryByItem(itemId);
+            //const inventoryData = {[itemId]: await getInventoryByItem(itemId)};
+            //const updatedInventory = { [itemId]: {inventoryData} };
+            
+            console.log(selectedItemInventory);
         } catch (error) {
             console.error('Error:', error);
         }
@@ -135,10 +137,12 @@ function Manager() {
         }
 
         try {
-            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
+            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)});
         
             if (response.ok) {
                 const data = await response.json();
+                //console.log(data);
+                setSelectedItemInventory(data.rows);
             } else {
                 console.error("Unable to view inventory.");
             }
@@ -309,7 +313,10 @@ function Manager() {
     };
     //Back-end implement needed
     const fetchEmployeeSchedules = () => { /* ... */ };
-    fetchMenuItems();
+    
+    useEffect(() => {
+        fetchMenuItems();
+    }, []);
     return (
         <div className={managerStyles.ManagerGUI}>
             {/* Navi Section */}
