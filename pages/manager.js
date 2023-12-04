@@ -167,8 +167,8 @@ function Manager() {
         
             if (response.ok) {
                 const data = await response.json();
-                //console.log(data);
                 setSelectedItemInventory(data.rows);
+                return data.rows; 
             } else {
                 console.error("Unable to view inventory.");
             }
@@ -246,7 +246,7 @@ function Manager() {
     }
 
     //Front-end handling function for editMenuItem {
-        const handleUpdate = (currentCount , ingredient_id) => {
+    const handleUpdate = (currentCount , ingredient_id) => {
 
             const newCount = prompt(`Enter current count for the ingredient (Current Count: ${currentCount}):`, currentCount);
     
@@ -394,8 +394,7 @@ function Manager() {
         }
     }
 
-    //Back-end implement needed
-    const fetchEmployeeSchedules = () => { /* ... */ };
+    
 
 
     ///////////////////////////////
@@ -506,11 +505,13 @@ function Manager() {
                                                 onClick={() => handleEdit(item.menu_item_id, item.price)}>
                                                     Edit price
                                             </button>
-                                            <button
-                                                className={managerStyles.deleteButton}
-                                                onClick={() => deleteItemFromMenu(item.menu_item_id)}>
-                                                    X
-                                            </button>
+                                            <select
+                                                className={managerStyles.statusDropdown}
+                                                onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)}>
+                                                <option value="">Select Status</option>
+                                                <option value="Sold">Sold</option>
+                                                <option value="Not Sold">Not Sold</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div className={managerStyles.addIngredientsToItemToMenuItemForm}>
@@ -536,7 +537,7 @@ function Manager() {
                                         )}
                                     </div>
                                     {/* Display inventory for given menu item */}
-                                    {selectedItemInventory[item.menu_item_id] && (
+                                    {selectedItemInventory && selectedItemInventory[item.menu_item_id] && (
                                         <ul className={managerStyles.inventoryList}>
                                             {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
                                                 <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
