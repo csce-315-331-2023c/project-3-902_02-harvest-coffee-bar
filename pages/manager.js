@@ -209,7 +209,7 @@ function Manager() {
 
     const submitAddIngredientsToItemForm = async (e, menu_item_id) => {
         e.preventDefault();
-        await addIngredientsToItemToMenuItem(menu_item_id, addIngredientsToItem.ingredient_id, addIngredientsToItem.num_ingredients);
+        await addIngredientsToMenuItem(menu_item_id, addIngredientsToItem.ingredient_id, addIngredientsToItem.num_ingredients);
 
         setAddIngredientsToItem({ ingredient_id: '', num_ingredients: '' });
         setShowAddIngredientsToItemForm(null);
