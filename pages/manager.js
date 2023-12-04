@@ -537,7 +537,7 @@ function Manager() {
                                         )}
                                     </div>
                                     {/* Display inventory for given menu item */}
-                                    {selectedItemInventory && selectedItemInventory[item.menu_item_id] && (
+                                    {selectedItemInventory[item.menu_item_id] && (
                                         <ul className={managerStyles.inventoryList}>
                                             {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
                                                 <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
