@@ -14,7 +14,7 @@ export default function NavBar() {
                             <a className={loginStyles.LoginLink}>Login</a>
                         </button>
                     </li>
-                    <li><Link href="/index"><a>Home</a></Link></li>
+                    <li><Link href="/"><a>Home</a></Link></li>
                     <li><Link href="/customer"><a className={styles.orderButton}>Order Online</a></Link></li>
                     <li><Link href="/cashier"><a>Cashier Page</a></Link></li>
                     <li><Link href="/manager"><a>Manager Page</a></Link></li>
