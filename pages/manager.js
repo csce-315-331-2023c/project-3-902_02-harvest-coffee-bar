@@ -706,7 +706,7 @@ function Manager() {
                                             </button>
                                             <button
                                                 className={managerStyles.deleteButton}
-                                                onClick={() => deleteItemFromMenu(item.ingredient_id)}>
+                                                onClick={() => deleteInventoryItem(item.ingredient_id)}>
                                                     X
                                             </button>
                                         </div>
