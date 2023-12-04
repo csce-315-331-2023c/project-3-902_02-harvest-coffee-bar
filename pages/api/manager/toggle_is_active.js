@@ -10,39 +10,40 @@ export default async (req, res) => {
     // avoid race conditions
     const client = await connection.connect();
 
-    // add item to menu
+    // delete item from menu
     try {
 
         await client.query('BEGIN;');
 
-        const lowStockQuery = `
-            SELECT
-                ingredient_name,
-                ingredient_count
-            FROM
-                ingredients_inventory
+        const toogleIsActiveQuery = `
+            UPDATE
+                menu_items
+            SET
+                is_active = $1
             WHERE
-                ingredient_count <= max_ingredient_count/5
-            ORDER BY
-                ingredient_count asc;
+                menu_item_id = $2;
         `;
 
-        const result = await client.query(lowStockQuery);
-        const lowStockData = result.rows; // Extract the rows from the result
+        const itemParameter = [
+            req.body.is_active,
+            req.body.menu_item_id
+        ];
+
+        client.query(toogleIsActiveQuery, itemParameter);
 
         // push statements to database
         await client.query('COMMIT;');
-        res.status(200).json({ message: "done", data: lowStockData });
+        res.status(200).json({ message: "done" });
 
     } catch (error) {
 
-        // disregard if an error is caught
+        // disregard if error is caught
         await client.query('ROLLBACK;');
         throw (error);
 
     } finally {
 
-        // release client back into the pool
+        // release client back into pool
         client.release();
 
     }

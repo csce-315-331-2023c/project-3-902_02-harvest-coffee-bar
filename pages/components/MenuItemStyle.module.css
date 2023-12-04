@@ -16,3 +16,14 @@
 .desc {
     font-style: oblique;
 }
+
+.altMenuItem {
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    font-family: 'Encode Sans', sans-serif;
+}
+
+.altMenuItem:hover {
+    font-size: xx-large;
+}

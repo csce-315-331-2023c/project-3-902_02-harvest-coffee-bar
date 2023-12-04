@@ -1,3 +1,8 @@
+//
+// TO BE DELETED
+//
+
+
 import connection from '../../../backend/database'
 
 export default async (req, res) => {

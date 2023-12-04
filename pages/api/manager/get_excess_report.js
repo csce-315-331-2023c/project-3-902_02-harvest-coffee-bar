@@ -4,7 +4,7 @@ export default async (req, res) => {
 
     // check if POST req
     if (req.method != 'POST') {
-        res.status(405).send({ message: 'Invalid request: Only POST reqs allowed' });
+        res.status(405).send({ message: 'Invalid request: Only POST reqs allowed, received ${req.method}' });
     }
 
     // avoid race conditions
@@ -15,7 +15,7 @@ export default async (req, res) => {
 
         await client.query('BEGIN;');
 
-        excessQuery = `
+        const excessQuery = `
             SELECT
                 ii.ingredient_id,
                 ii.ingredient_name,
@@ -38,7 +38,7 @@ export default async (req, res) => {
                 total_items_sold;
         `;
 
-        reportParameters = [
+        const reportParameters = [
             req.body.start_date,
             req.body.start_date,
             req.body.start_date,
