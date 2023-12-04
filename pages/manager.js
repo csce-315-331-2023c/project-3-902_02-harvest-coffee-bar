@@ -359,6 +359,19 @@ function Manager() {
         }
     }
 
+    const toggleIsActive = async (is_active, menu_item_id) => {
+        
+        var payload = {
+            is_active: is_active,
+            menu_item_id: menu_item_id
+        }
+
+        console.log(payload);
+
+        await fetch(`${server}/api/manage/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
+    }
+
     const getLowStock = async () => {
 
         try {
