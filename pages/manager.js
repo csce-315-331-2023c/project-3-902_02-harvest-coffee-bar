@@ -1,11 +1,11 @@
 // pages/manager.js
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { server } from '../config';
 import Link from 'next/link';
 import navStyles from './components/NavBar.module.css';
 import managerStyles from './components/ManagerGUIStyle.module.css'
-import Chart from 'chart.js';
+import Chart from 'chart.js/auto';
 
 
 
@@ -39,6 +39,8 @@ function Manager() {
     const [salesData, setSalesData] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const chartRef = useRef(null);
+    const [isShowingSalesData, setShowingSalesData] = useState(false);
 
     const [popularPairsData, setPairsData] = useState([]);
     const [PopularPairstartDate, setPopularPairStartDate] = useState('');
@@ -355,6 +357,11 @@ function Manager() {
             if (response.ok) {
                 const report = await response.json();
                 setSalesData(report);
+
+                setTimeout(() => {
+                    setShowingSalesData(true);
+                }, 100);
+                
             } else {
                 console.error("Unable to fetch sales report.");
             }
@@ -424,6 +431,10 @@ function Manager() {
         }
     }
 
+    //////////////////////////
+    // Chart Implementation //
+    //////////////////////////
+    
     
 
 
@@ -436,6 +447,73 @@ function Manager() {
         viewAllInInventory();
 
     }, []);
+
+    useEffect(() => {
+        if (salesData.length > 0 && isShowingSalesData) {
+            const ctx = chartRef.current.getContext('2d');
+
+            const existingChart = Chart.getChart(ctx);
+
+            if (existingChart) {
+                existingChart.destroy();
+            }
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: salesData.map(item => item.item),
+                    datasets:[{
+                        label: 'Total Units Sold',
+                        backgroundColor: 'rgba(95, 135, 107, 1)',
+                        borderWidth: 0,
+                        data: salesData.map(item => item.total_sales),
+                    }, {
+                        label: 'Total Profit',
+                        backgroundColor: 'rgba(95, 165, 107, 1)',
+                        borderWidth: 0,
+                        data: salesData.map(item => item.total_profit)
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 20,
+                                backgroundColor: 'rgba(255,255,255, 0.8)',
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                        },
+                        tooltip: {
+                            bodyColor: 'rgba(255, 255, 255, 1)'
+                        },
+                        background: {
+                            color: 'rgba(255, 255, 255, 1)'
+                        }
+                    },
+                },
+            });
+        }
+    }, [salesData, isShowingSalesData]);
 
     return (
         <div className={managerStyles.ManagerGUI}>
@@ -636,6 +714,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
+                {isShowingSalesData && <canvas ref={chartRef}></canvas>}
 
                 <br></br>
                 {/* Popular Item Pairs Div */}
