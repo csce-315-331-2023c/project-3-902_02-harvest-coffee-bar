@@ -195,6 +195,20 @@
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
+.menuItemsList .inventoryListItem {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #557a55; 
+    border-radius: 7px;
+}
+
+.menuItemsList .inventoryListItem:hover {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #557a55; 
+    border-radius: 7px;
+}
+
 .orderTrends h3 {
     margin : 10px;
 }

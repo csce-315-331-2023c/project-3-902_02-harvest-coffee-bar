@@ -167,8 +167,7 @@ function Manager() {
         
             if (response.ok) {
                 const data = await response.json();
-                setSelectedItemInventory(data.rows);
-                return data.rows; 
+                return data;
             } else {
                 console.error("Unable to view inventory.");
             }
@@ -214,6 +213,7 @@ function Manager() {
         setAddIngredientsToItem({ ingredient_id: '', num_ingredients: '' });
         setShowAddIngredientsToItemForm(null);
         //refresh the inventorylist -- need further implement
+        handleMenuItemClick(menu_item_id);
     };
     //}
 
@@ -541,22 +541,20 @@ function Manager() {
                                         <ul className={managerStyles.inventoryList}>
                                             {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
                                                 <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
-
-                                                    {/* Need Back-end implement  - list out inventory for selected Item  */}
-                                                    {inventoryItem.name} - Quantity: {inventoryItem.quantity}
+                                                    {inventoryItem.ingredient_name} - Quantity: {inventoryItem.num_ingredients}
                                                     <div className={managerStyles.inventoryListButton}>
 
 
                                                         {/* <button 
-                                                    className={managerStyles.editButton}
-                                                    onClick={() => handleEdit(item.menu_item_id, item.price)}>
-                                                        Edit price
-                                                </button>
-                                                <button 
-                                                    className={managerStyles.deleteButton} 
-                                                    onClick={() => deleteItemFromMenu(item.menu_item_id)}>
-                                                        X
-                                                </button> */}
+                                                            className={managerStyles.editButton}
+                                                            onClick={() => handleEdit(item.menu_item_id, item.price)}>
+                                                                Edit price
+                                                        </button>
+                                                        <button 
+                                                            className={managerStyles.deleteButton} 
+                                                            onClick={() => deleteItemFromMenu(item.menu_item_id)}>
+                                                                X
+                                                        </button> */}
                                                     </div>
                                                 </li>
                                             ))}
