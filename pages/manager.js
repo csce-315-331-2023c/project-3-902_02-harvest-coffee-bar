@@ -5,6 +5,9 @@ import { server } from '../config';
 import Link from 'next/link';
 import navStyles from './components/NavBar.module.css';
 import managerStyles from './components/ManagerGUIStyle.module.css'
+import Chart from 'chart.js';
+
+
 
 function Manager() {
     ////////////////////////
