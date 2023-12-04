@@ -342,8 +342,10 @@ function Manager() {
             start_date: start_date
         }
 
+        console.log(payload);
+
         try {
-            const response = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
+            const response = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
             if (response.ok) {
                 const report = await response.json();
@@ -360,11 +362,12 @@ function Manager() {
     const getLowStock = async () => {
 
         try {
-            const response = await fetch(`${server}/api/manager/get_low_stock`, { method: 'POST', headers: { 'Content-Type': 'applications/json' } });
+            const response = await fetch(`${server}/api/manager/get_low_stock`, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
 
             if (response.ok) {
                 const report = await response.json();
                 getLowStock (report.data);
+                console.log(report)
             } else {
                 console.error("Unable to fetch low stock items.");
             }
