@@ -24,9 +24,20 @@
 }
 
 .ManagerGUI button {
-    margin-left: 10px;
-    margin-bottom: 10px;
-    margin-top: 5px;
+    margin: 7.5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+    background-color: #51544e;
+    color: white; 
+}
+
+.ManagerGUI button:hover {
+    background-color: #45503b;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
 /* Section Styles */
@@ -37,12 +48,12 @@
     margin-bottom: 20px;
     background-color: #424d42; /* Background color adjusted */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
 }
 
 .ManagerGUI section:hover {
-    /* border-color: #537e53;
-    background-color: #354635; Hover background color adjusted */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.15);
+    transform: translate(-5px, -5px);
 }
 
 /* Menu Items List Section */
@@ -124,7 +135,7 @@
     background-color: #d8d8d8;
 }
 
-.menuItemsList .addItemButton, .addInventoryButton, .editButton, .deleteButton {
+.menuItemsList .addItemButton, .addInventoryButton, .editButton, .statusDropdown {
     margin: 7.5px;
     padding: 5px 10px;
     border: none;
@@ -149,8 +160,8 @@
     color: rgb(255, 255, 255);
 }
 
-.menuItemsList .deleteButton {
-    background-color: #f87167;
+.menuItemsList .statusDropdown {
+    background-color: #51544e;
     color: white;
 }
 
@@ -172,8 +183,8 @@
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
-.menuItemsList .deleteButton:hover {
-    background-color: #f54a4a;
+.menuItemsList .statusDropdown:hover {
+    background-color: #4c5543;
     border-color: #f0f0f0; 
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
@@ -182,6 +193,20 @@
     background-color: #4c5543;
     border-color: #f0f0f0;
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menuItemsList .inventoryListItem {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #557a55; 
+    border-radius: 7px;
+}
+
+.menuItemsList .inventoryListItem:hover {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #557a55; 
+    border-radius: 7px;
 }
 
 .orderTrends h3 {
@@ -335,3 +360,48 @@
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
+.stockReport .excessReports {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color:#5f726b; 
+    border-color: #537e53;
+}
+
+.stockReport .lowStockAlarm {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color:#5f726b; 
+    border-color: #537e53;
+}
+
+.stockReport .Label  {
+    margin: 10px;
+}
+
+.stockReport .Button {
+    margin: 10px;
+}
+
+.stockReport ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 5; 
+}
+
+.stockReport li {
+    margin: 10px;
+    padding: 5px;
+    background-color: #424d42; 
+    border-radius: 7px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}

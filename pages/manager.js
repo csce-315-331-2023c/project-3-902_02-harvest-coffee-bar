@@ -66,7 +66,7 @@ function Manager() {
     const fetchMenuItems = async () => {
         try {
             //attempt to fetch menu items
-            const response = await fetch(`${server}/api/manager/get_menu`);
+            const response = await fetch(`${server}/api/manager/get_all_menu_items`);
 
             if (response.ok) {
                 const data = await response.json();
@@ -167,8 +167,7 @@ function Manager() {
         
             if (response.ok) {
                 const data = await response.json();
-                //console.log(data);
-                setSelectedItemInventory(data.rows);
+                return data;
             } else {
                 console.error("Unable to view inventory.");
             }
@@ -209,11 +208,12 @@ function Manager() {
 
     const submitAddIngredientsToItemForm = async (e, menu_item_id) => {
         e.preventDefault();
-        await addIngredientsToItemToMenuItem(menu_item_id, addIngredientsToItem.ingredient_id, addIngredientsToItem.num_ingredients);
+        await addIngredientsToMenuItem(menu_item_id, addIngredientsToItem.ingredient_id, addIngredientsToItem.num_ingredients);
 
         setAddIngredientsToItem({ ingredient_id: '', num_ingredients: '' });
         setShowAddIngredientsToItemForm(null);
         //refresh the inventorylist -- need further implement
+        handleMenuItemClick(menu_item_id);
     };
     //}
 
@@ -246,7 +246,7 @@ function Manager() {
     }
 
     //Front-end handling function for editMenuItem {
-        const handleUpdate = (currentCount , ingredient_id) => {
+    const handleUpdate = (currentCount , ingredient_id) => {
 
             const newCount = prompt(`Enter current count for the ingredient (Current Count: ${currentCount}):`, currentCount);
     
@@ -366,8 +366,7 @@ function Manager() {
 
             if (response.ok) {
                 const report = await response.json();
-                getLowStock (report.data);
-                console.log(report)
+                setLowStock (report.data);
             } else {
                 console.error("Unable to fetch low stock items.");
             }
@@ -397,8 +396,7 @@ function Manager() {
         }
     }
 
-    //Back-end implement needed
-    const fetchEmployeeSchedules = () => { /* ... */ };
+    
 
 
     ///////////////////////////////
@@ -509,11 +507,13 @@ function Manager() {
                                                 onClick={() => handleEdit(item.menu_item_id, item.price)}>
                                                     Edit price
                                             </button>
-                                            <button
-                                                className={managerStyles.deleteButton}
-                                                onClick={() => deleteItemFromMenu(item.menu_item_id)}>
-                                                    X
-                                            </button>
+                                            <select
+                                                className={managerStyles.statusDropdown}>
+                                                {/* onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)} */}
+                                                <option value="">Select Status</option>
+                                                <option value="Sold">Sold</option>
+                                                <option value="Not Sold">Not Sold</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div className={managerStyles.addIngredientsToItemToMenuItemForm}>
@@ -543,22 +543,20 @@ function Manager() {
                                         <ul className={managerStyles.inventoryList}>
                                             {selectedItemInventory[item.menu_item_id].map((inventoryItem) => (
                                                 <li className={managerStyles.inventoryListItem} key={inventoryItem.id}>
-
-                                                    {/* Need Back-end implement  - list out inventory for selected Item  */}
-                                                    {inventoryItem.name} - Quantity: {inventoryItem.quantity}
+                                                    {inventoryItem.ingredient_name} - Quantity: {inventoryItem.num_ingredients}
                                                     <div className={managerStyles.inventoryListButton}>
 
 
                                                         {/* <button 
-                                                    className={managerStyles.editButton}
-                                                    onClick={() => handleEdit(item.menu_item_id, item.price)}>
-                                                        Edit price
-                                                </button>
-                                                <button 
-                                                    className={managerStyles.deleteButton} 
-                                                    onClick={() => deleteItemFromMenu(item.menu_item_id)}>
-                                                        X
-                                                </button> */}
+                                                            className={managerStyles.editButton}
+                                                            onClick={() => handleEdit(item.menu_item_id, item.price)}>
+                                                                Edit price
+                                                        </button>
+                                                        <button 
+                                                            className={managerStyles.deleteButton} 
+                                                            onClick={() => deleteItemFromMenu(item.menu_item_id)}>
+                                                                X
+                                                        </button> */}
                                                     </div>
                                                 </li>
                                             ))}
@@ -710,7 +708,7 @@ function Manager() {
                                             </button>
                                             <button
                                                 className={managerStyles.deleteButton}
-                                                onClick={() => deleteItemFromMenu(item.ingredient_id)}>
+                                                onClick={() => deleteInventoryItem(item.ingredient_id)}>
                                                     X
                                             </button>
                                         </div>
@@ -721,8 +719,8 @@ function Manager() {
                 )}
             </section>
 
-            {/* Excess Report Section */}
-            <section>
+            {/* Stock Report Section */}
+            <section className = {managerStyles.stockReport}>
                 <h2>Stock Reports</h2>
                 {/* Excess Reports Div */}
                 <div className = {managerStyles.excessReports}>
@@ -736,10 +734,10 @@ function Manager() {
                         onClick={() => getExcessReport(excessReportstartDate)}>
                             View Reports
                     </button>
-                    <ul>
+                    <ul className={managerStyles.excessReportsList}>
                         {excessReports.map((report, index) => (
-                            <li key={index}>
-                               {report.ingredient_name} - Excess: {report.ingredient_count}
+                            <li key={index} className = {managerStyles.excessReportsListItem}>
+                               {report.ingredient_name} - Excess: {report.total_items_sold}
                             </li>
                         ))}
                     </ul>
@@ -747,7 +745,7 @@ function Manager() {
 
                 <br></br>
                 {/* Low Stock Div */}
-                <div className={managerStyles.popularPairs}>
+                <div className={managerStyles.lowStockAlarm}>
                     <h3>Low Stock Alarm: </h3>
                     <button
                         onClick={() => getLowStock()}>
@@ -757,7 +755,7 @@ function Manager() {
                         {lowStock.map((report, index) => (
                             //Need Back-end implement - list out sales. 
                             <li key={index}>
-                                {report.ingredient_name} - Current Count: {data.ingredient_count}
+                                {report.ingredient_name} - Current Count: {report.ingredient_count}
                             </li>
                         ))}
                     </ul>

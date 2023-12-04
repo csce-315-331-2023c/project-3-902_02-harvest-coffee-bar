@@ -26,7 +26,7 @@ const Customer = () => {
 			console.error('Error:', error);
 		}
 	};
-	
+
 	const get_categories = async () => {
 		try {
 			const response = await fetch(`${server}/api/cashier_functions/fetch_cats`);
@@ -43,12 +43,13 @@ const Customer = () => {
 		setSelectedCategory(category);
 	}
 
-	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) => 
-	menuItem.menu_item_category === selectedCategory) : [];
+	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) =>
+		menuItem.menu_item_category === selectedCategory) : [];
 
 	useEffect(() => {
-	fetchMenuItems();
-	get_categories(); }, []);
+		fetchMenuItems();
+		get_categories();
+	}, []);
 
 
 	const addToReceipt = (item) => {
@@ -75,9 +76,9 @@ const Customer = () => {
 			ordered_items: receipt,
 			cusomter_id: customerID
 		}
-		{setReceiptVisible(!receiptVisible)};
+		{ setReceiptVisible(!receiptVisible) };
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    setReceipt([]);
+		setReceipt([]);
 	}
 
 	const displayIngredients = async (menuItem) => {
@@ -105,13 +106,13 @@ const Customer = () => {
 	// }, []);
 
 	const ReceiptPopup = () => {
-        // Close the receipt popup by setting the state to false
-        setReceiptVisible(!receiptVisible);
-    };
+		// Close the receipt popup by setting the state to false
+		setReceiptVisible(!receiptVisible);
+	};
 
 	const toggleAccessibilityMode = () => {
 		setAccessibilityMode(!accessibilityMode);
-	  };
+	};
 
 	return (
 		<div className={`${styles.CustomerGUI} ${accessibilityMode ? styles.accessibilityMode : ''}`}>
@@ -122,20 +123,20 @@ const Customer = () => {
 				<div className={styles.menu}>
 					<div className={styles.header2}>
 						<h2>Order Online</h2>
-						<button  onClick={toggleAccessibilityMode}>
+						<button onClick={toggleAccessibilityMode}>
 							{accessibilityMode ? 'Disable Accessibility Mode' : 'Enable Accessibility Mode'}
 						</button>
 					</div>
 					<div className={styles.catStyle}>
-							<ul>
-								{menuCats.map((menuCat) => (
-									<button key={menuCat.menu_item_category}
-									className={styles.catButtons} 
+						<ul>
+							{menuCats.map((menuCat) => (
+								<button key={menuCat.menu_item_category}
+									className={styles.catButtons}
 									onClick={() => displayCat(menuCat.menu_item_category)}>
 									<p>{menuCat.menu_item_category}</p>
-									</button> 
-								))}
-							</ul>
+								</button>
+							))}
+						</ul>
 					</div>
 					<hr className={styles.line}></hr>
 					<h2>{selectedCategory}</h2>
@@ -145,7 +146,7 @@ const Customer = () => {
 								<li key={menuItem.menu_item_id}>
 									<button className={styles.itemButtons} onClick={() => displayIngredients(menuItem)}>
 										<div className={styles.itemNameStyle}>
-											{menuItem.menu_item_name} - ${menuItem.price}	
+											{menuItem.menu_item_name} - ${menuItem.price}
 										</div>
 										{menuItem.item_description}
 									</button>
@@ -179,13 +180,13 @@ const Customer = () => {
 					</div>
 				</div>
 			</div>
-			<hr className={styles.line2}></hr>
 			<div className={styles.footer}>
-			<h3>Hours</h3>
-			<br></br>
-			<pre>
-				{'                          Open Daily from 7am - 6pm\n1037 University Dr - Suite 109, College Station, TX 77840\n                                    (979) 599-3236'}
-			</pre>
+				<hr className={styles.line2}></hr>
+				<h3>Hours</h3>
+				<br></br>
+				<pre>
+					{'                          Open Daily from 7am - 6pm\n1037 University Dr - Suite 109, College Station, TX 77840\n                                    (979) 599-3236'}
+				</pre>
 
 
 			</div>
@@ -194,4 +195,3 @@ const Customer = () => {
 }
 
 export default Customer;
- 
