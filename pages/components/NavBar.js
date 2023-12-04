@@ -1,7 +1,7 @@
 import styles from './NavBar.module.css';
 import loginStyles from './login.module.css';
 import Link from 'next/link';
-// import { signIn } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 
 export default function NavBar() {
     return (
