@@ -15,24 +15,31 @@ export default async (req, res) => {
 
         await client.query('BEGIN;');
 
-        const lowStockQuery = `
+        const itemParameters = [
+            req.body.menu_item_id
+        ];
+        console.log(itemParameters);
+        const fetchInventoryQuery = `
             SELECT
-                ingredient_name,
-                ingredient_count
+                ii.ingredient_id,
+                ii.ingredient_name AS ingredient_name,
+                mii.num_ingredients
             FROM
-                ingredients_inventory
+                menu_ingredients mii
+            JOIN
+                ingredients_inventory ii ON mii.ingredient_id = ii.ingredient_id
             WHERE
-                ingredient_count <= max_ingredient_count/5
-            ORDER BY
-                ingredient_count asc;
+                mii.menu_item_id = $1;
         `;
 
-        const result = await client.query(lowStockQuery);
-        const lowStockData = result.rows; // Extract the rows from the result
+        const result = await client.query(fetchInventoryQuery, itemParameters);
+        const inventoryData = result.rows; // Extract the rows from the result
+
+        console.log(result);
 
         // push statements to database
         await client.query('COMMIT;');
-        res.status(200).json({ message: "done", data: lowStockData });
+        res.status(200).json(inventoryData);
 
     } catch (error) {
 

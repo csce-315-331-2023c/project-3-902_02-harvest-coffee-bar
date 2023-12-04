@@ -24,8 +24,13 @@
 }
 
 .NavBar li.login {
+    display: flex;
     margin-right: auto;
     /* Push the Login to the left */
+}
+
+.NavBar .translation {
+    margin-left: auto;
 }
 
 .NavBar li a {

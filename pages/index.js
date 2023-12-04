@@ -1,4 +1,5 @@
 import NavBar from './components/NavBar';
+import TranslationComponent from './components/TranslationComponent';
 import FooterBar from './components/Footer';
 import landingStyles from './components/LandingGUIStyle.module.css';
 import GenerateMenuItemPanel from './components/MenuItem';
@@ -10,6 +11,7 @@ const Index = () => {
 	const [selectedCategory, setSelectedCategory] = useState(null);
 	const [menuItems, setMenuItems] = useState([]);
 	const [currTemperature, setCurrTemperature] = useState([]);
+	const [accessibilityMode, setAccessibilityMode] = useState(false);
 
 	useEffect(() => {
 		const fetchMenuItems = async () => {
@@ -59,12 +61,23 @@ const Index = () => {
 
 		getCategories();
 
+
 	}, []); // called with an empty array to ensure that calls are only made once when loaded
+
+	const toggleAccessibilityMode = () => {
+		setAccessibilityMode(!accessibilityMode);
+	};
 
 	return (
 		<div>
 			<NavBar />
 			<div className={landingStyles.header}>
+				<div className={landingStyles.accessibilityHeader}>
+					<button onClick={toggleAccessibilityMode}>
+						{accessibilityMode ? 'Disable Magnification' : 'Enable Magnification'}
+					</button>
+					<TranslationComponent />
+				</div>
 				<div className={landingStyles.headerImage}></div>
 				<div className={landingStyles.headerText}>
 					<h1>Welcome to</h1>
@@ -88,7 +101,7 @@ const Index = () => {
 								<ul>
 									{menuItems.filter((menuItem) =>
 										menuItem.menu_item_category === category.menu_item_category).map((menuItem) => (
-											<GenerateMenuItemPanel item={menuItem} />
+											<GenerateMenuItemPanel item={menuItem} mode={accessibilityMode} />
 										))}
 								</ul>
 							</div>
