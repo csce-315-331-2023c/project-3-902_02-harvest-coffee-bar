@@ -98,14 +98,6 @@ const Customer = () => {
 
 	}
 
-	// useEffect(() => {
-	// 	document.body.style.overflow = "hidden";
-	// 	return () => {
-	// 		document.body.style.overflow = "scroll"
-	// 	};
-	// }, []);
-
-
 	const toggleAccessibilityMode = () => {
 		setAccessibilityMode(!accessibilityMode);
 	};
@@ -113,7 +105,6 @@ const Customer = () => {
 	return (
 		<div className={`${styles.CustomerGUI} ${accessibilityMode ? styles.accessibilityMode : ''}`}>
 			<NavBar />
-
 
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
