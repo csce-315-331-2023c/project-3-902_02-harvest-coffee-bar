@@ -66,7 +66,7 @@ function Manager() {
     const fetchMenuItems = async () => {
         try {
             //attempt to fetch menu items
-            const response = await fetch(`${server}/api/manager/get_menu`);
+            const response = await fetch(`${server}/api/manager/get_all_menu_items`);
 
             if (response.ok) {
                 const data = await response.json();
