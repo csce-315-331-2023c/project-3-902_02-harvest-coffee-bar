@@ -22,7 +22,9 @@ export default async (req, res) => {
             FROM
                 ingredients_inventory
             WHERE
-                ingredient_count <= max_ingredient_count/5;
+                ingredient_count <= max_ingredient_count/5
+            ORDER BY
+                ingredient_count asc;
         `;
 
         const result = await client.query(lowStockQuery);
