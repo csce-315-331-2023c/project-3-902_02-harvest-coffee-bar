@@ -15,7 +15,7 @@ export default async (req, res) => {
 
         await client.query('BEGIN;');
 
-        excessQuery = `
+        const excessQuery = `
             SELECT
                 ii.ingredient_id,
                 ii.ingredient_name,
@@ -38,7 +38,7 @@ export default async (req, res) => {
                 total_items_sold;
         `;
 
-        reportParameters = [
+        const reportParameters = [
             req.body.start_date,
             req.body.start_date,
             req.body.start_date,
