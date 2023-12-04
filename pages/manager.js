@@ -534,7 +534,7 @@ function Manager() {
                                             </button>
                                             <select
                                                 className={managerStyles.statusDropdown}>
-                                                {/* onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)} */}
+                                                onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)}
                                                 <option value="">Select Status</option>
                                                 <option value="Sold">Sold</option>
                                                 <option value="Not Sold">Not Sold</option>
