@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './components/CashierGUIStyle.module.css';
 import { server } from '../config';
+import NavBar from './components/NavBar.js'
 
 const Cashier = () => {
 	const [receipt, setReceipt] = useState([]);
-	const [view, setView] = useState('customer');
 	const [menuItems, setMenuItems] = useState([]);
+	const [menuCats, setMenuCats] = useState([]);
+	const [selectedCategory, setSelectedCategory] = useState(null);
 
 	const fetchMenuItems = async () => {
 		try {
@@ -21,7 +23,30 @@ const Cashier = () => {
 		}
 	};
 
-	fetchMenuItems();
+	const get_categories = async () => {
+		try {
+			const response = await fetch(`${server}/api/cashier_functions/fetch_cats`);
+			if (response.ok) {
+				const data = await response.json();
+				setMenuCats(data);
+			}
+		} catch (error) {
+			console.error('Error: ', error);
+		}
+	}
+
+	const displayCat = (category) => {
+		setSelectedCategory(category);
+	}
+
+	const filteredMenuItems = selectedCategory ? menuItems.filter((menuItem) =>
+		menuItem.menu_item_category === selectedCategory) : [];
+
+	useEffect(() => {
+		fetchMenuItems();
+		get_categories();
+	}, []);
+
 
 	const addToReceipt = (item) => {
 		setReceipt([...receipt, item]);
@@ -38,43 +63,60 @@ const Cashier = () => {
 	};
 
 	const handleCheckout = async () => {
-
+		const customerID = prompt("Please enter the customer ID");
+		const tip = prompt("Please enter a tip")
 		var payload = {
-			total_price: calculateTotal(),
+			total_price: calculateTotal() + tip,
 			order_date: new Date().toISOString().split('.')[0],
-			ordered_items: receipt
+			ordered_items: receipt,
+			cusomter_id: customerID
 		}
 
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    setReceipt([]);
+		setReceipt([]);
 	}
 
+	// useEffect(() => {
+	// 	document.body.style.overflow = "hidden";
+	// 	return () => {
+	// 		document.body.style.overflow = "scroll"
+	// 	};
+	// }, []);
+
 	return (
+
 		<div className={styles.CashierGUI}>
 
-			<div className="view-buttons">
-				<button className={view === 'customer' ? 'active' : ''} onClick={() => setView('customer')}>
-					Customer View
-				</button>
-				<button className={view === 'manager' ? 'active' : ''} onClick={() => setView('manager')}>
-					Manager View
-				</button>
-			</div>
-
+			<NavBar />
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
-
-					<h2>Menu Items</h2>
-					<ul>
-						{menuItems.map((menuItem) => (
-							<li key={menuItem.menu_item_id}>
-								<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
-									{menuItem.menu_item_name} - ${menuItem.price}
+					<h2>Place Orders</h2>
+					<div className={styles.catStyle}>
+						<ul>
+							{menuCats.map((menuCat) => (
+								<button key={menuCat.menu_item_category}
+									className={styles.catButtons}
+									onClick={() => displayCat(menuCat.menu_item_category)}>
+									<p>{menuCat.menu_item_category}</p>
 								</button>
-							</li>
-						))}
-					</ul>
+							))}
+						</ul>
+					</div>
+					<hr className={styles.line}></hr>
+					<h2>{selectedCategory}</h2>
+					<div className={styles.menuItemStyle}>
+						<ul>
+							{filteredMenuItems.map((menuItem) => (
+								<li key={menuItem.menu_item_id}>
+									<button className={styles.itemButtons} onClick={() => addToReceipt(menuItem)}>
+										{menuItem.menu_item_name} - ${menuItem.price}
+									</button>
+								</li>
+							))}
+						</ul>
+					</div>
 				</div>
+
 				<div className={styles.receipt}>
 					<div>
 						<h2>Receipt</h2>

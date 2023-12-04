@@ -1,38 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Encode+Sans:wght@700;900&display=swap');
+
 /*TODO: Apply globally*/
+.NavBar {
+    font-family: 'Encode Sans', sans-serif;
+}
+
 .NavBar ul {
     display: flex;
-    /* flex-direction: row; */
+    flex-direction: row;
     list-style-type: none;
-    margin: 0;
     padding: 0;
-    /* overflow: hidden; */
-    background-color: #333;
-    opacity: 0.90;
+    overflow: hidden;
+    background-color: #f5f5f5bf;
+    border-radius: 30px;
+    border: #82DFAA 3px solid;
+    margin: 10px;
 }
 
 .NavBar li {
-    margin-right: 10px; /* Push items to the right */
+    display: inline;
+    justify-content: center;
+    float: right;
 }
 
 .NavBar li.login {
-    margin-right: auto; /* Push the Login to the left */
+    margin-right: auto;
+    /* Push the Login to the left */
 }
 
 .NavBar li a {
     display: block;
-    color: white;
+    color: #575757;
     text-align: center;
+    font-size: 20px;
+    font-weight: 700;
     padding: 14px 16px;
     text-decoration: none;
 }
 
 .NavBar li a:hover {
-    background-color: #000000;
+    color: #82DFAA;
     opacity: 1;
 }
 
 .NavBar li.login button {
-    font-family: 'Times New Roman', sans-serif;
     font-size: 16px;
     background-color: transparent;
     display: block;
@@ -40,9 +51,22 @@
     text-align: center;
     padding: none;
     cursor: pointer;
-  }
-  
+}
+
 .NavBar li.login button:hover {
     background-color: transparent;
-    opacity:1;
-  }
+    opacity: 1;
+}
+
+.NavBar li a.orderButton {
+    display: block;
+    margin: 5px;
+    line-height: 18px;
+    border-radius: 30px;
+    background-color: #82DFAA;
+}
+
+.NavBar li a.orderButton:hover {
+    color: #82DFAA;
+    background-color: #575757;
+}

@@ -4,7 +4,7 @@ export default async (req, res) => {
 
     try {
         // Fetch orders from your database
-        const menuItems = await connection.query('SELECT * FROM menu_items ORDER BY menu_item_id');
+        const menuItems = await connection.query('SELECT * FROM menu_items ORDER BY menu_item_category, menu_item_id');
 
         // Respond with the orders data
         res.status(200).json(menuItems.rows);
