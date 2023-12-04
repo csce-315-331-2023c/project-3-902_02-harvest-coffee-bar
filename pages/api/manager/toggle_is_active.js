@@ -1,8 +1,3 @@
-//
-// TO BE DELETED
-//
-
-
 import connection from '../../../backend/database'
 
 export default async (req, res) => {
@@ -20,18 +15,21 @@ export default async (req, res) => {
 
         await client.query('BEGIN;');
 
-        const deleteItemFromMenuQuery = `
-            DELETE FROM
+        const toogleIsActiveQuery = `
+            UPDATE
                 menu_items
+            SET
+                is_active = $1
             WHERE
-                menu_item_id = $1;
+                menu_item_id = $2;
         `;
 
         const itemParameter = [
+            req.body.is_active,
             req.body.menu_item_id
         ];
 
-        client.query(deleteItemFromMenuQuery, itemParameter);
+        client.query(toogleIsActiveQuery, itemParameter);
 
         // push statements to database
         await client.query('COMMIT;');

@@ -14,6 +14,7 @@
     color: #575757;
     margin-bottom: 10px;
 }
+
 .CustomerGUI .receipt h3 {
     color: #575757;
 }
@@ -22,8 +23,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-height: 80vh;
     width: 25%;
-    height: 10%;
     position: sticky;
     top: 10px;
     /* Adjust as needed */
@@ -63,7 +64,7 @@
     width: 100%;
     /* Make all "item-buttons" the same width */
     padding: 20px;
-    margin: 5px 0;
+    margin-top: auto;
     background-color: #82DFAA;
     color: black;
     cursor: pointer;
@@ -73,7 +74,7 @@
 }
 
 .CustomerGUI button.checkoutButton:hover {
-    background-color:rgb(149, 250, 184)
+    background-color: rgb(149, 250, 184)
 }
 
 .CustomerGUI .foot {
@@ -87,7 +88,9 @@
     padding: 20px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
-    /* min-height: 100vh; */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 .CustomerGUI .mainScreen {
@@ -123,6 +126,7 @@
     flex-wrap: wrap;
     width: 100%;
 }
+
 .CustomerGUI .menu h2 {
     text-align: center;
 }
@@ -166,7 +170,7 @@
 
 .CustomerGUI .catStyle {
     margin-bottom: 3%;
-    display:flex;
+    display: flex;
     flex-wrap: nowrap;
     margin-left: -130px;
     /* justify-content: space-between; */
@@ -199,16 +203,17 @@
 }
 
 .CustomerGUI button.catButtons:hover {
-    background-color:#f5f5f5bf;
+    background-color: #f5f5f5bf;
     color: #82DFAA;
     border-radius: 5px;
 }
 
 .CustomerGUI .footer {
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: auto;
 }
 
 .CustomerGUI .itemNameStyle {
@@ -217,47 +222,52 @@
     font-weight: bolder;
 }
 
-.CustomerGUI .line2 {
+.CustomerGUI .footer .line2 {
     background-color: #82DFAA;
     height: 3px;
-    margin-bottom: 2%;
+    width: 100%;
 }
 
 .CustomerGUI .header2 {
     display: flex;
-    align-items: center; /* Align items vertically in the center */
+    align-items: center;
+    /* Align items vertically in the center */
     /* justify-content: space-between; Put space between the items */
     margin-left: 40%;
 }
-  
+
 .CustomerGUI .header2 h2 {
-    margin-right: 15%; /* Adjust the margin between h2 and button */
+    margin-right: 15%;
+    /* Adjust the margin between h2 and button */
 }
 
 .CustomerGUI .header2 button {
-    background-color: #f5f5f5bf; /* Green background color */
-    color: black; /* White text color */
+    background-color: #f5f5f5bf;
+    /* Green background color */
+    color: black;
+    /* White text color */
     width: 50%;
     border-color: #82DFAA;
-    padding: 10px 20px; 
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
     font-weight: bolder;
     cursor: pointer;
-    border-radius: 5px; 
-    transition: background-color 0.3s ease; 
-    
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+
 }
-  
+
 .CustomerGUI .header2 button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049;
+    /* Darker green on hover */
 }
-  
+
 /* ------------------ Accesilibity mode starts here ------------------------- */
 
-.accessibilityMode *{
+.accessibilityMode * {
     font-family: 'Montserrat', sans-serif;
     margin: 0;
     padding: 0;
@@ -270,6 +280,7 @@
     color: #ffffff;
     margin-bottom: 10px;
 }
+
 .accessibilityMode .receipt h3 {
     color: #ffffff;
 }
@@ -329,7 +340,7 @@
 }
 
 .accessibilityMode button.checkoutButton:hover {
-    background-color:rgb(149, 250, 184)
+    background-color: rgb(149, 250, 184)
 }
 
 .accessibilityMode .foot {
@@ -390,9 +401,10 @@
     flex-wrap: wrap;
     width: 100%;
 }
+
 .accessibilityMode .menu h2 {
     text-align: center;
-    color:white;
+    color: white;
 }
 
 .accessibilityMode .menu ul li {
@@ -437,7 +449,7 @@
 
 .accessibilityMode .catStyle {
     margin-bottom: 3%;
-    display:flex;
+    display: flex;
     flex-wrap: nowrap;
     margin-left: -130px;
     /* justify-content: space-between; */
@@ -451,7 +463,7 @@
     display: flex;
     flex-wrap: nowrap;
     width: 70%;
-    
+
 }
 
 .accessibilityMode .catButtons {
@@ -472,13 +484,13 @@
 }
 
 .accessibilityMode button.catButtons:hover {
-    background-color:#000000bf;
+    background-color: #000000bf;
     color: #ffffff;
     border-radius: 5px;
 }
 
 .accessibilityMode .footer {
-    display:flex;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -499,32 +511,37 @@
 
 .accessibilityMode .header2 {
     display: flex;
-    align-items: center; /* Align items vertically in the center */
+    align-items: center;
+    /* Align items vertically in the center */
     /* justify-content: space-between; Put space between the items */
     margin-left: 40%;
 }
-  
+
 .accessibilityMode .header2 h2 {
-    margin-right: 15%; /* Adjust the margin between h2 and button */
+    margin-right: 15%;
+    /* Adjust the margin between h2 and button */
 }
 
 .accessibilityMode .header2 button {
-    background-color: #f5f5f5bf; /* Green background color */
-    color: black; /* White text color */
+    background-color: #f5f5f5bf;
+    /* Green background color */
+    color: black;
+    /* White text color */
     width: 50%;
     border-color: #82DFAA;
-    padding: 10px 20px; 
+    padding: 10px 20px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
     font-size: 14px;
     font-weight: bolder;
     cursor: pointer;
-    border-radius: 5px; 
-    transition: background-color 0.3s ease; 
-    
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+
 }
-  
+
 .accessibilityMode .header2 button:hover {
-    background-color: #45a049; /* Darker green on hover */
+    background-color: #45a049;
+    /* Darker green on hover */
 }

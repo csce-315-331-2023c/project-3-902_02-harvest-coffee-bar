@@ -7,24 +7,26 @@ import navStyles from './components/NavBar.module.css';
 import managerStyles from './components/ManagerGUIStyle.module.css'
 
 function Manager() {
+    ////////////////////////
+    // Defalt State Below //
+    ////////////////////////
+
     //menu item list section state
     const [menuItems, setMenuItems] = useState([]);
     const [isMenuVisible, setIsMenuVisible] = useState(false);
-    const [showAddForm, setShowAddForm] = useState(false);
+    const [showAddItemForm, setShowAddItemForm] = useState(false);
     const toggleMenuVisibility = () => {
         setIsMenuVisible(!isMenuVisible);
     };
     const [newMenuItem, setNewMenuItem] = useState({
-
         menu_item_name: '',
         menu_item_category: '',
         item_description: '',
         price: 0,
-
     });
     const [selectedItemInventory, setSelectedItemInventory] = useState({});
-    const [showAddIngredientsForm, setShowAddIngredientsForm] = useState(null);
-    const [addIngredients, setAddIngredients] = useState({
+    const [showAddIngredientsToItemForm, setShowAddIngredientsToItemForm] = useState(null);
+    const [addIngredientsToItem, setAddIngredientsToItem] = useState({
         ingredient_id: '',
         num_ingredients: ''
     });
@@ -38,18 +40,28 @@ function Manager() {
     const [popularPairsData, setPairsData] = useState([]);
     const [PopularPairstartDate, setPopularPairStartDate] = useState('');
     const [PopularPairendDate, setPopularPairEndDate] = useState('');
-
-
-
-
-
-
-
+    
+    //inventory list section state
     const [inventoryItems, setInventoryItems] = useState([]);
+    const [isInventoryVisible, setIsInventoryVisible] = useState(false);
+    const toggleInventoryVisibility = () => {
+        setIsInventoryVisible(!isInventoryVisible);
+    };
+    const [showAddInventoryForm, setShowAddInventoryForm] = useState(false);
+    const [newInventory, setNewInventory] = useState({
+        ingredient_name: '',
+        ingredient_count: 0,
+        max_ingredient_count: 0
+    });
+
+    //stock report section state
     const [excessReports, setExcessReports] = useState([]);
-    // const [employeeSchedules, setEmployeeSchedules] = useState([]);
+    const [excessReportstartDate, setExcessReportstartDate] = useState('');
+    const [lowStock, setLowStock] = useState([]);
 
-
+    /////////////////////////////
+    // back-end function below //
+    /////////////////////////////
 
     const fetchMenuItems = async () => {
         try {
@@ -68,21 +80,6 @@ function Manager() {
         }
     };
 
-
-
-    //dummy function for inventory of given menu item
-    const handleMenuItemClick = (itemId) => {
-        // Mock inventory data 
-        const mockInventory = {
-            [itemId]: [
-                { id: 1, name: "Inventory Item 1", quantity: 10 },
-                { id: 2, name: "Inventory Item 2", quantity: 5 }
-            ]
-        };
-
-        setSelectedItemInventory(mockInventory);
-    };
-
     const addItemToMenu = async (item_name, item_category, description, item_price) => {
 
         var payload = {
@@ -97,9 +94,9 @@ function Manager() {
     }
 
     //Front-end handling function for addItemToMenu {
-    const showAddItemForm = () => {
+    const showAddItemFormHandler = () => {
 
-        setShowAddForm(true);
+        setShowAddItemForm(true);
 
     };
 
@@ -120,7 +117,7 @@ function Manager() {
             newMenuItem.price
         );
 
-        setShowAddForm(false);
+        setShowAddItemForm(false);
         fetchMenuItems();
     };
     //}
@@ -132,7 +129,7 @@ function Manager() {
         }
 
         await fetch(`${server}/api/manager/delete_item_from_menu`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        // fetchMenuItems();
+        fetchMenuItems();
     }
 
     const editMenuItem = async (price, menu_item_id) => {
@@ -159,6 +156,39 @@ function Manager() {
     };
     //}
 
+    const getInventoryByItem = async (menu_item_id) => {
+
+        var payload = {
+            menu_item_id: menu_item_id
+        }
+
+        try {
+            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
+        
+            if (response.ok) {
+                const data = await response.json();
+            } else {
+                console.error("Unable to view inventory.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    }
+
+    //Front-end handling function for getInventoryByItem {
+
+    const handleMenuItemClick = async (itemId) => {
+        try {
+            const inventoryData = await getInventoryByItem(itemId);
+            const updatedInventory = { [itemId]: inventoryData };
+            setSelectedItemInventory(updatedInventory);
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+    //}
+
+
     const addIngredientsToMenuItem = async (menu_item_id, ingredient_id, num_ingredients) => {
 
         var payload = {
@@ -171,19 +201,19 @@ function Manager() {
     }
 
     //Front-end handling function for addIngredientsToMenuItem {
-    const handleAddIngredientsChange = (e) => {
-        setAddIngredients({ ...addIngredients, [e.target.name]: e.target.value });
+    const handleAddIngredientsToItemChange = (e) => {
+        setAddIngredientsToItem({ ...addIngredientsToItem, [e.target.name]: e.target.value });
     };
 
-    const submitAddIngredientsForm = async (e, menu_item_id) => {
+    const submitAddIngredientsToItemForm = async (e, menu_item_id) => {
         e.preventDefault();
-        await addIngredientsToMenuItem(menu_item_id, addIngredients.ingredient_id, addIngredients.num_ingredients);
+        await addIngredientsToItemToMenuItem(menu_item_id, addIngredientsToItem.ingredient_id, addIngredientsToItem.num_ingredients);
 
-        setAddIngredients({ ingredient_id: '', num_ingredients: '' });
-        setShowAddIngredientsForm(null);
+        setAddIngredientsToItem({ ingredient_id: '', num_ingredients: '' });
+        setShowAddIngredientsToItemForm(null);
         //refresh the inventorylist -- need further implement
     };
-
+    //}
 
     const viewAllInInventory = async () => {
 
@@ -192,6 +222,7 @@ function Manager() {
 
             if (response.ok) {
                 const data = await response.json();
+                setInventoryItems(data.data);
             } else {
                 console.error("Unable to view inventory.");
             }
@@ -212,6 +243,19 @@ function Manager() {
 
     }
 
+    //Front-end handling function for editMenuItem {
+        const handleUpdate = (currentCount , ingredient_id) => {
+
+            const newCount = prompt(`Enter current count for the ingredient (Current Count: ${currentCount}):`, currentCount);
+    
+            if (newCount !== null && newCount !== '') {
+                updateItemInInventory(newCount, ingredient_id);
+            }
+    
+            viewAllInInventory();
+        };
+        //}
+
     const addInventoryItem = async (ingredient_name, ingredient_count, max_ingredient_count) => {
 
         var payload = {
@@ -224,6 +268,34 @@ function Manager() {
 
     }
 
+    //Front-end handling function for addInventoryItem {
+    const showAddInventoryFormHandler = () => {
+
+        setShowAddInventoryForm(true);
+
+    };
+
+    const handleInventoryInputChange = (e) => {
+
+        setNewInventory({ ...newInventory, [e.target.name]: e.target.value });
+
+    };
+
+    const submitAddInventoryForm = async (e) => {
+
+        e.preventDefault();
+
+        await addInventoryItem(
+            newInventory.ingredient_name,
+            newInventory.ingredient_count,
+            newInventory.max_ingredient_count,
+        );
+
+        setShowAddInventoryForm(false);
+        viewAllInInventory();
+    };
+    //}
+
     const deleteInventoryItem = async (ingredient_id) => {
 
         var payload = {
@@ -231,7 +303,7 @@ function Manager() {
         }
 
         await fetch(`${server}/api/manager/delete_inventory_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-
+        viewAllInInventory();
     }
 
     /* STATISTICAL FUNCTIONS */
@@ -273,6 +345,7 @@ function Manager() {
 
             if (response.ok) {
                 const report = await response.json();
+                setExcessReports (report.data);
             } else {
                 console.error("Unable to fetch excess report.");
             }
@@ -289,6 +362,7 @@ function Manager() {
 
             if (response.ok) {
                 const report = await response.json();
+                getLowStock (report.data);
             } else {
                 console.error("Unable to fetch low stock items.");
             }
@@ -319,21 +393,19 @@ function Manager() {
     }
 
     //Back-end implement needed
-    const fetchSalesData = () => {
-        // Mock data
-        const mockSalesData = [
-            { itemName: 'Pizza', totalSales: 20 },
-            { itemName: 'Burger', totalSales: 15 },
-        ];
-        setSalesData(mockSalesData);
-    };
-    //Back-end implement needed
     const fetchEmployeeSchedules = () => { /* ... */ };
 
+
+    ///////////////////////////////
+    // Front-end Implement Below //
+    ///////////////////////////////
     useEffect(() => {
 
         fetchMenuItems();
+        viewAllInInventory();
+
     }, []);
+
     return (
         <div className={managerStyles.ManagerGUI}>
             {/* Navi Section */}
@@ -357,18 +429,10 @@ function Manager() {
                         <div className={managerStyles.addItemForm}>
                             <button
                                 className={managerStyles.addItemButton}
-                                onClick={showAddItemForm}>
-                                Add new item
+                                onClick={showAddItemFormHandler}>
+                                    Add new item
                             </button>
-
-                            {/* test */}
-                            {/* <button 
-                        className={managerStyles.addItemButton} 
-                        onClick={() => addItemToMenu("testname", "testcategory", "testdescription", "0")}> 
-                        Add new item
-                    </button> */}
-
-                            {showAddForm && (
+                            {showAddItemForm && (
                                 <form onSubmit={submitAddItemForm}>
                                     <div className={managerStyles.addItemInput}>
                                         <input
@@ -408,12 +472,12 @@ function Manager() {
                                     <button
                                         className={managerStyles.addItemFormButton}
                                         type="submit">
-                                        Submit
+                                            Submit
                                     </button>
                                     <button
                                         className={managerStyles.addItemFormButton}
-                                        onClick={() => setShowAddForm(false)}>
-                                        Cancel
+                                        onClick={() => setShowAddItemForm(false)}>
+                                            Cancel
                                     </button>
                                 </form>
                             )}
@@ -432,40 +496,40 @@ function Manager() {
                                         <div className={managerStyles.buttonContainer}>
                                             <button
                                                 className={managerStyles.addInventoryButton}
-                                                onClick={() => setShowAddIngredientsForm(item.menu_item_id)}>
-                                                Add new inventory
+                                                onClick={() => setShowAddIngredientsToItemForm(item.menu_item_id)}>
+                                                    Add new inventory
                                             </button>
                                             <button
                                                 className={managerStyles.editButton}
                                                 onClick={() => handleEdit(item.menu_item_id, item.price)}>
-                                                Edit price
+                                                    Edit price
                                             </button>
                                             <button
                                                 className={managerStyles.deleteButton}
                                                 onClick={() => deleteItemFromMenu(item.menu_item_id)}>
-                                                X
+                                                    X
                                             </button>
                                         </div>
                                     </div>
-                                    <div className={managerStyles.addIngredientsToMenuItemForm}>
-                                        {showAddIngredientsForm === item.menu_item_id && (
-                                            <form onSubmit={(e) => submitAddIngredientsForm(e, item.menu_item_id)}>
+                                    <div className={managerStyles.addIngredientsToItemToMenuItemForm}>
+                                        {showAddIngredientsToItemForm === item.menu_item_id && (
+                                            <form onSubmit={(e) => submitAddIngredientsToItemForm(e, item.menu_item_id)}>
                                                 <input
                                                     type="number"
                                                     name="ingredient_id"
                                                     placeholder="Ingredient ID"
-                                                    value={addIngredients.ingredient_id}
-                                                    onChange={handleAddIngredientsChange}
+                                                    value={addIngredientsToItem.ingredient_id}
+                                                    onChange={handleAddIngredientsToItemChange}
                                                 />
                                                 <input
                                                     type="number"
                                                     name="num_ingredients"
                                                     placeholder="Number of Ingredients"
-                                                    value={addIngredients.num_ingredients}
-                                                    onChange={handleAddIngredientsChange}
+                                                    value={addIngredientsToItem.num_ingredients}
+                                                    onChange={handleAddIngredientsToItemChange}
                                                 />
                                                 <button type="submit">Submit</button>
-                                                <button onClick={() => setShowAddIngredientsForm(null)}>Cancel</button>
+                                                <button onClick={() => setShowAddIngredientsToItemForm(null)}>Cancel</button>
                                             </form>
                                         )}
                                     </div>
@@ -503,56 +567,60 @@ function Manager() {
             </section>
 
             {/* Order Trends Section */}
-            <section className={managerStyles.orderTrends}>
+            <section className = {managerStyles.orderTrends}>
                 <h2>Order Trends</h2>
-                <div className={managerStyles.salesData}>
+                {/* Sales Report Div */}
+                <div className = {managerStyles.salesData}>
                     <h3>Sales Report: </h3>
-                    <label>
-                        Start Date:
-                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
+                    <label className = {managerStyles.salesDataLabel}>
+                            Start Date:
+                        <input type = "date" value = {startDate} onChange = {(e) => setStartDate(e.target.value)} />
                     </label>
-                    <label>
-                        End Date:
-                        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
+                    <label className = {managerStyles.salesDataLabel}>
+                            End Date:
+                        <input type = "date" value = {endDate} onChange ={ (e) => setEndDate(e.target.value)} />
                     </label>
-                    <label>
-                        Item:
-                        <select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
+                    <label className = {managerStyles.salesDataLabel}>
+                            Item: &nbsp;
+                        <select value = {selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
                             <option value="All">All Items</option>
                             {menuItems.map((item) => (
-                                <option key={item.menu_item_id} value={item.menu_item_name}>
+                                <option key = {item.menu_item_id} value = {item.menu_item_name}>
                                     {item.menu_item_name}
                                 </option>
                             ))}
                         </select>
                     </label>
                     <button
-                        onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
-                        View Sales
+                        className = {managerStyles.salesDataButton}
+                        onClick = {() => getSalesByTime(startDate, endDate, selectedItem)}>
+                            View Sales
                     </button>
-                    <ul>
+                    <ul className={managerStyles.salesDataList}>
                         {salesData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
-                            <li key={index}>
-                                {data.item}: {data.total_sales}
+                            <li key = {index} className = {managerStyles.salesDataListItem}>
+                                {data.item}: {data.total_sales}, total profit: {data.total_profit}
                             </li>
                         ))}
                     </ul>
                 </div>
+
                 <br></br>
+                {/* Popular Item Pairs Div */}
                 <div className={managerStyles.popularPairs}>
                     <h3>Popular Item Pairs: </h3>
                     <label>
-                        Start Date:
+                            Start Date:
                         <input type="date" value={PopularPairstartDate} onChange={(e) => setPopularPairStartDate(e.target.value)} />
                     </label>
                     <label>
-                        End Date:
+                            End Date:
                         <input type="date" value={PopularPairendDate} onChange={(e) => setPopularPairEndDate(e.target.value)} />
                     </label>
                     <button
                         onClick={() => getWhatSellsTogether(PopularPairstartDate, PopularPairendDate)}>
-                        View Pairs
+                            View Pairs
                     </button>
                     <ul>
                         {popularPairsData.map((data, index) => (
@@ -566,29 +634,129 @@ function Manager() {
             </section>
 
             {/* Inventory List Section */}
-            <section>
+            <section className = {managerStyles.InventoryList}> 
                 <h2>Inventory List</h2>
-                <button onClick={viewAllInInventory}>view All In Inventory</button>
-                <ul>
-                    {inventoryItems.map((item, index) => (
-                        <li key={index}>
-                            {item.name} - Quantity: {item.quantity}
-                        </li>
-                    ))}
-                </ul>
+                <button 
+                    className={managerStyles.viewListButton}
+                    onClick={toggleInventoryVisibility}>
+                    {isInventoryVisible ? 'Hide Inventory' : 'View All Inventory'}
+                </button>
+                {isInventoryVisible && (
+                    <div className={managerStyles.scrollableContainer}>
+                        <div className={managerStyles.addInventoryForm}>
+                            <button
+                                className={managerStyles.addInventoryButton}
+                                onClick={showAddInventoryFormHandler}>
+                                    Add new ingredient
+                            </button>
+                            {showAddInventoryForm && (
+                                <form onSubmit={submitAddInventoryForm}>
+                                    <div className={managerStyles.addInventoryInput}>
+                                        <input
+                                            type="text"
+                                            name="ingredient_name"
+                                            placeholder="Ingredient Name"
+                                            value={newInventory.ingredient_name}
+                                            onChange={handleInventoryInputChange}
+                                        />
+                                    </div>
+                                    <div className={managerStyles.addInventoryInput}>
+                                        <input
+                                            type="number"
+                                            name="ingredient_count"
+                                            placeholder="Ingredient Count"
+                                            value={newInventory.ingredient_count}
+                                            onChange={handleInventoryInputChange}
+                                        />
+                                    </div>
+                                    <div className={managerStyles.addInventoryInput}>
+                                        <input
+                                            type="number" 
+                                            name="max_ingredient_count"
+                                            placeholder="Maximum Ingredient Count"
+                                            value={newInventory.max_ingredient_count}
+                                            onChange={handleInventoryInputChange}
+                                        />
+                                    </div>
+                                    <button
+                                        className={managerStyles.addInventoryFormButton}
+                                        type="submit">
+                                            Submit
+                                    </button>
+                                    <button
+                                        className={managerStyles.addInventoryFormButton}
+                                        onClick={() => setShowAddInventoryForm(false)}>
+                                            Cancel
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+                        <ul>
+                            {inventoryItems.map((item, index) => (
+                                <li key={index}>
+                                        <span>
+                                            {item.ingredient_name} (ID: {item.ingredient_id}) - Quantity: {item.ingredient_count}
+                                        </span>
+                                        <div className={managerStyles.buttonContainer}>
+                                            <button
+                                                className={managerStyles.editButton}
+                                                onClick={() => handleUpdate(item.ingredient_count, item.ingredient_id)}>
+                                                    Update Inventory
+                                            </button>
+                                            <button
+                                                className={managerStyles.deleteButton}
+                                                onClick={() => deleteItemFromMenu(item.ingredient_id)}>
+                                                    X
+                                            </button>
+                                        </div>
+                                </li>
+                            ))}
+                        </ul>
+                </div>
+                )}
             </section>
 
             {/* Excess Report Section */}
             <section>
-                <h2>Excess Reports</h2>
-                <button onClick={getExcessReport}>Fetch Excess Reports</button>
-                <ul>
-                    {excessReports.map((report, index) => (
-                        <li key={index}>
-                            {report.date}: {report.item} - Excess: {report.quantity}
-                        </li>
-                    ))}
-                </ul>
+                <h2>Stock Reports</h2>
+                {/* Excess Reports Div */}
+                <div className = {managerStyles.excessReports}>
+                    <h3>Excess Reports: </h3>
+                    <label className = {managerStyles.excessReportsLabel}>
+                            Start Date:
+                        <input type = "date" value = {excessReportstartDate} onChange = {(e) => setExcessReportstartDate(e.target.value)} />
+                    </label>
+                    <button 
+                        className={managerStyles.excessReportsButton}
+                        onClick={() => getExcessReport(excessReportstartDate)}>
+                            View Reports
+                    </button>
+                    <ul>
+                        {excessReports.map((report, index) => (
+                            <li key={index}>
+                               {report.ingredient_name} - Excess: {report.ingredient_count}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <br></br>
+                {/* Low Stock Div */}
+                <div className={managerStyles.popularPairs}>
+                    <h3>Low Stock Alarm: </h3>
+                    <button
+                        onClick={() => getLowStock()}>
+                            View Alarm
+                    </button>
+                    <ul>
+                        {lowStock.map((report, index) => (
+                            //Need Back-end implement - list out sales. 
+                            <li key={index}>
+                                {report.ingredient_name} - Current Count: {data.ingredient_count}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </section>
 
             {/* Employee Schedules Section
@@ -612,6 +780,7 @@ function Manager() {
                     </tbody>
                 </table>
             </section>             */}
+        
         </div>
     );
 }
