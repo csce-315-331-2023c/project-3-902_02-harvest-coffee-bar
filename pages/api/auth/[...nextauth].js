@@ -8,6 +8,7 @@ export default NextAuth({
       clientSecret: process.env.GOOGLE_SECRET,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET, // Set your secret using an environment variable
   session: {
     jwt: true,
   },
