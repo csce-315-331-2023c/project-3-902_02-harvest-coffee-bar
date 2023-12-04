@@ -360,3 +360,48 @@
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
+.stockReport .excessReports {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color:#5f726b; 
+    border-color: #537e53;
+}
+
+.stockReport .lowStockAlarm {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color:#5f726b; 
+    border-color: #537e53;
+}
+
+.stockReport .Label  {
+    margin: 10px;
+}
+
+.stockReport .Button {
+    margin: 10px;
+}
+
+.stockReport ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 5; 
+}
+
+.stockReport li {
+    margin: 10px;
+    padding: 5px;
+    background-color: #424d42; 
+    border-radius: 7px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}

@@ -343,7 +343,7 @@ function Manager() {
         }
 
         try {
-            const response = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'applications/json' }, body: JSON.stringify(payload) });
+            const response = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
             if (response.ok) {
                 const report = await response.json();
@@ -364,7 +364,7 @@ function Manager() {
 
             if (response.ok) {
                 const report = await response.json();
-                getLowStock (report.data);
+                setLowStock (report.data);
             } else {
                 console.error("Unable to fetch low stock items.");
             }
@@ -717,8 +717,8 @@ function Manager() {
                 )}
             </section>
 
-            {/* Excess Report Section */}
-            <section>
+            {/* Stock Report Section */}
+            <section className = {managerStyles.stockReport}>
                 <h2>Stock Reports</h2>
                 {/* Excess Reports Div */}
                 <div className = {managerStyles.excessReports}>
@@ -732,10 +732,10 @@ function Manager() {
                         onClick={() => getExcessReport(excessReportstartDate)}>
                             View Reports
                     </button>
-                    <ul>
+                    <ul className={managerStyles.excessReportsList}>
                         {excessReports.map((report, index) => (
-                            <li key={index}>
-                               {report.ingredient_name} - Excess: {report.ingredient_count}
+                            <li key={index} className = {managerStyles.excessReportsListItem}>
+                               {report.ingredient_name} - Excess: {report.total_items_sold}
                             </li>
                         ))}
                     </ul>
@@ -743,7 +743,7 @@ function Manager() {
 
                 <br></br>
                 {/* Low Stock Div */}
-                <div className={managerStyles.popularPairs}>
+                <div className={managerStyles.lowStockAlarm}>
                     <h3>Low Stock Alarm: </h3>
                     <button
                         onClick={() => getLowStock()}>
@@ -753,7 +753,7 @@ function Manager() {
                         {lowStock.map((report, index) => (
                             //Need Back-end implement - list out sales. 
                             <li key={index}>
-                                {report.ingredient_name} - Current Count: {data.ingredient_count}
+                                {report.ingredient_name} - Current Count: {report.ingredient_count}
                             </li>
                         ))}
                     </ul>
