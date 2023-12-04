@@ -308,6 +308,31 @@ function Manager() {
         viewAllInInventory();
     }
 
+    const handleStatusChange = async (menu_item_id, value) => {
+        
+        if (value == "") {
+
+        } else {
+
+            if (value == "Sold") {
+                is_active = true;
+            } else if (value == "Not Sold") {
+                is_active = false;
+            }
+
+            var payload = {
+                is_active: is_active,
+                menu_item_id: menu_item_id
+            }
+    
+            console.log(payload);
+    
+            await fetch(`${server}/api/manage/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    
+        }
+
+    }
+
     /* STATISTICAL FUNCTIONS */
 
     const getSalesByTime = async (start_time, end_time, item_name) => {
@@ -357,19 +382,6 @@ function Manager() {
         } catch (error) {
             console.error("Error:", error);
         }
-    }
-
-    const toggleIsActive = async (is_active, menu_item_id) => {
-        
-        var payload = {
-            is_active: is_active,
-            menu_item_id: menu_item_id
-        }
-
-        console.log(payload);
-
-        await fetch(`${server}/api/manage/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-
     }
 
     const getLowStock = async () => {
