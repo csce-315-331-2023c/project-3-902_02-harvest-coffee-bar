@@ -308,6 +308,31 @@ function Manager() {
         viewAllInInventory();
     }
 
+    const handleStatusChange = async (menu_item_id, value) => {
+        
+        if (value == "") {
+
+        } else {
+
+            if (value == "Sold") {
+                is_active = true;
+            } else if (value == "Not Sold") {
+                is_active = false;
+            }
+
+            var payload = {
+                is_active: is_active,
+                menu_item_id: menu_item_id
+            }
+    
+            console.log(payload);
+    
+            await fetch(`${server}/api/manage/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    
+        }
+
+    }
+
     /* STATISTICAL FUNCTIONS */
 
     const getSalesByTime = async (start_time, end_time, item_name) => {
@@ -342,6 +367,8 @@ function Manager() {
             start_date: start_date
         }
 
+        console.log(payload);
+
         try {
             const response = await fetch(`${server}/api/manager/get_excess_report`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 
@@ -360,7 +387,7 @@ function Manager() {
     const getLowStock = async () => {
 
         try {
-            const response = await fetch(`${server}/api/manager/get_low_stock`, { method: 'POST', headers: { 'Content-Type': 'applications/json' } });
+            const response = await fetch(`${server}/api/manager/get_low_stock`, { method: 'POST', headers: { 'Content-Type': 'application/json' } });
 
             if (response.ok) {
                 const report = await response.json();
@@ -507,7 +534,7 @@ function Manager() {
                                             </button>
                                             <select
                                                 className={managerStyles.statusDropdown}>
-                                                {/* onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)} */}
+                                                onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)}
                                                 <option value="">Select Status</option>
                                                 <option value="Sold">Sold</option>
                                                 <option value="Not Sold">Not Sold</option>

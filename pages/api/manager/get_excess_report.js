@@ -4,7 +4,7 @@ export default async (req, res) => {
 
     // check if POST req
     if (req.method != 'POST') {
-        res.status(405).send({ message: 'Invalid request: Only POST reqs allowed' });
+        res.status(405).send({ message: 'Invalid request: Only POST reqs allowed, received ${req.method}' });
     }
 
     // avoid race conditions
