@@ -163,10 +163,12 @@ function Manager() {
         }
 
         try {
-            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }});
+            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)});
         
             if (response.ok) {
                 const data = await response.json();
+                //console.log(data);
+                setSelectedItemInventory(data.rows);
             } else {
                 console.error("Unable to view inventory.");
             }

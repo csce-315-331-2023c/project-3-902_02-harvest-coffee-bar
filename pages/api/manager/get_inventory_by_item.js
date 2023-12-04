@@ -18,7 +18,7 @@ export default async (req, res) => {
         const itemParameters = [
             req.body.menu_item_id
         ];
-
+        console.log(itemParameters);
         const fetchInventoryQuery = `
             SELECT
                 ii.ingredient_id,
@@ -35,9 +35,11 @@ export default async (req, res) => {
         const result = await client.query(fetchInventoryQuery, itemParameters);
         const inventoryData = result.rows; // Extract the rows from the result
 
+        console.log(result);
+
         // push statements to database
         await client.query('COMMIT;');
-        res.status(200).json({ message: "done", data: inventoryData });
+        res.status(200).json(inventoryData);
 
     } catch (error) {
 
