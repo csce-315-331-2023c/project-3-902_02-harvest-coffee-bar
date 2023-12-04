@@ -309,7 +309,7 @@ function Manager() {
     }
 
     const handleStatusChange = async (menu_item_id, value) => {
-        
+        var is_active = true;
         if (value == "") {
 
         } else {
@@ -327,7 +327,7 @@ function Manager() {
     
             console.log(payload);
     
-            await fetch(`${server}/api/manage/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            await fetch(`${server}/api/manager/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     
         }
 
@@ -533,8 +533,8 @@ function Manager() {
                                                     Edit price
                                             </button>
                                             <select
-                                                className={managerStyles.statusDropdown}>
-                                                onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)}
+                                                className={managerStyles.statusDropdown}
+                                                onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)}>
                                                 <option value="">Select Status</option>
                                                 <option value="Sold">Sold</option>
                                                 <option value="Not Sold">Not Sold</option>
