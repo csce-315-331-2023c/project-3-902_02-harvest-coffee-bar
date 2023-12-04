@@ -10,7 +10,6 @@ const Customer = () => {
 	const [menuItems, setMenuItems] = useState([]);
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
-	const [receiptVisible, setReceiptVisible] = useState(false);
 	const [accessibilityMode, setAccessibilityMode] = useState(false);
 
 	const fetchMenuItems = async () => {
@@ -75,7 +74,6 @@ const Customer = () => {
 			ordered_items: receipt,
 			cusomter_id: customerID
 		}
-		{setReceiptVisible(!receiptVisible)};
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     setReceipt([]);
 	}
@@ -87,9 +85,11 @@ const Customer = () => {
 		}
 		try {
 			console.log(menuItem.menu_item_id);
-			const response = await fetch(`${server}/api/cashier_functions/get_ingredients`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+			const response = await fetch(`${server}/api/cashier_functions/get_ingredients`,
+				{ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 			if (response.ok) {
 				const data = await response.json();
+				console.log(data);
 			}
 		} catch (error) {
 			console.error('Error: ', error);
@@ -104,10 +104,6 @@ const Customer = () => {
 	// 	};
 	// }, []);
 
-	const ReceiptPopup = () => {
-        // Close the receipt popup by setting the state to false
-        setReceiptVisible(!receiptVisible);
-    };
 
 	const toggleAccessibilityMode = () => {
 		setAccessibilityMode(!accessibilityMode);

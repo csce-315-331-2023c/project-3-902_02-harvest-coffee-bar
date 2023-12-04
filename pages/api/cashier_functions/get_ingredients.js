@@ -17,11 +17,12 @@ export default async (req, res) => {
         await client.query('BEGIN;');
         const menu_item = req.body.menu_item_id;
 
-        const query1 = `SELECT ingredient_id FROM menu_ingredients WHERE menu_item_id = ${menu_item};`;
+        const query1 = `SELECT ingredient_id FROM menu_ingredients WHERE menu_item_id = $1;`;
 
         // push statements to database
-        await client.query(query1,(error, results1) => {
-            const ingredient_ids = results1.map(result => result.ingredient_id);
+        await client.query(query1,[req.body.menu_item_id]);
+            // console.log(results1);
+            const ingredient_ids = results1.rows.map(row => row.ingredient_id);
             // joining for the query to get the names
             const ingredient_ids_list = ingredient_ids.join(', ');
             const query2 = `SELECT ingredient_name FROM ingredients_inventory WHERE ingredient_id IN (${ingredient_ids_list});`;
@@ -29,12 +30,12 @@ export default async (req, res) => {
             connection.query(query2, (error, results2) => {
                 if (error) throw error;
             
-                const ingredientNames = results2.map(result => result.ingredient_name);
+                const ingredientNames = results2.rows.map(row => row.ingredient_name);
+                console.log(ingredientNames.rows);
             
                 res.status(200).json(ingredientNames.rows);
                 connection.end();
             });
-        });
 
     } catch (error) {
 
