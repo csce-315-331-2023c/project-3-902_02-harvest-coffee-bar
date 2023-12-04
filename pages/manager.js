@@ -45,6 +45,8 @@ function Manager() {
     const [popularPairsData, setPairsData] = useState([]);
     const [PopularPairstartDate, setPopularPairStartDate] = useState('');
     const [PopularPairendDate, setPopularPairEndDate] = useState('');
+    const pairChartRef = useRef(null);
+    const [isShowingPopularPairs, setShowingPopularPairs] = useState(false);
     
     //inventory list section state
     const [inventoryItems, setInventoryItems] = useState([]);
@@ -429,6 +431,10 @@ function Manager() {
             if (response.ok) {
                 const report = await response.json();
                 setPairsData(report);
+
+                setTimeout(() => {
+                    setShowingPopularPairs(true);
+                }, 100);
             } else {
                 console.error("Unable to get paired item trend report.");
             }
@@ -508,6 +514,69 @@ function Manager() {
             });
         }
     }, [salesData, isShowingSalesData]);
+
+    // popular pairs chart
+    useEffect(() => {
+        if (popularPairsData.length > 0 && isShowingPopularPairs) {
+            const pairctx = pairChartRef.current.getContext('2d');
+
+            const existingPairChart = Chart.getChart(pairctx);
+
+            if (existingPairChart) {
+                existingPairChart.destroy();
+            }
+
+            new Chart(pairctx, {
+                type: 'bar',
+                data: {
+                    labels: popularPairsData.map(item => `${item.i1_name}:${item.i2_name}`),
+                    datasets:[{
+                        label: 'Pair Units Sold',
+                        backgroundColor: 'rgba(95, 135, 107, 1)',
+                        borderWidth: 0,
+                        data: popularPairsData.map(item => item.frequency),
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 20,
+                                backgroundColor: 'rgba(255,255,255, 0.8)',
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                        },
+                        tooltip: {
+                            bodyColor: 'rgba(255, 255, 255, 1)'
+                        },
+                        background: {
+                            color: 'rgba(255, 255, 255, 1)'
+                        }
+                    },
+                },
+            });
+        }
+    }, [popularPairsData, isShowingPopularPairs]);
 
     // Low Stock chart
     useEffect(() => {
@@ -811,6 +880,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
+                {isShowingPopularPairs && <canvas ref={pairChartRef}></canvas>}
             </section>
 
             {/* Inventory List Section */}
