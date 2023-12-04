@@ -48,7 +48,7 @@
 .CashierGUI .mainScreen {
     margin-top: 20px;
     display: flex;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 .CashierGUI .changeView {
@@ -67,7 +67,7 @@
     width: 70%;
     /* Adjust as needed */
     justify-content: flex-start;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 /* .CashierGUI .menu h2 {
