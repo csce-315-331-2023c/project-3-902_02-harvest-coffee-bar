@@ -64,6 +64,7 @@ function Manager() {
     //stock report section state
     const [excessReports, setExcessReports] = useState([]);
     const [excessReportstartDate, setExcessReportstartDate] = useState('');
+    const [excessReportEndDate, setExcessReportEndDate] = useState('');
     const [lowStock, setLowStock] = useState([]);
     const lowChartRef = useRef(null);
     const [isShowingLowStock, setShowingLowStock] = useState(false);
@@ -375,10 +376,11 @@ function Manager() {
     }
 
 
-    const getExcessReport = async (start_date) => {
+    const getExcessReport = async (start_date, end_date) => {
 
         var payload = {
-            start_date: start_date
+            start_date: start_date,
+            end_date: end_date
         }
 
         console.log(payload);
@@ -976,15 +978,19 @@ function Manager() {
                             Start Date:
                         <input type = "date" value = {excessReportstartDate} onChange = {(e) => setExcessReportstartDate(e.target.value)} />
                     </label>
+                    <label>
+                            End Date:
+                        <input type="date" value={excessReportEndDate} onChange={(e) => setExcessReportEndDate(e.target.value)} />
+                    </label>
                     <button 
                         className={managerStyles.excessReportsButton}
-                        onClick={() => getExcessReport(excessReportstartDate)}>
+                        onClick={() => getExcessReport(excessReportstartDate, excessReportEndDate)}>
                             View Reports
                     </button>
                     <ul className={managerStyles.excessReportsList}>
                         {excessReports.map((report, index) => (
                             <li key={index} className = {managerStyles.excessReportsListItem}>
-                               {report.ingredient_name} - Excess: {report.total_items_sold}
+                               {report.ingredient_name} - Sold: {report.total_items_sold}
                             </li>
                         ))}
                     </ul>
