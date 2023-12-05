@@ -135,6 +135,10 @@
     background-color: #d8d8d8;
 }
 
+.menuItemsList .addInventoryToItemDropDown {
+    width: 200px;
+}
+
 .menuItemsList .addItemButton, .addInventoryButton, .editButton, .statusDropdown {
     margin: 7.5px;
     padding: 5px 10px;

@@ -213,6 +213,7 @@ function Manager() {
     //Front-end handling function for addIngredientsToMenuItem {
     const handleAddIngredientsToItemChange = (e) => {
         setAddIngredientsToItem({ ...addIngredientsToItem, [e.target.name]: e.target.value });
+
     };
 
     const submitAddIngredientsToItemForm = async (e, menu_item_id) => {
@@ -646,10 +647,8 @@ function Manager() {
     // Front-end Implement Below //
     ///////////////////////////////
     useEffect(() => {
-
         fetchMenuItems();
         viewAllInInventory();
-
     }, []);
 
     
@@ -764,19 +763,26 @@ function Manager() {
                                     <div className={managerStyles.addIngredientsToItemToMenuItemForm}>
                                         {showAddIngredientsToItemForm === item.menu_item_id && (
                                             <form onSubmit={(e) => submitAddIngredientsToItemForm(e, item.menu_item_id)}>
-                                                <input
-                                                    type="number"
+                                                 <select
                                                     name="ingredient_id"
-                                                    placeholder="Ingredient ID"
                                                     value={addIngredientsToItem.ingredient_id}
                                                     onChange={handleAddIngredientsToItemChange}
-                                                />
+                                                    className={managerStyles.addInventoryToItemDropDown}
+                                                >
+                                                    <option>Select An Inventory</option>
+                                                    {inventoryItems.map((ingredient) => (
+                                                        <option key={ingredient.ingredient_id} value={ingredient.ingredient_id}>
+                                                            {ingredient.ingredient_name}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                                 <input
                                                     type="number"
                                                     name="num_ingredients"
                                                     placeholder="Number of Ingredients"
                                                     value={addIngredientsToItem.num_ingredients}
                                                     onChange={handleAddIngredientsToItemChange}
+                                                    className={managerStyles.addInventoryToItemInput}
                                                 />
                                                 <button type="submit">Submit</button>
                                                 <button onClick={() => setShowAddIngredientsToItemForm(null)}>Cancel</button>
