@@ -35,7 +35,7 @@ export default async (req, res) => {
                 `;
 
         const orderParams = [newOrderID, req.body.total_price, req.body.order_date, req.body.customer_id]
-
+        console.log(orderParams);
         client.query(insertOrderStatement, orderParams);
 
         // associate items to an order

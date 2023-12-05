@@ -9,7 +9,7 @@ const Cashier = () => {
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
 	const [showIngredientsModal, setShowIngredientsModal] = useState(false);
-    const [selectedIngredients, setSelectedIngredients] = useState([]);
+	const [selectedIngredients, setSelectedIngredients] = useState([]);
 	const [selectedMenuItem, setSelectedMenuItem] = useState(null);
 
 	const fetchMenuItems = async () => {
@@ -26,7 +26,7 @@ const Cashier = () => {
 		}
 	};
 
-	
+
 	const displayIngredients = async (menuItem) => {
 		setSelectedMenuItem(menuItem);
 		var payload = {
@@ -40,7 +40,7 @@ const Cashier = () => {
 			if (response.ok) {
 				const data = await response.json();
 				setSelectedIngredients(data); // Save ingredients to state
-        		setShowIngredientsModal(true); // Show the modal
+				setShowIngredientsModal(true); // Show the modal
 			}
 		} catch (error) {
 			console.error('Error: ', error);
@@ -53,7 +53,7 @@ const Cashier = () => {
 	};
 	const closeIngredientsModal = () => {
 		setShowIngredientsModal(false);
-		setSelectedIngredients([]); 
+		setSelectedIngredients([]);
 	};
 
 	const get_categories = async () => {
@@ -100,7 +100,7 @@ const Cashier = () => {
 		const customerID = prompt("Please enter the customer ID");
 		const tip = prompt("Please enter a tip")
 		var payload = {
-			total_price: calculateTotal() - calculateTotal() + tip,
+			total_price: calculateTotal() - calculateTotal() + parseInt(tip),
 			order_date: new Date().toISOString().split('.')[0],
 			ordered_items: receipt,
 			customer_id: customerID
@@ -149,14 +149,14 @@ const Cashier = () => {
 											<li key={index}>
 												{ingredient}
 												<button className={styles.removeIngredientButton} onClick={() => removeIngredient(index)}>
-        											Remove
-      											</button>	
+													Remove
+												</button>
 											</li>
 										))}
 									</ul>
 									<button className={styles.addToReceiptButton} onClick={() => addToReceipt(selectedMenuItem)}>
-                    					Add to Receipt
-                					</button>
+										Add to Receipt
+									</button>
 								</div>
 							</div>
 						</div>

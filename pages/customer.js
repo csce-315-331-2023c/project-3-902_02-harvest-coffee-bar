@@ -75,7 +75,7 @@ const Customer = () => {
 		const customerID = prompt("Please enter the customer ID");
 		const tip = prompt("Please enter a tip")
 		var payload = {
-			total_price: calculateTotal() - calculateTotal() + tip,
+			total_price: calculateTotal() - calculateTotal() + parseInt(tip),
 			order_date: new Date().toISOString().split('.')[0],
 			ordered_items: receipt,
 			customer_id: customerID
