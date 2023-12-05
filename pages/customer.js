@@ -78,7 +78,7 @@ const Customer = () => {
 			total_price: calculateTotal() + tip,
 			order_date: new Date().toISOString().split('.')[0],
 			ordered_items: receipt,
-			cusomter_id: customerID
+			customer_id: 777
 		}
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 		setReceipt([]);
@@ -129,7 +129,7 @@ const Customer = () => {
 					<div className={styles.header2}>
 						<h2>Order Online</h2>
 						<button onClick={toggleAccessibilityMode}>
-							{accessibilityMode ? 'Disable Dark Mode' : 'Enable Dark Mode'}
+							{accessibilityMode ? 'Disable Accessibilty Mode' : 'Enable Accessibility Mode'}
 						</button>
 					</div>
 					<div className={styles.catStyle}>
