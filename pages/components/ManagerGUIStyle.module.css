@@ -405,3 +405,10 @@
     align-items: flex-start;
     flex-direction: column;
 }
+
+.ManagerGUI canvas{
+    margin: 50px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    border-color:rgba(93, 172, 129, 0.685)
+}

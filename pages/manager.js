@@ -844,6 +844,9 @@ function Manager() {
                         onClick = {() => getSalesByTime(startDate, endDate, selectedItem)}>
                             View Sales
                     </button>
+                    <div>
+                    {isShowingSalesData && <canvas ref={salesChartRef}></canvas>}
+                    </div>
                     <ul className={managerStyles.salesDataList}>
                         {salesData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
@@ -853,7 +856,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
-                {isShowingSalesData && <canvas ref={salesChartRef}></canvas>}
+                
 
                 <br></br>
                 {/* Popular Item Pairs Div */}
@@ -871,6 +874,9 @@ function Manager() {
                         onClick={() => getWhatSellsTogether(PopularPairstartDate, PopularPairendDate)}>
                             View Pairs
                     </button>
+                    <div>
+                    {isShowingPopularPairs && <canvas ref={pairChartRef}></canvas>}
+                    </div>
                     <ul>
                         {popularPairsData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
@@ -880,7 +886,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
-                {isShowingPopularPairs && <canvas ref={pairChartRef}></canvas>}
+                
             </section>
 
             {/* Inventory List Section */}
@@ -998,6 +1004,9 @@ function Manager() {
                         onClick={() => getLowStock()}>
                             View Alarm
                     </button>
+                    <div>
+                    {isShowingLowStock && <canvas className={managerStyles.lowStockChart} ref={lowChartRef}></canvas>}
+                    </div>
                     <ul>
                         {lowStock.map((report, index) => (
                             //Need Back-end implement - list out sales. 
@@ -1007,7 +1016,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
-                {isShowingLowStock && <canvas ref={lowChartRef}></canvas>}
+                
             </section>
 
             {/* Employee Schedules Section
