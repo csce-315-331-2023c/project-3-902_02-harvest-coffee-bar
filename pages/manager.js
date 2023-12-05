@@ -34,6 +34,13 @@ function Manager() {
         num_ingredients: ''
     });
 
+    //View orders section
+    const [orderData, setOrderData] = useState([]);
+    const [orderStartDate, setOrderStartDate] = useState('');
+    const [orderEndDate, setOrderEndDate] = useState('');
+    const orderChartRef = useRef(null);
+    const [isShowingOrders, setShowingOrders] = useState(false);
+
     //order trends section state
     const [selectedItem, setSelectedItem] = useState('All');
     const [salesData, setSalesData] = useState([]);
@@ -347,6 +354,31 @@ function Manager() {
     }
 
     /* STATISTICAL FUNCTIONS */
+    const getOrdersByTime = async (start_time, end_time) => {
+        setOrderData([]);
+
+        var payload = {
+            start_time: start_time,
+            end_time: end_time
+        }
+
+        console.log(payload);
+
+        try {
+            const response = await fetch(`${server}/api/manager/get_orders_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        
+            if (response.ok) {
+                const report = await response.json();
+                setOrderData(report);
+
+                setTimeout(() => {
+                    setShowingOrders(true);
+                }, 100);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
 
     const getSalesByTime = async (start_time, end_time, item_name) => {
         setSalesData([]);
@@ -892,6 +924,34 @@ function Manager() {
             {/* Order Trends Section */}
             <section className = {managerStyles.orderTrends}>
                 <h2>Order Trends</h2>
+
+                {/* Orders Div */}
+                <div className = {managerStyles.salesData}>
+                    <h3>View Orders:</h3>
+                    <label className = {managerStyles.salesDataLabel}>
+                            Start Date:
+                        <input type = "date" value = {orderStartDate} onChange = {(e) => setOrderStartDate(e.target.value)} />
+                    </label>
+                    <label className = {managerStyles.salesDataLabel}>
+                            End Date:
+                        <input type = "date" value = {orderEndDate} onChange ={ (e) => setOrderEndDate(e.target.value)} />
+                    </label>
+                    <button
+                        className = {managerStyles.salesDataButton}
+                        onClick = {() => getOrdersByTime(orderStartDate, orderEndDate)}>
+                            View Orders
+                    </button>
+                    <ul className={managerStyles.salesDataList}>
+                        {orderData.map((data, index) => (
+                            //Need Back-end implement - list out sales. 
+                            <li key = {index} className = {managerStyles.salesDataListItem}>
+                                { /*data.item}: {data.total_sales}, total profit: {data.total_profit */}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <br></br>
                 {/* Sales Report Div */}
                 <div className = {managerStyles.salesData}>
                     <h3>Sales Report: </h3>
