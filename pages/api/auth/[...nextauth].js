@@ -15,7 +15,9 @@ export default NextAuth({
   callbacks: {
     async jwt(token, user) {
       if (user) {
-        if (user.email.endsWith('@tamu.edu')) {
+        console.log('In here');
+        if (user.email == 'niteshduraivel@tamu.edu') {
+          console.log('Admin login detected');
           token.role = 'admin';
         } 
         // else if (user.email.endsWith('@tamu.edu')) {
@@ -29,6 +31,7 @@ export default NextAuth({
 
         token.id = user.id;
       }
+      console.log('Out here');
       return token;
     },
     async session(session, token) {
