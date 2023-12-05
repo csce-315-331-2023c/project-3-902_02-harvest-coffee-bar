@@ -66,10 +66,10 @@ const Cashier = () => {
 		const customerID = prompt("Please enter the customer ID");
 		const tip = prompt("Please enter a tip")
 		var payload = {
-			total_price: calculateTotal() + tip,
+			total_price: calculateTotal() - calculateTotal() + tip,
 			order_date: new Date().toISOString().split('.')[0],
 			ordered_items: receipt,
-			cusomter_id: customerID
+			customer_id: customerID
 		}
 
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });

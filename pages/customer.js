@@ -12,7 +12,7 @@ const Customer = () => {
 	const [selectedCategory, setSelectedCategory] = useState(null);
 	const [accessibilityMode, setAccessibilityMode] = useState(false);
 	const [showIngredientsModal, setShowIngredientsModal] = useState(false);
-    const [selectedIngredients, setSelectedIngredients] = useState([]);
+	const [selectedIngredients, setSelectedIngredients] = useState([]);
 	const [selectedMenuItem, setSelectedMenuItem] = useState(null);
 
 
@@ -75,10 +75,10 @@ const Customer = () => {
 		const customerID = prompt("Please enter the customer ID");
 		const tip = prompt("Please enter a tip")
 		var payload = {
-			total_price: calculateTotal() + tip,
+			total_price: calculateTotal() - calculateTotal() + tip,
 			order_date: new Date().toISOString().split('.')[0],
 			ordered_items: receipt,
-			cusomter_id: customerID
+			customer_id: customerID
 		}
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 		setReceipt([]);
@@ -97,7 +97,7 @@ const Customer = () => {
 			if (response.ok) {
 				const data = await response.json();
 				setSelectedIngredients(data); // Save ingredients to state
-        		setShowIngredientsModal(true); // Show the modal
+				setShowIngredientsModal(true); // Show the modal
 			}
 		} catch (error) {
 			console.error('Error: ', error);
@@ -117,7 +117,7 @@ const Customer = () => {
 
 	const closeIngredientsModal = () => {
 		setShowIngredientsModal(false);
-		setSelectedIngredients([]); 
+		setSelectedIngredients([]);
 	};
 
 	return (
@@ -156,14 +156,14 @@ const Customer = () => {
 											<li key={index}>
 												{ingredient}
 												<button className={styles.removeIngredientButton} onClick={() => removeIngredient(index)}>
-        											Remove
-      											</button>	
+													Remove
+												</button>
 											</li>
 										))}
 									</ul>
 									<button className={styles.addToReceiptButton} onClick={() => addToReceipt(selectedMenuItem)}>
-                    					Add to Receipt
-                					</button>
+										Add to Receipt
+									</button>
 								</div>
 							</div>
 						</div>
