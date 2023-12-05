@@ -48,6 +48,7 @@
     margin-top: 20px;
     display: flex;
     overflow: hidden;
+    min-height: 85vh;
 }
 
 .CashierGUI .changeView {
@@ -199,7 +200,7 @@
     transform: translate(-50%, -50%);
     width: 80%;
     max-width: 600px;
-    background-color: #fff;
+    background-color: #5f726b;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -234,16 +235,18 @@
     flex-direction: column;
     align-items: center; 
     margin-right: 7%;
+    color: white;
 }
 
 .CashierrGUI .modalContent ul li {
     margin-bottom: 10px;
     text-align: center;
+    color: white;
 }
 
 .CashierGUI .addToReceiptButton {
-    background-color: #82DFAA;
-    color: black;
+    background-color: #51544e;
+    color: white;
     cursor: pointer;
     border: none;
     border-radius: 5px;
@@ -262,6 +265,10 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 10px;
+}
+
+.modalContent h2 {
+    color: #ffffff;
 }
 
 .CashierGUI .removeIngredientButton {

@@ -627,3 +627,87 @@
     padding: 5px;
     margin-left: 10px;
 }
+
+
+
+.accessibilityMode .modal {
+    position: fixed;
+    z-index: 1000; 
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    background-color: #4d4d4d;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.accessibilityMode .overlay {
+    position: fixed;
+    z-index: 999; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+.accessibilityMode .modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.accessibilityMode .modalContent h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.accessibilityMode .modalContent ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    color: #fff;
+}
+
+.accessibilityMode .modalContent ul li {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.accessibilityMode .addToReceiptButton {
+    background-color: #414744;
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 4%;
+    font-size: 16px;
+}
+
+.accessibilityMode .addToReceiptButton:hover {
+    background-color: rgb(149, 250, 184);
+}
+
+.accessibilityMode .modalContent ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.accessibilityMode .removeIngredientButton {
+    background-color: #ff5c5c;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 10px;
+}
