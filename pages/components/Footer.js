@@ -8,7 +8,7 @@ export default function FooterBar() {
                 <hr className={styles.line2}></hr>
                 <div className={styles.footer}>
                     <h3>Hours</h3>
-                    <br></br>
+
                     <>Open Daily from 7am - 6pm</>
                     <br></br>
                     <>1037 University Dr - Suite 109, College Station, TX 77840</>
