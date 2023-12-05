@@ -65,6 +65,9 @@ function Manager() {
     const [excessReports, setExcessReports] = useState([]);
     const [excessReportstartDate, setExcessReportstartDate] = useState('');
     const [excessReportEndDate, setExcessReportEndDate] = useState('');
+    const [isShowingExcess, setShowingExcess] = useState(false);
+    const excessChartRef = useRef(null);
+
     const [lowStock, setLowStock] = useState([]);
     const lowChartRef = useRef(null);
     const [isShowingLowStock, setShowingLowStock] = useState(false);
@@ -391,6 +394,10 @@ function Manager() {
             if (response.ok) {
                 const report = await response.json();
                 setExcessReports (report.data);
+
+                setTimeout(() => {
+                    setShowingExcess(true);
+                }, 100);
             } else {
                 console.error("Unable to fetch excess report.");
             }
@@ -579,6 +586,70 @@ function Manager() {
             });
         }
     }, [popularPairsData, isShowingPopularPairs]);
+
+    // Excess chart
+    // popular pairs chart
+    useEffect(() => {
+        if (excessReports.length > 0 && isShowingExcess) {
+            const excessctx = excessChartRef.current.getContext('2d');
+
+            const existingExcessChart = Chart.getChart(excessctx);
+
+            if (existingExcessChart) {
+                existingExcessChart.destroy();
+            }
+
+            new Chart(excessctx, {
+                type: 'bar',
+                data: {
+                    labels: excessReports.map(item => item.ingredient_name),
+                    datasets:[{
+                        label: 'Less Common Ingredients Sold',
+                        backgroundColor: 'rgba(95, 135, 107, 1)',
+                        borderWidth: 0,
+                        data: excessReports.map(item => item.total_items_sold),
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 20,
+                                backgroundColor: 'rgba(255,255,255, 0.8)',
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                        },
+                        tooltip: {
+                            bodyColor: 'rgba(255, 255, 255, 1)'
+                        },
+                        background: {
+                            color: 'rgba(255, 255, 255, 1)'
+                        }
+                    },
+                },
+            });
+        }
+    }, [excessReports, isShowingExcess]);
 
     // Low Stock chart
     useEffect(() => {
@@ -995,6 +1066,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
+                {isShowingExcess && <canvas ref={excessChartRef}></canvas>}
 
                 <br></br>
                 {/* Low Stock Div */}
