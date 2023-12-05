@@ -545,3 +545,87 @@
     background-color: #45a049;
     /* Darker green on hover */
 }
+
+
+
+.CustomerGUI .modal {
+    position: fixed;
+    z-index: 1000; 
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 600px;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.CustomerGUI .overlay {
+    position: fixed;
+    z-index: 999; 
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.CustomerGUI .modalContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.CustomerGUI .modalContent h2 {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.CustomerGUI .modalContent ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+}
+
+.CustomerGUI .modalContent ul li {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.CustomerGUI .addToReceiptButton {
+    background-color: #82DFAA;
+    color: black;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 20px;
+    margin-left: 4%;
+    font-size: 16px;
+}
+
+.CustomerGUI .addToReceiptButton:hover {
+    background-color: rgb(149, 250, 184);
+}
+
+.CustomerGUI .modalContent ul li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.CustomerGUI .removeIngredientButton {
+    background-color: #ff5c5c;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    margin-left: 10px;
+}

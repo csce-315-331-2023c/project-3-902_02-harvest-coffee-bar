@@ -10,8 +10,11 @@ const Customer = () => {
 	const [menuItems, setMenuItems] = useState([]);
 	const [menuCats, setMenuCats] = useState([]);
 	const [selectedCategory, setSelectedCategory] = useState(null);
-	const [receiptVisible, setReceiptVisible] = useState(false);
 	const [accessibilityMode, setAccessibilityMode] = useState(false);
+	const [showIngredientsModal, setShowIngredientsModal] = useState(false);
+    const [selectedIngredients, setSelectedIngredients] = useState([]);
+	const [selectedMenuItem, setSelectedMenuItem] = useState(null);
+
 
 	const fetchMenuItems = async () => {
 		try {
@@ -54,6 +57,7 @@ const Customer = () => {
 
 	const addToReceipt = (item) => {
 		setReceipt([...receipt, item]);
+		closeIngredientsModal();
 	};
 
 	const removeFromReceipt = (index) => {
@@ -76,21 +80,24 @@ const Customer = () => {
 			ordered_items: receipt,
 			cusomter_id: customerID
 		}
-		{ setReceiptVisible(!receiptVisible) };
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
 		setReceipt([]);
 	}
 
 	const displayIngredients = async (menuItem) => {
-		addToReceipt(menuItem);
+		setSelectedMenuItem(menuItem);
 		var payload = {
 			menu_item_id: menuItem.menu_item_id
 		}
 		try {
 			console.log(menuItem.menu_item_id);
-			const response = await fetch(`${server}/api/cashier_functions/get_ingredients`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+			const response = await fetch(`${server}/api/cashier_functions/get_ingredients`,
+				{ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+			console.log(response);
 			if (response.ok) {
 				const data = await response.json();
+				setSelectedIngredients(data); // Save ingredients to state
+        		setShowIngredientsModal(true); // Show the modal
 			}
 		} catch (error) {
 			console.error('Error: ', error);
@@ -98,33 +105,31 @@ const Customer = () => {
 
 	}
 
-	// useEffect(() => {
-	// 	document.body.style.overflow = "hidden";
-	// 	return () => {
-	// 		document.body.style.overflow = "scroll"
-	// 	};
-	// }, []);
-
-	const ReceiptPopup = () => {
-		// Close the receipt popup by setting the state to false
-		setReceiptVisible(!receiptVisible);
+	const removeIngredient = (index) => {
+		const updatedIngredients = [...selectedIngredients];
+		updatedIngredients.splice(index, 1);
+		setSelectedIngredients(updatedIngredients);
 	};
 
 	const toggleAccessibilityMode = () => {
 		setAccessibilityMode(!accessibilityMode);
 	};
 
+	const closeIngredientsModal = () => {
+		setShowIngredientsModal(false);
+		setSelectedIngredients([]); 
+	};
+
 	return (
 		<div className={`${styles.CustomerGUI} ${accessibilityMode ? styles.accessibilityMode : ''}`}>
 			<NavBar />
-
 
 			<div className={styles.mainScreen}>
 				<div className={styles.menu}>
 					<div className={styles.header2}>
 						<h2>Order Online</h2>
 						<button onClick={toggleAccessibilityMode}>
-							{accessibilityMode ? 'Disable Accessibility Mode' : 'Enable Accessibility Mode'}
+							{accessibilityMode ? 'Disable Dark Mode' : 'Enable Dark Mode'}
 						</button>
 					</div>
 					<div className={styles.catStyle}>
@@ -140,6 +145,29 @@ const Customer = () => {
 					</div>
 					<hr className={styles.line}></hr>
 					<h2>{selectedCategory}</h2>
+					{showIngredientsModal && selectedMenuItem && (
+						<div>
+							<div className={styles.overlay}></div>
+							<div className={styles.modal}>
+								<div className={styles.modalContent}>
+									<h2>Ingredients for {selectedMenuItem.menu_item_name}</h2>
+									<ul>
+										{selectedIngredients.map((ingredient, index) => (
+											<li key={index}>
+												{ingredient}
+												<button className={styles.removeIngredientButton} onClick={() => removeIngredient(index)}>
+        											Remove
+      											</button>	
+											</li>
+										))}
+									</ul>
+									<button className={styles.addToReceiptButton} onClick={() => addToReceipt(selectedMenuItem)}>
+                    					Add to Receipt
+                					</button>
+								</div>
+							</div>
+						</div>
+					)}
 					<div className={styles.menuItemStyle}>
 						<ul>
 							{filteredMenuItems.map((menuItem) => (
