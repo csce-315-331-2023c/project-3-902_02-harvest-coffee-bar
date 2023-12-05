@@ -369,6 +369,7 @@ function Manager() {
         
             if (response.ok) {
                 const report = await response.json();
+                console.log(report);
                 setOrderData(report);
 
                 setTimeout(() => {
@@ -945,7 +946,7 @@ function Manager() {
                         {orderData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
                             <li key = {index} className = {managerStyles.salesDataListItem}>
-                                { /*data.item}: {data.total_sales}, total profit: {data.total_profit */}
+                                Order-ID: {data.order_id} |  Total Price: {data.total_price} | Customer: {data.customer_name} - {data.customer_id} | Timestamp: {data.order_date}
                             </li>
                         ))}
                     </ul>
