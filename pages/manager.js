@@ -179,6 +179,10 @@ function Manager() {
     //Front-end handling function for getInventoryByItem {
 
     const handleMenuItemClick = async (itemId) => {
+        if (event.target.tagName === 'BUTTON' || event.target.tagName === 'SELECT' || event.target.tagName === 'BUTTON' || event.target.tagName === 'OPTION') {
+            return;
+        }
+        
         try {
             const inventoryData = await getInventoryByItem(itemId);
             const updatedInventory = { [itemId]: inventoryData };
@@ -446,7 +450,7 @@ function Manager() {
             </nav>
             <h1> Manager Dashboard </h1>
 
-            {/* Menu Items List Section */}
+            {/* Menu Items List*/}
             <section className={managerStyles.menuItemsList}>
                 <h2> Menu Items </h2>
                 <button onClick={toggleMenuVisibility}>
@@ -514,10 +518,8 @@ function Manager() {
                             {menuItems.map((item) => (
                                 <li key={item.menu_item_id}>
                                     <div className={managerStyles.firstlineList}
-                                        // Need Back-end implement - dummy function of inventory for selected item
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}>
                                         <span
-                                            // Need Back-end implement - dummy function of inventory for selected item
                                             onClick={() => handleMenuItemClick(item.menu_item_id)}>
                                             {item.menu_item_name} - ${item.price}
                                         </span>
@@ -533,9 +535,10 @@ function Manager() {
                                                     Edit price
                                             </button>
                                             <select
-                                                className={managerStyles.statusDropdown}>
+                                                className={managerStyles.statusDropdown}
                                                 onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)}
-                                                <option value="">Select Status</option>
+                                            >    
+                                                {/* <option value="">Select Status</option> */}
                                                 <option value="Sold">Sold</option>
                                                 <option value="Not Sold">Not Sold</option>
                                             </select>
