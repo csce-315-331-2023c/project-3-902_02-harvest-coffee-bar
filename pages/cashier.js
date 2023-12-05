@@ -103,7 +103,7 @@ const Cashier = () => {
 			total_price: calculateTotal() + tip,
 			order_date: new Date().toISOString().split('.')[0],
 			ordered_items: receipt,
-			cusomter_id: customerID
+			customer_id: customerID
 		}
 
 		await fetch(`${server}/api/cashier_functions/add_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
