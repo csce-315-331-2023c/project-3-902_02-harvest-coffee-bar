@@ -535,15 +535,17 @@ function Manager() {
                 existingPairChart.destroy();
             }
 
+            var pairsData = popularPairsData.slice(0, 30);
+
             new Chart(pairctx, {
                 type: 'bar',
                 data: {
-                    labels: popularPairsData.map(item => `${item.i1_name}:${item.i2_name}`),
+                    labels: pairsData.map(item => `${item.i1_name}:${item.i2_name}`),
                     datasets:[{
                         label: 'Pair Units Sold',
                         backgroundColor: 'rgba(95, 135, 107, 1)',
                         borderWidth: 0,
-                        data: popularPairsData.map(item => item.frequency),
+                        data: pairsData.map(item => item.frequency),
                     }],
                 },
                 options: {
