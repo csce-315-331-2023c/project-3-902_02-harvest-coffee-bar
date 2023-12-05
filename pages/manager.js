@@ -978,7 +978,7 @@ function Manager() {
                             Start Date:
                         <input type = "date" value = {excessReportstartDate} onChange = {(e) => setExcessReportstartDate(e.target.value)} />
                     </label>
-                    <label>
+                    <label className = {managerStyles.excessReportsLabel}>
                             End Date:
                         <input type="date" value={excessReportEndDate} onChange={(e) => setExcessReportEndDate(e.target.value)} />
                     </label>
