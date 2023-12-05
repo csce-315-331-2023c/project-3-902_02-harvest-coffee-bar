@@ -79,6 +79,16 @@ function Manager() {
     const lowChartRef = useRef(null);
     const [isShowingLowStock, setShowingLowStock] = useState(false);
 
+    //user management section state
+    const [users, setUsers] = useState([]);
+    const [showUserManagement, setShowUserManagement] = useState(false);
+    const [showAddUserForm, setShowAddUserForm] = useState(false);
+    const [newUser, setNewUser] = useState({ 
+        employee_name: '', 
+        employee_title: '', 
+        employee_email: '' 
+    });
+
     /////////////////////////////
     // back-end function below //
     /////////////////////////////
@@ -357,6 +367,75 @@ function Manager() {
         }
 
     }
+
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch(`${server}/api/admin/get_all_users`);
+            const data = await response.json();
+            setUsers(data);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    const toggleUserManagementVisibility = () => {
+        setShowUserManagement(!showUserManagement);
+        if (!showUserManagement) {
+            fetchUsers();
+        }
+    };
+
+    const handleAddUser = async () => {
+
+        try {
+            const response = await fetch(`${server}/api/path-to-add-user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser),
+            });
+    
+            if (response.ok) {
+                setNewUser({ employee_name: '', employee_title: '', employee_email: '' });
+                setShowAddUserForm(false);
+                fetchUsers();
+            } else {
+                console.error('Failed to add user');
+            }
+        } catch (error) {
+            console.error('Error adding user:', error);
+        }
+    };
+    // Function to handle adding a new user {
+    const handleAddUserSubmit = (event) => {
+        event.preventDefault();
+        handleAddUser();
+    };
+
+    const handleShowAddUserForm = () => {
+        setShowAddUserForm(true);
+    };
+
+    const handleCancelAddUser = () => {
+        setShowAddUserForm(false);
+        setNewUser({ employee_name: '', employee_title: '', employee_email: '' }); // Reset form
+    };
+
+    const handleNewUserChange = (e) => {
+        setNewUser({ ...newUser, [e.target.name]: e.target.value });
+    };
+    //}
+
+    // Function to handle editing a user
+    const handleEditUser = (userId) => {
+        // Implement edit user functionality
+    };
+
+    // Function to handle deleting a user
+    const handleDeleteUser = (userId) => {
+        // Implement delete user functionality
+    };
 
     /* STATISTICAL FUNCTIONS */
     const getOrdersByTime = async (start_time, end_time) => {
@@ -761,6 +840,7 @@ function Manager() {
     useEffect(() => {
         fetchMenuItems();
         viewAllInInventory();
+        fetchUsers();
     }, []);
 
     
@@ -841,6 +921,7 @@ function Manager() {
                                 </form>
                             )}
                         </div>
+
                         <ul>
                             {menuItems.map((item) => (
                                 <li key={item.menu_item_id}>
@@ -1168,28 +1249,95 @@ function Manager() {
                 
             </section>
 
-            {/* Employee Schedules Section
-            <section>
-                <h2>Employee Schedules</h2>
-                <button onClick={fetchEmployeeSchedules}>Fetch Schedules</button>
-                <table>
-                    <thead>
-                        <tr>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {employeeSchedules.map((schedule, index) => (
-                            <tr key={index}>
-                                <td>{schedule.employeeName}</td>
-                                <td>{schedule.role}</td>
-                                <td>{schedule.shiftStart}</td>
-                                <td>{schedule.shiftEnd}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </section>             */}
-        
+            {/* User Managerment Section  */}
+            <section className = {managerStyles.userManagement}>
+                <h2>User Management</h2>
+                <button 
+                    onClick={toggleUserManagementVisibility}>
+                    {showUserManagement ? 'Hide Users' : 'Show Users'}
+                </button>
+                {showUserManagement && (
+                    <div className={managerStyles.scrollableContainer}>
+                        <div className={managerStyles.addUserForm}>
+                            <button 
+                                onClick={handleShowAddUserForm}>
+                                    Add User
+                            </button>
+                            {showAddUserForm && (
+                                <form onSubmit={handleAddUserSubmit}>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name="employee_name"
+                                            value={newUser.employee_name}
+                                            onChange={handleNewUserChange}
+                                            placeholder="Name"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name="employee_title"
+                                            value={newUser.employee_title}
+                                            onChange={handleNewUserChange}
+                                            placeholder="Title"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="email"
+                                            name="employee_email"
+                                            value={newUser.employee_email}
+                                            onChange={handleNewUserChange}
+                                            placeholder="Email"
+                                            required
+                                        />
+                                    </div>
+                                    <button 
+                                        type="submit">
+                                            Submit
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        onClick={handleCancelAddUser}>
+                                            Cancel
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+
+                        <ul>
+                            {users.map((user, index) => (
+                                <li key={index}>
+                                    <div className={managerStyles.nameLine}>
+                                        <div>
+                                            Name: {user.employee_name}
+                                        </div>
+                                        <div className={managerStyles.nameLineButton}>
+                                            <button 
+                                                onClick={() => handleEditUser(user.employee_id)}>
+                                                    Edit
+                                            </button>
+                                            <button 
+                                                onClick={() => handleDeleteUser(user.employee_id)}>
+                                                    Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className={managerStyles.otherLine}>
+                                        Title: {user.employee_title}
+                                    </div>
+                                    <div className={managerStyles.otherLine}>
+                                        Email: {user.employee_email}
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </section>   
         </div>
     );
 }
