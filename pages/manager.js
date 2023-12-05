@@ -604,7 +604,7 @@ function Manager() {
                 data: {
                     labels: excessReports.map(item => item.ingredient_name),
                     datasets:[{
-                        label: 'Less Common Ingredients Sold',
+                        label: 'Num Sold',
                         backgroundColor: 'rgba(95, 135, 107, 1)',
                         borderWidth: 0,
                         data: excessReports.map(item => item.total_items_sold),
