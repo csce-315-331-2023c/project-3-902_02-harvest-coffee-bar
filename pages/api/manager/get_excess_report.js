@@ -19,30 +19,29 @@ export default async (req, res) => {
             SELECT
                 ii.ingredient_id,
                 ii.ingredient_name,
-                SUM(CASE WHEN o.order_date >= $1 THEN oi.num_items ELSE 0 END) AS total_items_sold,
-                ii.ingredient_count AS current_ingredient_amount
+                SUM(CASE WHEN o.order_date BETWEEN $1 AND $2 THEN oi.num_items ELSE 0 END) AS total_items_sold,
+                ii.ingredient_count AS current_ingredient_amount,
+                ii.max_ingredient_count
             FROM
-                public.ingredients_inventory ii
+                ingredients_inventory ii
             LEFT JOIN
-                public.ordered_items oi ON ii.ingredient_id = oi.menu_item_id
+                ordered_items oi ON ii.ingredient_id = oi.menu_item_id
             LEFT JOIN
-                public.orders o ON oi.ordered_id = o.order_id
+                orders o ON oi.ordered_id = o.order_id
             WHERE
-                o.order_date >= $2
+                o.order_date BETWEEN $1 AND $2
             GROUP BY
                 ii.ingredient_id, ii.ingredient_name, ii.ingredient_count
             HAVING
-                SUM(CASE WHEN o.order_date >= $3 THEN oi.num_items ELSE 0 END) <
-                0.1 * (SUM(CASE WHEN o.order_date >= $4 THEN oi.num_items ELSE 0 END) + ii.ingredient_count)
+                SUM(CASE WHEN o.order_date BETWEEN $1 AND $2 THEN oi.num_items ELSE 0 END) <
+                0.5 * (ii.ingredient_count)
             ORDER BY
-                total_items_sold;
+                total_items_sold asc;
         `;
 
         const reportParameters = [
             req.body.start_date,
-            req.body.start_date,
-            req.body.start_date,
-            req.body.start_date
+            req.body.end_date
         ];
 
         const result = await client.query(excessQuery, reportParameters);
