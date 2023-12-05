@@ -34,6 +34,13 @@ function Manager() {
         num_ingredients: ''
     });
 
+    //View orders section
+    const [orderData, setOrderData] = useState([]);
+    const [orderStartDate, setOrderStartDate] = useState('');
+    const [orderEndDate, setOrderEndDate] = useState('');
+    const orderChartRef = useRef(null);
+    const [isShowingOrders, setShowingOrders] = useState(false);
+
     //order trends section state
     const [selectedItem, setSelectedItem] = useState('All');
     const [salesData, setSalesData] = useState([]);
@@ -64,6 +71,10 @@ function Manager() {
     //stock report section state
     const [excessReports, setExcessReports] = useState([]);
     const [excessReportstartDate, setExcessReportstartDate] = useState('');
+    const [excessReportEndDate, setExcessReportEndDate] = useState('');
+    const [isShowingExcess, setShowingExcess] = useState(false);
+    const excessChartRef = useRef(null);
+
     const [lowStock, setLowStock] = useState([]);
     const lowChartRef = useRef(null);
     const [isShowingLowStock, setShowingLowStock] = useState(false);
@@ -343,6 +354,31 @@ function Manager() {
     }
 
     /* STATISTICAL FUNCTIONS */
+    const getOrdersByTime = async (start_time, end_time) => {
+        setOrderData([]);
+
+        var payload = {
+            start_time: start_time,
+            end_time: end_time
+        }
+
+        console.log(payload);
+
+        try {
+            const response = await fetch(`${server}/api/manager/get_orders_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        
+            if (response.ok) {
+                const report = await response.json();
+                setOrderData(report);
+
+                setTimeout(() => {
+                    setShowingOrders(true);
+                }, 100);
+            }
+        } catch (error) {
+            console.error("Error:", error);
+        }
+    }
 
     const getSalesByTime = async (start_time, end_time, item_name) => {
         setSalesData([]);
@@ -375,10 +411,11 @@ function Manager() {
     }
 
 
-    const getExcessReport = async (start_date) => {
+    const getExcessReport = async (start_date, end_date) => {
 
         var payload = {
-            start_date: start_date
+            start_date: start_date,
+            end_date: end_date
         }
 
         console.log(payload);
@@ -389,6 +426,10 @@ function Manager() {
             if (response.ok) {
                 const report = await response.json();
                 setExcessReports (report.data);
+
+                setTimeout(() => {
+                    setShowingExcess(true);
+                }, 100);
             } else {
                 console.error("Unable to fetch excess report.");
             }
@@ -526,15 +567,17 @@ function Manager() {
                 existingPairChart.destroy();
             }
 
+            var pairsData = popularPairsData.slice(0, 30);
+
             new Chart(pairctx, {
                 type: 'bar',
                 data: {
-                    labels: popularPairsData.map(item => `${item.i1_name}:${item.i2_name}`),
+                    labels: pairsData.map(item => `${item.i1_name}:${item.i2_name}`),
                     datasets:[{
                         label: 'Pair Units Sold',
                         backgroundColor: 'rgba(95, 135, 107, 1)',
                         borderWidth: 0,
-                        data: popularPairsData.map(item => item.frequency),
+                        data: pairsData.map(item => item.frequency),
                     }],
                 },
                 options: {
@@ -577,6 +620,70 @@ function Manager() {
             });
         }
     }, [popularPairsData, isShowingPopularPairs]);
+
+    // Excess chart
+    // popular pairs chart
+    useEffect(() => {
+        if (excessReports.length > 0 && isShowingExcess) {
+            const excessctx = excessChartRef.current.getContext('2d');
+
+            const existingExcessChart = Chart.getChart(excessctx);
+
+            if (existingExcessChart) {
+                existingExcessChart.destroy();
+            }
+
+            new Chart(excessctx, {
+                type: 'bar',
+                data: {
+                    labels: excessReports.map(item => item.ingredient_name),
+                    datasets:[{
+                        label: 'Num Sold',
+                        backgroundColor: 'rgba(95, 135, 107, 1)',
+                        borderWidth: 0,
+                        data: excessReports.map(item => item.total_items_sold),
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 20,
+                                backgroundColor: 'rgba(255,255,255, 0.8)',
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                        },
+                        tooltip: {
+                            bodyColor: 'rgba(255, 255, 255, 1)'
+                        },
+                        background: {
+                            color: 'rgba(255, 255, 255, 1)'
+                        }
+                    },
+                },
+            });
+        }
+    }, [excessReports, isShowingExcess]);
 
     // Low Stock chart
     useEffect(() => {
@@ -817,6 +924,34 @@ function Manager() {
             {/* Order Trends Section */}
             <section className = {managerStyles.orderTrends}>
                 <h2>Order Trends</h2>
+
+                {/* Orders Div */}
+                <div className = {managerStyles.salesData}>
+                    <h3>View Orders:</h3>
+                    <label className = {managerStyles.salesDataLabel}>
+                            Start Date:
+                        <input type = "date" value = {orderStartDate} onChange = {(e) => setOrderStartDate(e.target.value)} />
+                    </label>
+                    <label className = {managerStyles.salesDataLabel}>
+                            End Date:
+                        <input type = "date" value = {orderEndDate} onChange ={ (e) => setOrderEndDate(e.target.value)} />
+                    </label>
+                    <button
+                        className = {managerStyles.salesDataButton}
+                        onClick = {() => getOrdersByTime(orderStartDate, orderEndDate)}>
+                            View Orders
+                    </button>
+                    <ul className={managerStyles.salesDataList}>
+                        {orderData.map((data, index) => (
+                            //Need Back-end implement - list out sales. 
+                            <li key = {index} className = {managerStyles.salesDataListItem}>
+                                { /*data.item}: {data.total_sales}, total profit: {data.total_profit */}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <br></br>
                 {/* Sales Report Div */}
                 <div className = {managerStyles.salesData}>
                     <h3>Sales Report: </h3>
@@ -982,19 +1117,24 @@ function Manager() {
                             Start Date:
                         <input type = "date" value = {excessReportstartDate} onChange = {(e) => setExcessReportstartDate(e.target.value)} />
                     </label>
+                    <label className = {managerStyles.excessReportsLabel}>
+                            End Date:
+                        <input type="date" value={excessReportEndDate} onChange={(e) => setExcessReportEndDate(e.target.value)} />
+                    </label>
                     <button 
                         className={managerStyles.excessReportsButton}
-                        onClick={() => getExcessReport(excessReportstartDate)}>
+                        onClick={() => getExcessReport(excessReportstartDate, excessReportEndDate)}>
                             View Reports
                     </button>
                     <ul className={managerStyles.excessReportsList}>
                         {excessReports.map((report, index) => (
                             <li key={index} className = {managerStyles.excessReportsListItem}>
-                               {report.ingredient_name} - Excess: {report.total_items_sold}
+                               {report.ingredient_name} - Sold: {report.total_items_sold}
                             </li>
                         ))}
                     </ul>
                 </div>
+                {isShowingExcess && <canvas ref={excessChartRef}></canvas>}
 
                 <br></br>
                 {/* Low Stock Div */}
