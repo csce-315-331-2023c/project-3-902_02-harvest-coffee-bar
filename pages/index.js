@@ -1,4 +1,5 @@
 import NavBar from './components/NavBar';
+import TranslationComponent from './components/TranslationComponent';
 import FooterBar from './components/Footer';
 import landingStyles from './components/LandingGUIStyle.module.css';
 import GenerateMenuItemPanel from './components/MenuItem';
@@ -71,9 +72,12 @@ const Index = () => {
 		<div>
 			<NavBar />
 			<div className={landingStyles.header}>
-				<button onClick={toggleAccessibilityMode}>
-					{accessibilityMode ? 'Disable Magnification' : 'Enable Magnification'}
-				</button>
+				<div className={landingStyles.accessibilityHeader}>
+					<button onClick={toggleAccessibilityMode}>
+						{accessibilityMode ? 'Disable Magnification' : 'Enable Magnification'}
+					</button>
+					<TranslationComponent />
+				</div>
 				<div className={landingStyles.headerImage}></div>
 				<div className={landingStyles.headerText}>
 					<h1>Welcome to</h1>

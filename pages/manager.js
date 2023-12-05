@@ -1,10 +1,13 @@
 // pages/manager.js
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { server } from '../config';
 import Link from 'next/link';
 import navStyles from './components/NavBar.module.css';
 import managerStyles from './components/ManagerGUIStyle.module.css'
+import Chart from 'chart.js/auto';
+
+
 
 function Manager() {
     ////////////////////////
@@ -36,10 +39,14 @@ function Manager() {
     const [salesData, setSalesData] = useState([]);
     const [startDate, setStartDate] = useState('');
     const [endDate, setEndDate] = useState('');
+    const salesChartRef = useRef(null);
+    const [isShowingSalesData, setShowingSalesData] = useState(false);
 
     const [popularPairsData, setPairsData] = useState([]);
     const [PopularPairstartDate, setPopularPairStartDate] = useState('');
     const [PopularPairendDate, setPopularPairEndDate] = useState('');
+    const pairChartRef = useRef(null);
+    const [isShowingPopularPairs, setShowingPopularPairs] = useState(false);
     
     //inventory list section state
     const [inventoryItems, setInventoryItems] = useState([]);
@@ -58,6 +65,8 @@ function Manager() {
     const [excessReports, setExcessReports] = useState([]);
     const [excessReportstartDate, setExcessReportstartDate] = useState('');
     const [lowStock, setLowStock] = useState([]);
+    const lowChartRef = useRef(null);
+    const [isShowingLowStock, setShowingLowStock] = useState(false);
 
     /////////////////////////////
     // back-end function below //
@@ -208,6 +217,7 @@ function Manager() {
     //Front-end handling function for addIngredientsToMenuItem {
     const handleAddIngredientsToItemChange = (e) => {
         setAddIngredientsToItem({ ...addIngredientsToItem, [e.target.name]: e.target.value });
+
     };
 
     const submitAddIngredientsToItemForm = async (e, menu_item_id) => {
@@ -313,7 +323,7 @@ function Manager() {
     }
 
     const handleStatusChange = async (menu_item_id, value) => {
-        
+        var is_active = true;
         if (value == "") {
 
         } else {
@@ -331,7 +341,7 @@ function Manager() {
     
             console.log(payload);
     
-            await fetch(`${server}/api/manage/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+            await fetch(`${server}/api/manager/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
     
         }
 
@@ -356,6 +366,11 @@ function Manager() {
             if (response.ok) {
                 const report = await response.json();
                 setSalesData(report);
+
+                setTimeout(() => {
+                    setShowingSalesData(true);
+                }, 100);
+                
             } else {
                 console.error("Unable to fetch sales report.");
             }
@@ -396,6 +411,10 @@ function Manager() {
             if (response.ok) {
                 const report = await response.json();
                 setLowStock (report.data);
+
+                setTimeout(() => {
+                    setShowingLowStock(true);
+                }, 100);
             } else {
                 console.error("Unable to fetch low stock items.");
             }
@@ -417,6 +436,10 @@ function Manager() {
             if (response.ok) {
                 const report = await response.json();
                 setPairsData(report);
+
+                setTimeout(() => {
+                    setShowingPopularPairs(true);
+                }, 100);
             } else {
                 console.error("Unable to get paired item trend report.");
             }
@@ -425,18 +448,214 @@ function Manager() {
         }
     }
 
+    //////////////////////////
+    // Chart Implementation //
+    //////////////////////////
     
+    // Sales Chart
+    useEffect(() => {
+        if (salesData.length > 0 && isShowingSalesData) {
+            const ctx = salesChartRef.current.getContext('2d');
+
+            const existingChart = Chart.getChart(ctx);
+
+            if (existingChart) {
+                existingChart.destroy();
+            }
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: salesData.map(item => item.item),
+                    datasets:[{
+                        label: 'Total Units Sold',
+                        backgroundColor: 'rgba(95, 135, 107, 1)',
+                        borderWidth: 0,
+                        data: salesData.map(item => item.total_sales),
+                    }, {
+                        label: 'Total Profit',
+                        backgroundColor: 'rgba(95, 165, 107, 1)',
+                        borderWidth: 0,
+                        data: salesData.map(item => item.total_profit)
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 20,
+                                backgroundColor: 'rgba(255,255,255, 0.8)',
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                        },
+                        tooltip: {
+                            bodyColor: 'rgba(255, 255, 255, 1)'
+                        },
+                        background: {
+                            color: 'rgba(255, 255, 255, 1)'
+                        }
+                    },
+                },
+            });
+        }
+    }, [salesData, isShowingSalesData]);
+
+    // popular pairs chart
+    useEffect(() => {
+        if (popularPairsData.length > 0 && isShowingPopularPairs) {
+            const pairctx = pairChartRef.current.getContext('2d');
+
+            const existingPairChart = Chart.getChart(pairctx);
+
+            if (existingPairChart) {
+                existingPairChart.destroy();
+            }
+
+            new Chart(pairctx, {
+                type: 'bar',
+                data: {
+                    labels: popularPairsData.map(item => `${item.i1_name}:${item.i2_name}`),
+                    datasets:[{
+                        label: 'Pair Units Sold',
+                        backgroundColor: 'rgba(95, 135, 107, 1)',
+                        borderWidth: 0,
+                        data: popularPairsData.map(item => item.frequency),
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 20,
+                                backgroundColor: 'rgba(255,255,255, 0.8)',
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                        },
+                        tooltip: {
+                            bodyColor: 'rgba(255, 255, 255, 1)'
+                        },
+                        background: {
+                            color: 'rgba(255, 255, 255, 1)'
+                        }
+                    },
+                },
+            });
+        }
+    }, [popularPairsData, isShowingPopularPairs]);
+
+    // Low Stock chart
+    useEffect(() => {
+        if (lowStock.length > 0 && isShowingLowStock) {
+            const lowctx = lowChartRef.current.getContext('2d');
+
+            const existingLowChart = Chart.getChart(lowctx);
+
+            if (existingLowChart) {
+                existingLowChart.destroy();
+            }
+
+            new Chart(lowctx, {
+                type: 'bar',
+                data: {
+                    labels: lowStock.map(item => item.ingredient_name),
+                    datasets: [{
+                        label: 'Low Stock Item Count',
+                        backgroundColor: 'rgba(95, 135, 107, 1)',
+                        borderWidth: 0,
+                        data: lowStock.map(item => item.ingredient_count),
+                    }],
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        },
+                        x: {
+                            ticks: {
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                            grid: {
+                                color: 'rgba(100, 100, 100, 1)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: true,
+                            labels: {
+                                boxWidth: 20,
+                                backgroundColor: 'rgba(255,255,255, 0.8)',
+                                color: 'rgba(255, 255, 255, 1)'
+                            },
+                        },
+                        tooltip: {
+                            bodyColor: 'rgba(255, 255, 255, 1)'
+                        },
+                        background: {
+                            color: 'rgba(255, 255, 255, 1)'
+                        }
+                    },
+                },
+            });
+        }
+    }, [lowStock, isShowingLowStock]);
 
 
     ///////////////////////////////
     // Front-end Implement Below //
     ///////////////////////////////
     useEffect(() => {
-
         fetchMenuItems();
         viewAllInInventory();
-
     }, []);
+
+    
 
     return (
         <div className={managerStyles.ManagerGUI}>
@@ -536,9 +755,8 @@ function Manager() {
                                             </button>
                                             <select
                                                 className={managerStyles.statusDropdown}
-                                                onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)}
-                                            >    
-                                                {/* <option value="">Select Status</option> */}
+                                                onChange={(e) => handleStatusChange(item.menu_item_id, e.target.value)}>
+                                                <option value="">Select Status</option>
                                                 <option value="Sold">Sold</option>
                                                 <option value="Not Sold">Not Sold</option>
                                             </select>
@@ -547,19 +765,26 @@ function Manager() {
                                     <div className={managerStyles.addIngredientsToItemToMenuItemForm}>
                                         {showAddIngredientsToItemForm === item.menu_item_id && (
                                             <form onSubmit={(e) => submitAddIngredientsToItemForm(e, item.menu_item_id)}>
-                                                <input
-                                                    type="number"
+                                                 <select
                                                     name="ingredient_id"
-                                                    placeholder="Ingredient ID"
                                                     value={addIngredientsToItem.ingredient_id}
                                                     onChange={handleAddIngredientsToItemChange}
-                                                />
+                                                    className={managerStyles.addInventoryToItemDropDown}
+                                                >
+                                                    <option>Select An Inventory</option>
+                                                    {inventoryItems.map((ingredient) => (
+                                                        <option key={ingredient.ingredient_id} value={ingredient.ingredient_id}>
+                                                            {ingredient.ingredient_name}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                                 <input
                                                     type="number"
                                                     name="num_ingredients"
                                                     placeholder="Number of Ingredients"
                                                     value={addIngredientsToItem.num_ingredients}
                                                     onChange={handleAddIngredientsToItemChange}
+                                                    className={managerStyles.addInventoryToItemInput}
                                                 />
                                                 <button type="submit">Submit</button>
                                                 <button onClick={() => setShowAddIngredientsToItemForm(null)}>Cancel</button>
@@ -627,6 +852,9 @@ function Manager() {
                         onClick = {() => getSalesByTime(startDate, endDate, selectedItem)}>
                             View Sales
                     </button>
+                    <div>
+                    {isShowingSalesData && <canvas ref={salesChartRef}></canvas>}
+                    </div>
                     <ul className={managerStyles.salesDataList}>
                         {salesData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
@@ -636,6 +864,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
+                
 
                 <br></br>
                 {/* Popular Item Pairs Div */}
@@ -653,6 +882,9 @@ function Manager() {
                         onClick={() => getWhatSellsTogether(PopularPairstartDate, PopularPairendDate)}>
                             View Pairs
                     </button>
+                    <div>
+                    {isShowingPopularPairs && <canvas ref={pairChartRef}></canvas>}
+                    </div>
                     <ul>
                         {popularPairsData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
@@ -662,6 +894,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
+                
             </section>
 
             {/* Inventory List Section */}
@@ -779,6 +1012,9 @@ function Manager() {
                         onClick={() => getLowStock()}>
                             View Alarm
                     </button>
+                    <div>
+                    {isShowingLowStock && <canvas className={managerStyles.lowStockChart} ref={lowChartRef}></canvas>}
+                    </div>
                     <ul>
                         {lowStock.map((report, index) => (
                             //Need Back-end implement - list out sales. 
@@ -788,6 +1024,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
+                
             </section>
 
             {/* Employee Schedules Section
