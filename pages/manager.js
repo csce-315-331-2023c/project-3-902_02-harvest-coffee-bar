@@ -362,7 +362,7 @@ function Manager() {
 
     }
 
-   
+
     /* STATISTICAL FUNCTIONS */
     const getOrdersByTime = async (start_time, end_time) => {
         setOrderData([]);
@@ -1173,7 +1173,7 @@ function Manager() {
                 </div>
 
             </section>
-                            
+
             {/* User Managerment Section  */}
             {userRole === 'Admin' && (
                 <UserManagement />
@@ -1194,7 +1194,7 @@ function UserManagement() {
     const [editingUser, setEditingUser] = useState(null);
 
     // User Management component content
-    
+
     const fetchUsers = async () => {
         try {
             const response = await fetch(`${server}/api/admin/get_all_users`);
