@@ -54,7 +54,7 @@ function Manager() {
     const [PopularPairendDate, setPopularPairEndDate] = useState('');
     const pairChartRef = useRef(null);
     const [isShowingPopularPairs, setShowingPopularPairs] = useState(false);
-    
+
     //inventory list section state
     const [inventoryItems, setInventoryItems] = useState([]);
     const [isInventoryVisible, setIsInventoryVisible] = useState(false);
@@ -83,10 +83,10 @@ function Manager() {
     const [users, setUsers] = useState([]);
     const [showUserManagement, setShowUserManagement] = useState(false);
     const [showAddUserForm, setShowAddUserForm] = useState(false);
-    const [newUser, setNewUser] = useState({ 
-        employee_name: '', 
-        employee_title: '', 
-        employee_email: '' 
+    const [newUser, setNewUser] = useState({
+        employee_name: '',
+        employee_title: '',
+        employee_email: ''
     });
     const [editingUser, setEditingUser] = useState(null);
 
@@ -195,8 +195,8 @@ function Manager() {
         }
 
         try {
-            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload)});
-        
+            const response = await fetch(`${server}/api/manager/get_inventory_by_item`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+
             if (response.ok) {
                 const data = await response.json();
                 return data;
@@ -214,7 +214,7 @@ function Manager() {
         if (event.target.tagName === 'BUTTON' || event.target.tagName === 'SELECT' || event.target.tagName === 'BUTTON' || event.target.tagName === 'OPTION') {
             return;
         }
-        
+
         try {
             const inventoryData = await getInventoryByItem(itemId);
             const updatedInventory = { [itemId]: inventoryData };
@@ -282,17 +282,17 @@ function Manager() {
     }
 
     //Front-end handling function for editMenuItem {
-    const handleUpdate = (currentCount , ingredient_id) => {
+    const handleUpdate = (currentCount, ingredient_id) => {
 
-            const newCount = prompt(`Enter current count for the ingredient (Current Count: ${currentCount}):`, currentCount);
-    
-            if (newCount !== null && newCount !== '') {
-                updateItemInInventory(newCount, ingredient_id);
-            }
-    
-            viewAllInInventory();
-        };
-        //}
+        const newCount = prompt(`Enter current count for the ingredient (Current Count: ${currentCount}):`, currentCount);
+
+        if (newCount !== null && newCount !== '') {
+            updateItemInInventory(newCount, ingredient_id);
+        }
+
+        viewAllInInventory();
+    };
+    //}
 
     const addInventoryItem = async (ingredient_name, ingredient_count, max_ingredient_count) => {
 
@@ -360,11 +360,11 @@ function Manager() {
                 is_active: is_active,
                 menu_item_id: menu_item_id
             }
-    
+
             console.log(payload);
-    
+
             await fetch(`${server}/api/manager/toggle_is_active`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    
+
         }
 
     }
@@ -444,15 +444,14 @@ function Manager() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    employee_name: editingUser.employee_name, 
-                    employee_role: editingUser.employee_title,  
-                    employee_email: editingUser.employee_email, 
+                    employee_role: editingUser.employee_title,
+                    employee_email: editingUser.employee_email,
                 }),
             });
-    
+
             if (response.ok) {
-                setEditingUser(null); 
-                fetchUsers(); 
+                setEditingUser(null);
+                fetchUsers();
             } else {
                 console.error('Failed to edit user');
             }
@@ -461,11 +460,28 @@ function Manager() {
         }
     };
     //}
-    
+
 
     // Function to handle deleting a user
-    const handleDeleteUser = (userId) => {
+    const handleDeleteUser = async (userId) => {
         // Implement delete user functionality
+        try {
+            const response = await fetch(`${server}/api/admin/delete_user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ employee_id: userId }),
+            });
+
+            if (response.ok) {
+                fetchUsers();
+            } else {
+                console.error('Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
     };
 
     /* STATISTICAL FUNCTIONS */
@@ -481,7 +497,7 @@ function Manager() {
 
         try {
             const response = await fetch(`${server}/api/manager/get_orders_by_time`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        
+
             if (response.ok) {
                 const report = await response.json();
                 console.log(report);
@@ -517,7 +533,7 @@ function Manager() {
                 setTimeout(() => {
                     setShowingSalesData(true);
                 }, 100);
-                
+
             } else {
                 console.error("Unable to fetch sales report.");
             }
@@ -541,7 +557,7 @@ function Manager() {
 
             if (response.ok) {
                 const report = await response.json();
-                setExcessReports (report.data);
+                setExcessReports(report.data);
 
                 setTimeout(() => {
                     setShowingExcess(true);
@@ -562,7 +578,7 @@ function Manager() {
 
             if (response.ok) {
                 const report = await response.json();
-                setLowStock (report.data);
+                setLowStock(report.data);
 
                 setTimeout(() => {
                     setShowingLowStock(true);
@@ -603,7 +619,7 @@ function Manager() {
     //////////////////////////
     // Chart Implementation //
     //////////////////////////
-    
+
     // Sales Chart
     useEffect(() => {
         if (salesData.length > 0 && isShowingSalesData) {
@@ -619,7 +635,7 @@ function Manager() {
                 type: 'bar',
                 data: {
                     labels: salesData.map(item => item.item),
-                    datasets:[{
+                    datasets: [{
                         label: 'Total Units Sold',
                         backgroundColor: 'rgba(95, 135, 107, 1)',
                         borderWidth: 0,
@@ -689,7 +705,7 @@ function Manager() {
                 type: 'bar',
                 data: {
                     labels: pairsData.map(item => `${item.i1_name}:${item.i2_name}`),
-                    datasets:[{
+                    datasets: [{
                         label: 'Pair Units Sold',
                         backgroundColor: 'rgba(95, 135, 107, 1)',
                         borderWidth: 0,
@@ -753,7 +769,7 @@ function Manager() {
                 type: 'bar',
                 data: {
                     labels: excessReports.map(item => item.ingredient_name),
-                    datasets:[{
+                    datasets: [{
                         label: 'Num Sold',
                         backgroundColor: 'rgba(95, 135, 107, 1)',
                         borderWidth: 0,
@@ -874,7 +890,7 @@ function Manager() {
         fetchUsers();
     }, []);
 
-    
+
 
     return (
         <div className={managerStyles.ManagerGUI}>
@@ -900,7 +916,7 @@ function Manager() {
                             <button
                                 className={managerStyles.addItemButton}
                                 onClick={showAddItemFormHandler}>
-                                    Add new item
+                                Add new item
                             </button>
                             {showAddItemForm && (
                                 <form onSubmit={submitAddItemForm}>
@@ -942,12 +958,12 @@ function Manager() {
                                     <button
                                         className={managerStyles.addItemFormButton}
                                         type="submit">
-                                            Submit
+                                        Submit
                                     </button>
                                     <button
                                         className={managerStyles.addItemFormButton}
                                         onClick={() => setShowAddItemForm(false)}>
-                                            Cancel
+                                        Cancel
                                     </button>
                                 </form>
                             )}
@@ -966,12 +982,12 @@ function Manager() {
                                             <button
                                                 className={managerStyles.addInventoryButton}
                                                 onClick={() => setShowAddIngredientsToItemForm(item.menu_item_id)}>
-                                                    Add new inventory
+                                                Add new inventory
                                             </button>
                                             <button
                                                 className={managerStyles.editButton}
                                                 onClick={() => handleEdit(item.menu_item_id, item.price)}>
-                                                    Edit price
+                                                Edit price
                                             </button>
                                             <select
                                                 className={managerStyles.statusDropdown}
@@ -985,7 +1001,7 @@ function Manager() {
                                     <div className={managerStyles.addIngredientsToItemToMenuItemForm}>
                                         {showAddIngredientsToItemForm === item.menu_item_id && (
                                             <form onSubmit={(e) => submitAddIngredientsToItemForm(e, item.menu_item_id)}>
-                                                 <select
+                                                <select
                                                     name="ingredient_id"
                                                     value={addIngredientsToItem.ingredient_id}
                                                     onChange={handleAddIngredientsToItemChange}
@@ -1043,29 +1059,29 @@ function Manager() {
             </section>
 
             {/* Order Trends Section */}
-            <section className = {managerStyles.orderTrends}>
+            <section className={managerStyles.orderTrends}>
                 <h2>Order Trends</h2>
 
                 {/* Orders Div */}
-                <div className = {managerStyles.salesData}>
+                <div className={managerStyles.salesData}>
                     <h3>View Orders:</h3>
-                    <label className = {managerStyles.salesDataLabel}>
-                            Start Date:
-                        <input type = "date" value = {orderStartDate} onChange = {(e) => setOrderStartDate(e.target.value)} />
+                    <label className={managerStyles.salesDataLabel}>
+                        Start Date:
+                        <input type="date" value={orderStartDate} onChange={(e) => setOrderStartDate(e.target.value)} />
                     </label>
-                    <label className = {managerStyles.salesDataLabel}>
-                            End Date:
-                        <input type = "date" value = {orderEndDate} onChange ={ (e) => setOrderEndDate(e.target.value)} />
+                    <label className={managerStyles.salesDataLabel}>
+                        End Date:
+                        <input type="date" value={orderEndDate} onChange={(e) => setOrderEndDate(e.target.value)} />
                     </label>
                     <button
-                        className = {managerStyles.salesDataButton}
-                        onClick = {() => getOrdersByTime(orderStartDate, orderEndDate)}>
-                            View Orders
+                        className={managerStyles.salesDataButton}
+                        onClick={() => getOrdersByTime(orderStartDate, orderEndDate)}>
+                        View Orders
                     </button>
                     <ul className={managerStyles.salesDataList}>
                         {orderData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
-                            <li key = {index} className = {managerStyles.salesDataListItem}>
+                            <li key={index} className={managerStyles.salesDataListItem}>
                                 Order-ID: {data.order_id} |  Total Price: {data.total_price} | Customer: {data.customer_name} - {data.customer_id} | Timestamp: {data.order_date}
                             </li>
                         ))}
@@ -1074,64 +1090,64 @@ function Manager() {
 
                 <br></br>
                 {/* Sales Report Div */}
-                <div className = {managerStyles.salesData}>
+                <div className={managerStyles.salesData}>
                     <h3>Sales Report: </h3>
-                    <label className = {managerStyles.salesDataLabel}>
-                            Start Date:
-                        <input type = "date" value = {startDate} onChange = {(e) => setStartDate(e.target.value)} />
+                    <label className={managerStyles.salesDataLabel}>
+                        Start Date:
+                        <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                     </label>
-                    <label className = {managerStyles.salesDataLabel}>
-                            End Date:
-                        <input type = "date" value = {endDate} onChange ={ (e) => setEndDate(e.target.value)} />
+                    <label className={managerStyles.salesDataLabel}>
+                        End Date:
+                        <input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                     </label>
-                    <label className = {managerStyles.salesDataLabel}>
-                            Item: &nbsp;
-                        <select value = {selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
+                    <label className={managerStyles.salesDataLabel}>
+                        Item: &nbsp;
+                        <select value={selectedItem} onChange={(e) => setSelectedItem(e.target.value)}>
                             <option value="All">All Items</option>
                             {menuItems.map((item) => (
-                                <option key = {item.menu_item_id} value = {item.menu_item_name}>
+                                <option key={item.menu_item_id} value={item.menu_item_name}>
                                     {item.menu_item_name}
                                 </option>
                             ))}
                         </select>
                     </label>
                     <button
-                        className = {managerStyles.salesDataButton}
-                        onClick = {() => getSalesByTime(startDate, endDate, selectedItem)}>
-                            View Sales
+                        className={managerStyles.salesDataButton}
+                        onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
+                        View Sales
                     </button>
                     <div>
-                    {isShowingSalesData && <canvas ref={salesChartRef}></canvas>}
+                        {isShowingSalesData && <canvas ref={salesChartRef}></canvas>}
                     </div>
                     <ul className={managerStyles.salesDataList}>
                         {salesData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
-                            <li key = {index} className = {managerStyles.salesDataListItem}>
+                            <li key={index} className={managerStyles.salesDataListItem}>
                                 {data.item}: {data.total_sales}, total profit: {data.total_profit}
                             </li>
                         ))}
                     </ul>
                 </div>
-                
+
 
                 <br></br>
                 {/* Popular Item Pairs Div */}
                 <div className={managerStyles.popularPairs}>
                     <h3>Popular Item Pairs: </h3>
                     <label>
-                            Start Date:
+                        Start Date:
                         <input type="date" value={PopularPairstartDate} onChange={(e) => setPopularPairStartDate(e.target.value)} />
                     </label>
                     <label>
-                            End Date:
+                        End Date:
                         <input type="date" value={PopularPairendDate} onChange={(e) => setPopularPairEndDate(e.target.value)} />
                     </label>
                     <button
                         onClick={() => getWhatSellsTogether(PopularPairstartDate, PopularPairendDate)}>
-                            View Pairs
+                        View Pairs
                     </button>
                     <div>
-                    {isShowingPopularPairs && <canvas ref={pairChartRef}></canvas>}
+                        {isShowingPopularPairs && <canvas ref={pairChartRef}></canvas>}
                     </div>
                     <ul>
                         {popularPairsData.map((data, index) => (
@@ -1142,13 +1158,13 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
-                
+
             </section>
 
             {/* Inventory List Section */}
-            <section className = {managerStyles.InventoryList}> 
+            <section className={managerStyles.InventoryList}>
                 <h2>Inventory List</h2>
-                <button 
+                <button
                     className={managerStyles.viewListButton}
                     onClick={toggleInventoryVisibility}>
                     {isInventoryVisible ? 'Hide Inventory' : 'View All Inventory'}
@@ -1159,7 +1175,7 @@ function Manager() {
                             <button
                                 className={managerStyles.addInventoryButton}
                                 onClick={showAddInventoryFormHandler}>
-                                    Add new ingredient
+                                Add new ingredient
                             </button>
                             {showAddInventoryForm && (
                                 <form onSubmit={submitAddInventoryForm}>
@@ -1183,7 +1199,7 @@ function Manager() {
                                     </div>
                                     <div className={managerStyles.addInventoryInput}>
                                         <input
-                                            type="number" 
+                                            type="number"
                                             name="max_ingredient_count"
                                             placeholder="Maximum Ingredient Count"
                                             value={newInventory.max_ingredient_count}
@@ -1193,12 +1209,12 @@ function Manager() {
                                     <button
                                         className={managerStyles.addInventoryFormButton}
                                         type="submit">
-                                            Submit
+                                        Submit
                                     </button>
                                     <button
                                         className={managerStyles.addInventoryFormButton}
                                         onClick={() => setShowAddInventoryForm(false)}>
-                                            Cancel
+                                        Cancel
                                     </button>
                                 </form>
                             )}
@@ -1206,51 +1222,51 @@ function Manager() {
                         <ul>
                             {inventoryItems.map((item, index) => (
                                 <li key={index}>
-                                        <span>
-                                            {item.ingredient_name} (ID: {item.ingredient_id}) - Quantity: {item.ingredient_count}
-                                        </span>
-                                        <div className={managerStyles.buttonContainer}>
-                                            <button
-                                                className={managerStyles.editButton}
-                                                onClick={() => handleUpdate(item.ingredient_count, item.ingredient_id)}>
-                                                    Update Inventory
-                                            </button>
-                                            <button
-                                                className={managerStyles.deleteButton}
-                                                onClick={() => deleteInventoryItem(item.ingredient_id)}>
-                                                    X
-                                            </button>
-                                        </div>
+                                    <span>
+                                        {item.ingredient_name} (ID: {item.ingredient_id}) - Quantity: {item.ingredient_count}
+                                    </span>
+                                    <div className={managerStyles.buttonContainer}>
+                                        <button
+                                            className={managerStyles.editButton}
+                                            onClick={() => handleUpdate(item.ingredient_count, item.ingredient_id)}>
+                                            Update Inventory
+                                        </button>
+                                        <button
+                                            className={managerStyles.deleteButton}
+                                            onClick={() => deleteInventoryItem(item.ingredient_id)}>
+                                            X
+                                        </button>
+                                    </div>
                                 </li>
                             ))}
                         </ul>
-                </div>
+                    </div>
                 )}
             </section>
 
             {/* Stock Report Section */}
-            <section className = {managerStyles.stockReport}>
+            <section className={managerStyles.stockReport}>
                 <h2>Stock Reports</h2>
                 {/* Excess Reports Div */}
-                <div className = {managerStyles.excessReports}>
+                <div className={managerStyles.excessReports}>
                     <h3>Excess Reports: </h3>
-                    <label className = {managerStyles.excessReportsLabel}>
-                            Start Date:
-                        <input type = "date" value = {excessReportstartDate} onChange = {(e) => setExcessReportstartDate(e.target.value)} />
+                    <label className={managerStyles.excessReportsLabel}>
+                        Start Date:
+                        <input type="date" value={excessReportstartDate} onChange={(e) => setExcessReportstartDate(e.target.value)} />
                     </label>
-                    <label className = {managerStyles.excessReportsLabel}>
-                            End Date:
+                    <label className={managerStyles.excessReportsLabel}>
+                        End Date:
                         <input type="date" value={excessReportEndDate} onChange={(e) => setExcessReportEndDate(e.target.value)} />
                     </label>
-                    <button 
+                    <button
                         className={managerStyles.excessReportsButton}
                         onClick={() => getExcessReport(excessReportstartDate, excessReportEndDate)}>
-                            View Reports
+                        View Reports
                     </button>
                     <ul className={managerStyles.excessReportsList}>
                         {excessReports.map((report, index) => (
-                            <li key={index} className = {managerStyles.excessReportsListItem}>
-                               {report.ingredient_name} - Sold: {report.total_items_sold}
+                            <li key={index} className={managerStyles.excessReportsListItem}>
+                                {report.ingredient_name} - Sold: {report.total_items_sold}
                             </li>
                         ))}
                     </ul>
@@ -1263,10 +1279,10 @@ function Manager() {
                     <h3>Low Stock Alarm: </h3>
                     <button
                         onClick={() => getLowStock()}>
-                            View Alarm
+                        View Alarm
                     </button>
                     <div>
-                    {isShowingLowStock && <canvas className={managerStyles.lowStockChart} ref={lowChartRef}></canvas>}
+                        {isShowingLowStock && <canvas className={managerStyles.lowStockChart} ref={lowChartRef}></canvas>}
                     </div>
                     <ul>
                         {lowStock.map((report, index) => (
@@ -1277,22 +1293,22 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
-                
+
             </section>
 
             {/* User Managerment Section  */}
-            <section className = {managerStyles.userManagement}>
+            <section className={managerStyles.userManagement}>
                 <h2>User Management</h2>
-                <button 
+                <button
                     onClick={toggleUserManagementVisibility}>
                     {showUserManagement ? 'Hide Users' : 'Show Users'}
                 </button>
                 {showUserManagement && (
                     <div className={managerStyles.scrollableContainer}>
                         <div className={managerStyles.addUserForm}>
-                            <button 
+                            <button
                                 onClick={handleShowAddUserForm}>
-                                    Add User
+                                Add User
                             </button>
                             {showAddUserForm && (
                                 <form onSubmit={handleAddUserSubmit}>
@@ -1330,14 +1346,14 @@ function Manager() {
                                             required
                                         />
                                     </div>
-                                    <button 
+                                    <button
                                         type="submit">
-                                            Submit
+                                        Submit
                                     </button>
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         onClick={handleCancelAddUser}>
-                                            Cancel
+                                        Cancel
                                     </button>
                                 </form>
                             )}
@@ -1351,13 +1367,13 @@ function Manager() {
                                             Name: {user.employee_name}
                                         </div>
                                         <div className={managerStyles.nameLineButton}>
-                                            <button 
+                                            <button
                                                 onClick={() => handleEditUser(user.employee_id)}>
-                                                    Edit
+                                                Edit
                                             </button>
-                                            <button 
+                                            <button
                                                 onClick={() => handleDeleteUser(user.employee_id)}>
-                                                    Delete
+                                                Delete
                                             </button>
                                         </div>
                                     </div>
@@ -1412,7 +1428,7 @@ function Manager() {
                         </ul>
                     </div>
                 )}
-            </section>   
+            </section>
         </div>
     );
 }

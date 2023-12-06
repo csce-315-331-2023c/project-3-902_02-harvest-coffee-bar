@@ -78,10 +78,10 @@ const Customer = () => {
 			// Non-guest checkout
 			const customerEmail = JSON.parse(customerInfo).email;
 			// Fetch customer id using email (create one if not found)
-			const response = await fetch(`${server}/api/customer/get_customer_id`, { 
-				method: 'POST', 
-				headers: { 'Content-Type': 'application/json' }, 
-				body: JSON.stringify({ email: customerEmail }) 
+			const response = await fetch(`${server}/api/customer/get_customer_id`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify({ email: customerEmail })
 			});
 			const data = await response.json();
 			customerID = data.id;

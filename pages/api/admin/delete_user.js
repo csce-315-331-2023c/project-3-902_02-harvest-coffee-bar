@@ -18,12 +18,14 @@ export default async (req, res) => {
         DELETE FROM
             employees
         WHERE
-            employee_email = $1;`
+            employee_id = $1;`
 
-        const deleteParams = [req.body.employee_email];
+        const deleteParams = [req.body.employee_id];
+        client.query(deleteQuery, deleteParams);
 
-        const result = await client.query(deleteQuery, deleteParams);
+        await client.query('COMMIT;');
         res.status(200).json({ message: "done" });
+
     } catch (error) {
         // disregard if an error is caught
         await client.query('ROLLBACK;');
