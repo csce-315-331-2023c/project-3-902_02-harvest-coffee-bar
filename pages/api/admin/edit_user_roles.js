@@ -20,15 +20,17 @@ export default async (req, res) => {
                 employees
             SET
                 employee_name = $1,
-                employee_title = $2
+                employee_title = $2,
+                employee_email = $3
             WHERE
-                employee_email = $3;
+                employee_id = $4;
         `;
 
         const editParams = [
             req.body.employee_name,
             req.body.employee_role,
-            req.body.employee_email
+            req.body.employee_email,
+            req.body.employee_id
         ];
 
         client.query(editUserRoleQuery, editParams);

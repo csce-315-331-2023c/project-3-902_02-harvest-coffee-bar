@@ -8,8 +8,6 @@ import managerStyles from './components/ManagerGUIStyle.module.css'
 import Chart from 'chart.js/auto';
 import { useSession } from 'next-auth/react';
 
-
-
 function Manager() {
     ////////////////////////
     // Defalt State Below //
@@ -81,18 +79,9 @@ function Manager() {
     const [isShowingLowStock, setShowingLowStock] = useState(false);
 
     //user management section state
-    const [users, setUsers] = useState([]);
-    const [showUserManagement, setShowUserManagement] = useState(false);
-    const [showAddUserForm, setShowAddUserForm] = useState(false);
-    const [newUser, setNewUser] = useState({
-        employee_name: '',
-        employee_title: '',
-        employee_email: ''
-    });
-    const [editingUser, setEditingUser] = useState(null);
-
     const { data: session } = useSession();
-
+    const userRole = session?.user?.role;
+    console.log(session)
     /////////////////////////////
     // back-end function below //
     /////////////////////////////
@@ -382,121 +371,7 @@ function Manager() {
 
     }
 
-    const fetchUsers = async () => {
-        try {
-            const response = await fetch(`${server}/api/admin/get_all_users`);
-            const data = await response.json();
-            setUsers(data);
-        } catch (error) {
-            console.error('Error fetching users:', error);
-        }
-    };
-
-    const toggleUserManagementVisibility = () => {
-        setShowUserManagement(!showUserManagement);
-        if (!showUserManagement) {
-            fetchUsers();
-        }
-    };
-
-    const handleAddUser = async () => {
-        try {
-            const response = await fetch(`${server}/api/admin/add_new_user`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newUser),
-            });
-
-            if (response.ok) {
-                setNewUser({ employee_name: '', employee_title: '', employee_email: '' });
-                setShowAddUserForm(false);
-                fetchUsers();
-            } else {
-                console.error('Failed to add user');
-            }
-        } catch (error) {
-            console.error('Error adding user:', error);
-        }
-    };
-    // Function to handle adding a new user {
-    const handleAddUserSubmit = (event) => {
-        event.preventDefault();
-        handleAddUser();
-    };
-
-    const handleShowAddUserForm = () => {
-        setShowAddUserForm(true);
-    };
-
-    const handleCancelAddUser = () => {
-        setShowAddUserForm(false);
-        setNewUser({ employee_name: '', employee_title: '', employee_email: '' }); // Reset form
-    };
-
-    const handleNewUserChange = (e) => {
-        setNewUser({ ...newUser, [e.target.name]: e.target.value });
-    };
-    //}
-
-    const handleEditUser = (userId) => {
-        const userToEdit = users.find(user => user.employee_id === userId);
-        if (userToEdit) {
-            setEditingUser(userToEdit);
-        }
-    };
-
-    // Function to handle editing a user
-    const handleEditUserSubmit = async (event) => {
-        event.preventDefault();
-        try {
-            const response = await fetch(`${server}/api/admin/edit_user_roles`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    employee_name: editingUser.employee_name,
-                    employee_role: editingUser.employee_title,
-                    employee_email: editingUser.employee_email
-                }),
-            });
-
-            if (response.ok) {
-                setEditingUser(null);
-                fetchUsers();
-            } else {
-                console.error('Failed to edit user');
-            }
-        } catch (error) {
-            console.error('Error editing user:', error);
-        }
-    };
-    //}
-
-
-    // Function to handle deleting a user
-    const handleDeleteUser = async (userId) => {
-        // Implement delete user functionality
-        try {
-            const response = await fetch(`${server}/api/admin/delete_user`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ employee_id: userId }),
-            });
-
-            if (response.ok) {
-                fetchUsers();
-            } else {
-                console.error('Failed to delete user');
-            }
-        } catch (error) {
-            console.error('Error deleting user:', error);
-        }
-    };
+    
 
     /* STATISTICAL FUNCTIONS */
     const getOrdersByTime = async (start_time, end_time) => {
@@ -901,7 +776,6 @@ function Manager() {
     useEffect(() => {
         fetchMenuItems();
         viewAllInInventory();
-        fetchUsers();
     }, []);
 
 
@@ -1322,7 +1196,147 @@ function Manager() {
                 </div>
 
             </section>
+            {userRole === 'Admin' && (
+                <UserManagement />
+            )}
 
+        </div>
+    );
+}
+
+function UserManagement() {
+    const [users, setUsers] = useState([]);
+    const [showUserManagement, setShowUserManagement] = useState(false);
+    const [showAddUserForm, setShowAddUserForm] = useState(false);
+    const [newUser, setNewUser] = useState({
+        employee_name: '',
+        employee_title: '',
+        employee_email: ''
+    });
+    const [editingUser, setEditingUser] = useState(null);
+
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch(`${server}/api/admin/get_all_users`);
+            const data = await response.json();
+            setUsers(data);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    const toggleUserManagementVisibility = () => {
+        setShowUserManagement(!showUserManagement);
+        if (!showUserManagement) {
+            fetchUsers();
+        }
+    };
+
+    const handleAddUser = async () => {
+        try {
+            const response = await fetch(`${server}/api/admin/add_new_user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser),
+            });
+
+            if (response.ok) {
+                setNewUser({ employee_name: '', employee_title: '', employee_email: '' });
+                setShowAddUserForm(false);
+                fetchUsers();
+            } else {
+                console.error('Failed to add user');
+            }
+        } catch (error) {
+            console.error('Error adding user:', error);
+        }
+    };
+    // Function to handle adding a new user {
+    const handleAddUserSubmit = (event) => {
+        event.preventDefault();
+        handleAddUser();
+    };
+
+    const handleShowAddUserForm = () => {
+        setShowAddUserForm(true);
+    };
+
+    const handleCancelAddUser = () => {
+        setShowAddUserForm(false);
+        setNewUser({ employee_name: '', employee_title: '', employee_email: '' }); // Reset form
+    };
+
+    const handleNewUserChange = (e) => {
+        setNewUser({ ...newUser, [e.target.name]: e.target.value });
+    };
+    //}
+
+    const handleEditUser = (userId) => {
+        const userToEdit = users.find(user => user.employee_id === userId);
+        if (userToEdit) {
+            setEditingUser(userToEdit);
+        }
+    };
+
+    // Function to handle editing a user
+    const handleEditUserSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch(`${server}/api/admin/edit_user_roles`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    employee_id: editingUser.employee_id,
+                    employee_name: editingUser.employee_name,
+                    employee_role: editingUser.employee_title,
+                    employee_email: editingUser.employee_email
+                }),
+            });
+
+            if (response.ok) {
+                setEditingUser(null);
+                fetchUsers();
+            } else {
+                console.error('Failed to edit user');
+            }
+        } catch (error) {
+            console.error('Error editing user:', error);
+        }
+    };
+    //}
+
+
+    // Function to handle deleting a user
+    const handleDeleteUser = async (userId) => {
+        try {
+            const response = await fetch(`${server}/api/admin/delete_user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ employee_id: userId }),
+            });
+
+            if (response.ok) {
+                fetchUsers();
+            } else {
+                console.error('Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
+    
+    useEffect(() => {
+        fetchUsers();
+    }, []);
+    
+    return (
+        <div>
             {/* User Managerment Section  */}
             <section className={managerStyles.userManagement}>
                 <h2>User Management</h2>
@@ -1456,9 +1470,7 @@ function Manager() {
                     </div>
                 )}
             </section>
-
         </div>
     );
 }
-
 export default Manager;
