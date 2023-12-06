@@ -88,6 +88,8 @@ function Manager() {
         employee_title: '', 
         employee_email: '' 
     });
+    const [editingUser, setEditingUser] = useState(null);
+
 
     /////////////////////////////
     // back-end function below //
@@ -247,7 +249,6 @@ function Manager() {
 
         setAddIngredientsToItem({ ingredient_id: '', num_ingredients: '' });
         setShowAddIngredientsToItemForm(null);
-        //refresh the inventorylist -- need further implement
         handleMenuItemClick(menu_item_id);
     };
     //}
@@ -386,16 +387,15 @@ function Manager() {
     };
 
     const handleAddUser = async () => {
-
         try {
-            const response = await fetch(`${server}/api/path-to-add-user`, {
+            const response = await fetch(`${server}/api/admin/add_new_user`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(newUser),
             });
-    
+
             if (response.ok) {
                 setNewUser({ employee_name: '', employee_title: '', employee_email: '' });
                 setShowAddUserForm(false);
@@ -427,10 +427,41 @@ function Manager() {
     };
     //}
 
-    // Function to handle editing a user
     const handleEditUser = (userId) => {
-        // Implement edit user functionality
+        const userToEdit = users.find(user => user.employee_id === userId);
+        if (userToEdit) {
+            setEditingUser(userToEdit);
+        }
     };
+
+    // Function to handle editing a user
+    const handleEditUserSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch(`${server}/api/admin/edit_user_roles`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    employee_name: editingUser.employee_name, 
+                    employee_role: editingUser.employee_title,  
+                    employee_email: editingUser.employee_email, 
+                }),
+            });
+    
+            if (response.ok) {
+                setEditingUser(null); 
+                fetchUsers(); 
+            } else {
+                console.error('Failed to edit user');
+            }
+        } catch (error) {
+            console.error('Error editing user:', error);
+        }
+    };
+    //}
+    
 
     // Function to handle deleting a user
     const handleDeleteUser = (userId) => {
@@ -1276,14 +1307,18 @@ function Manager() {
                                         />
                                     </div>
                                     <div>
-                                        <input
-                                            type="text"
+                                        <select
                                             name="employee_title"
                                             value={newUser.employee_title}
                                             onChange={handleNewUserChange}
-                                            placeholder="Title"
                                             required
-                                        />
+                                        >
+                                            <option value="">Select Title</option>
+                                            <option value="Admin">Admin</option>
+                                            <option value="Manager">Manager</option>
+                                            <option value="Cashier">Cashier</option>
+                                            <option value="Customer">Customer</option>
+                                        </select>
                                     </div>
                                     <div>
                                         <input
@@ -1332,6 +1367,46 @@ function Manager() {
                                     <div className={managerStyles.otherLine}>
                                         Email: {user.employee_email}
                                     </div>
+                                    {editingUser && editingUser.employee_id === user.employee_id && (
+                                        <form onSubmit={handleEditUserSubmit}>
+                                            <div>
+                                                <input
+                                                    type="text"
+                                                    name="employee_name"
+                                                    value={editingUser.employee_name}
+                                                    onChange={e => setEditingUser({ ...editingUser, employee_name: e.target.value })}
+                                                    placeholder="Name"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <select
+                                                    name="employee_title"
+                                                    value={editingUser.employee_title}
+                                                    onChange={e => setEditingUser({ ...editingUser, employee_title: e.target.value })}
+                                                    required
+                                                >
+                                                    <option value="">Select Title</option>
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Manager">Manager</option>
+                                                    <option value="Cashier">Cashier</option>
+                                                    <option value="Customer">Customer</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <input
+                                                    type="email"
+                                                    name="employee_email"
+                                                    value={editingUser.employee_email}
+                                                    onChange={e => setEditingUser({ ...editingUser, employee_email: e.target.value })}
+                                                    placeholder="Email"
+                                                    required
+                                                />
+                                            </div>
+                                            <button type="submit">Submit</button>
+                                            <button type="button" onClick={() => setEditingUser(null)}>Cancel</button>
+                                        </form>
+                                    )}
                                 </li>
                             ))}
                         </ul>
