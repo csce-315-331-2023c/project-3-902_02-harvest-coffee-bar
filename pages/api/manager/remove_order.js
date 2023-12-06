@@ -10,30 +10,31 @@ export default async (req, res) => {
     // avoid race conditions
     const client = await connection.connect();
 
-    // delete item from menu
+    // add item to menu
     try {
 
         await client.query('BEGIN;');
 
-        const editUserRoleQuery = `
-            UPDATE
-                employees
-            SET
-                employee_name = $1,
-                employee_title = $2,
-                employee_email = $3
-            WHERE
-                employee_id = $4;
-        `;
-
-        const editParams = [
-            req.body.employee_name,
-            req.body.employee_role,
-            req.body.employee_email,
-            req.body.employee_id
+        const orderParameters = [
+            req.body.order_id
         ];
 
-        client.query(editUserRoleQuery, editParams);
+        const deleteOrderItemsQuery = `
+            DELETE FROM
+                ordered_items
+            WHERE
+                ordered_id = $1;
+        `;
+
+        const deleteOrderQuery = `
+            DELETE FROM
+                orders
+            WHERE
+                order_id = $1;
+        `
+
+        client.query(deleteOrderItemsQuery, orderParameters);
+        client.query(deleteOrderQuery, orderParameters);
 
         // push statements to database
         await client.query('COMMIT;');
@@ -41,13 +42,13 @@ export default async (req, res) => {
 
     } catch (error) {
 
-        // disregard if error is caught
+        // disregard if an error is caught
         await client.query('ROLLBACK;');
         throw (error);
 
     } finally {
 
-        // release client back into pool
+        // release client back into the pool
         client.release();
 
     }
