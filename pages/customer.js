@@ -79,10 +79,11 @@ const Customer = () => {
 		if (session) {
 			// Non-guest checkout
 			const customerEmail = session.user.email;
+			const customerName = session.user.name;
 			console.log('customerEmail:', customerEmail);
 			// Fetch customer id using email (create one if not found)
 			const response = await fetch(`${server}/api/customer/customer_id`,
-				{ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: customerEmail }) });
+				{ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: customerEmail, name: customerName }) });
 			const data = await response.json();
 			customerID = data.id;
 		} else {
