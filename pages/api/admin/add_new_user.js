@@ -23,32 +23,20 @@ export default async (req, res) => {
         await client.query('BEGIN;');
 
         // grab new order id
-        const newIdQuery = await connection.query("SELECT MAX(order_id) + 1 as new_id FROM orders;");
-        const newOrderID = newIdQuery.rows[0].new_id;
+        const newIdQuery = await connection.query("SELECT MAX(employee_id) + 1 as new_id FROM employees;");
+        const newUserID = newIdQuery.rows[0].new_id;
 
         // push order to database
-        const insertOrderStatement = `
+        const addNewUserStatement = `
                 INSERT INTO
-                    orders(order_id, order_type, total_price, order_date, customer_id)
+                    employees(employee_id, employee_name, employee_title, employee_email)
                 VALUES 
-                    ($1, 'Dine-In', $2, $3, $4);
+                    ($1, $2, $3, $4);
                 `;
 
-        const orderParams = [newOrderID, req.body.total_price, req.body.order_date, req.body.customer_id]
-        client.query(insertOrderStatement, orderParams);
+        const userParams = [newUserID, req.body.employee_name, req.body.employee_title, req.body.employee_email]
 
-        // associate items to an order
-        const orderedItemStatement = `
-                INSERT INTO
-                    ordered_items(ordered_id, menu_item_id, num_items)
-                VALUES
-                    ($1, $2, $3);
-        `;
-
-        for (let i = 0; i < req.body.ordered_items.length; ++i) {
-            const orderedItemParams = [newOrderID, req.body.ordered_items[i].menu_item_id, 1];
-            client.query(orderedItemStatement, orderedItemParams);
-        }
+        client.query(addNewUserStatement, userParams);
 
         // push statements to database
         await client.query('COMMIT;');

@@ -40,6 +40,45 @@
     box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
 }
 
+.ManagerGUI select {
+    margin: 7.5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+    background-color: #51544e;
+    color: white; 
+}
+
+.ManagerGUI select:hover {
+    background-color: #45503b;
+    border-color: #f0f0f0;
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ManagerGUI input {
+    margin: 7.5px;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-size: 0.9em;
+    background-color: #51544e;
+    color: white; 
+}
+
+.ManagerGUI input:hover {
+    box-shadow: 0 15px 15px rgba(0, 0, 0, 0.1);
+}
+
+.ManagerGUI canvas{
+    margin: 50px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    border-color:rgba(93, 172, 129, 0.685)
+}
+
 /* Section Styles */
 .ManagerGUI section {
     border: 1px solid #424d42; /* Border color adjusted */
@@ -133,6 +172,10 @@
 
 .menuItemsList .inventoryListItem:hover {
     background-color: #d8d8d8;
+}
+
+.menuItemsList .addInventoryToItemDropDown {
+    width: 200px;
 }
 
 .menuItemsList .addItemButton, .addInventoryButton, .editButton, .statusDropdown {
@@ -371,6 +414,11 @@
     border-color: #537e53;
 }
 
+.stockReport .excessReportsLabel {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
 .stockReport .lowStockAlarm {
     max-height: 500px; 
     overflow-y: auto;
@@ -406,9 +454,46 @@
     flex-direction: column;
 }
 
-.ManagerGUI canvas{
-    margin: 50px;
-    border: 1px solid #ccc;
+.userManagement .scrollableContainer {
+    max-height: 500px; 
+    overflow-y: auto;
+    border: 1px solid #ccc; 
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background-color:#5f726b; 
+    border-color: #537e53;
+}
+
+.userManagement .addUserForm {
     border-radius: 7px;
-    border-color:rgba(93, 172, 129, 0.685)
+    background-color: #424d42;
+    margin-bottom: 10px;
+}
+
+.userManagement ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 5; 
+}
+
+.userManagement li {
+    margin-bottom: 10px;
+    padding: 5px;
+    background-color: #424d42; 
+    border-radius: 7px;
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.userManagement .nameLine {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.userManagement .otherLine {
+    margin-bottom: 10px;
 }
