@@ -41,25 +41,14 @@ export default NextAuth({
 				} catch (error) {
 					console.error("Error:", error);
 				}
-
-
-				// if (user.email == 'tomsterqaz@tamu.edu') {
-				// 	token.role = 'admin';
-				// } else {
-				// 	token.role = 'customer';
-				// }
-
 			}
 
 			return token;
 		},
 		async session({ session, token }) {
-			// console.log(session);
-			// console.log(token);
 			session.user.id = token.id;
 			session.user.role = token.role;
 
-			//console.log(session);
 			return session;
 		},
 	},
