@@ -72,19 +72,17 @@ const Customer = () => {
 	};
 
 	const handleCheckout = async () => {
-		const session = await getSession(context)
+		const session = await getSession()
 		// const customerInfo = sessionStorage.getItem('customerInfo');
 		let customerID;
-
+		console.log('session:',session);
 		if (session) {
 			// Non-guest checkout
 			const customerEmail = session.user.email;
+			console.log('customerEmail:', customerEmail);
 			// Fetch customer id using email (create one if not found)
-			const response = await fetch(`${server}/api/customer/get_customer_id`, { 
-				method: 'POST', 
-				headers: { 'Content-Type': 'application/json' }, 
-				body: JSON.stringify({ email: customerEmail }) 
-			});
+			const response = await fetch(`${server}/api/customer/get_customer_id`, 
+				{ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: customerEmail }) });
 			const data = await response.json();
 			customerID = data.id;
 		} else {

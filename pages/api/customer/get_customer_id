@@ -1,5 +1,5 @@
 // pages/api/get_customer_id.js
-import connection from '../../backend/database';
+import connection from '../../../backend/database';
 
 export default async function handler(req, res) {
   const { email } = req.body;
