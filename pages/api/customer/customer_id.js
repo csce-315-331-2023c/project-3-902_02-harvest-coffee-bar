@@ -18,7 +18,7 @@ export default async function handler(req, res) {
       // If the customer doesn't exist, create a new one
       const newIdQuery = await connection.query("SELECT MAX(customer_id) + 1 as new_id FROM orders;");
       const newCustomerID = newIdQuery.rows[0].new_id;
-      const result = await connection.query('INSERT INTO customer(customer_id, customer_name, customer_points, customer_email) VALUES($1, $2, $3, $4)', [newCustomerID, name, points, email]);
+      const result = await connection.query('INSERT INTO customer(customer_id, customer_name, customer_points, customer_email) VALUES($1, $2, $3, $4) RETURNING customer_id', [newCustomerID, name, points, email]);
       customerId = result.rows[0].customer_id;
     }
 

@@ -81,7 +81,7 @@ const Customer = () => {
 			const customerEmail = session.user.email;
 			console.log('customerEmail:', customerEmail);
 			// Fetch customer id using email (create one if not found)
-			const response = await fetch(`${server}/api/customer/get_customer_id`,
+			const response = await fetch(`${server}/api/customer/customer_id`,
 				{ method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: customerEmail }) });
 			const data = await response.json();
 			customerID = data.id;
