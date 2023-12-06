@@ -446,6 +446,7 @@ function Manager() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    employee_name: editingUser.employee_id,
                     employee_name: editingUser.employee_name,
                     employee_role: editingUser.employee_title,
                     employee_email: editingUser.employee_email
