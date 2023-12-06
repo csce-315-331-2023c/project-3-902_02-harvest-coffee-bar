@@ -3,6 +3,7 @@ import styles from './components/CustomerGUIStyle.module.css';
 import { server } from '../config';
 import Link from 'next/link';
 import NavBar from './components/NavBar.js'
+import { getSession } from 'next-auth/react'
 
 const Customer = () => {
 	const [receipt, setReceipt] = useState([]);
@@ -71,12 +72,13 @@ const Customer = () => {
 	};
 
 	const handleCheckout = async () => {
-		const customerInfo = sessionStorage.getItem('customerInfo');
+		const session = await getSession(context)
+		// const customerInfo = sessionStorage.getItem('customerInfo');
 		let customerID;
 
-		if (customerInfo) {
+		if (session) {
 			// Non-guest checkout
-			const customerEmail = JSON.parse(customerInfo).email;
+			const customerEmail = session.user.email;
 			// Fetch customer id using email (create one if not found)
 			const response = await fetch(`${server}/api/customer/get_customer_id`, { 
 				method: 'POST', 

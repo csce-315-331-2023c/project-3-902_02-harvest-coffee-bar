@@ -17,7 +17,7 @@ export default NextAuth({
 		async jwt({ token, user }) {
 
 			if (user) {
-
+        token.email = user.email;
 				var payload = {
 					employee_email: user.email
 				}
