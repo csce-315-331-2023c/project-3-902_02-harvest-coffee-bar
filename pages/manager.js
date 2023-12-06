@@ -1308,7 +1308,6 @@ function UserManagement() {
     };
     
     useEffect(() => {
-
         fetchUsers();
     }, []);
     
