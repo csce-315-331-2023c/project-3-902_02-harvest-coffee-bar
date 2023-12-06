@@ -71,8 +71,25 @@ const Customer = () => {
 	};
 
 	const handleCheckout = async () => {
+		const customerInfo = sessionStorage.getItem('customerInfo');
+		let customerID;
 
-		const customerID = prompt("Please enter the customer ID");
+		if (customerInfo) {
+			// Non-guest checkout
+			const customerEmail = JSON.parse(customerInfo).email;
+			// Fetch customer id using email (create one if not found)
+			const response = await fetch(`${server}/api/customer/get_customer_id`, { 
+				method: 'POST', 
+				headers: { 'Content-Type': 'application/json' }, 
+				body: JSON.stringify({ email: customerEmail }) 
+			});
+			const data = await response.json();
+			customerID = data.id;
+		} else {
+			// Guest checkout
+			customerID = "888";
+		}
+		// const customerID = prompt("Please enter the customer ID");
 		const tip = prompt("Please enter a tip")
 		var payload = {
 			total_price: calculateTotal() - calculateTotal() + parseInt(tip),
