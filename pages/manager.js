@@ -953,20 +953,18 @@ function Manager() {
                         onClick = {() => getOrdersByTime(orderStartDate, orderEndDate)}>
                             View Orders
                     </button>
-                    <ul className={managerStyles.salesDataList}>
+                    <ul>
                         {orderData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
-                            <li key = {index} className = {managerStyles.salesDataListItem}>
+                            <li key = {index}>
                                 <span>
                                 Order-ID: {data.order_id} |  Total Price: {data.total_price} | Customer: {data.customer_name} - {data.customer_id} | Timestamp: {data.order_date}
+                                <button
+                                    className={managerStyles.deleteButton}
+                                    onClick={() => removeOrder(data.order_id)}>
+                                        X
+                                </button>
                                 </span>
-                                <div className={managerStyles.buttonContainer}>
-                                    <button
-                                        className={managerStyles.deleteButton}
-                                        onClick={() => removeOrder(data.order_id)}>
-                                            X
-                                    </button>
-                                </div>
                             </li>
                         ))}
                     </ul>
