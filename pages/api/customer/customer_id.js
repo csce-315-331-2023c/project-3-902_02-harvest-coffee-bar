@@ -2,8 +2,8 @@
 import connection from '../../../backend/database';
 
 export default async function handler(req, res) {
-  const { email } = req.body;
-  const { name } = req.body;
+  const { email } = req.body.email;
+  const { name } = req.body.name;
   const points = 0;
 
   try {
