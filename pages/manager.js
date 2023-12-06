@@ -328,6 +328,17 @@ function Manager() {
         viewAllInInventory();
     }
 
+    const removeOrder = async (order_id) => {
+
+        var payload = {
+            order_id: order_id
+        }
+
+        await fetch(`${server}/api/manager/remove_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        getSalesByTime(orderStartDate, orderEndDate);
+
+    }
+
     const handleStatusChange = async (menu_item_id, value) => {
         var is_active = true;
         if (value == "") {
@@ -946,7 +957,16 @@ function Manager() {
                         {orderData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
                             <li key = {index} className = {managerStyles.salesDataListItem}>
+                                <span>
                                 Order-ID: {data.order_id} |  Total Price: {data.total_price} | Customer: {data.customer_name} - {data.customer_id} | Timestamp: {data.order_date}
+                                </span>
+                                <div className={managerStyles.buttonContainer}>
+                                    <button
+                                        className={managerStyles.deleteButton}
+                                        onClick={() => removeOrder(data.order_id)}>
+                                            X
+                                    </button>
+                                </div>
                             </li>
                         ))}
                     </ul>
