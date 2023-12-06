@@ -766,7 +766,6 @@ function Manager() {
     useEffect(() => {
         fetchMenuItems();
         viewAllInInventory();
-        fetchUsers();
     }, []);
 
 
@@ -1312,7 +1311,9 @@ function UserManagement() {
             console.error('Error deleting user:', error);
         }
     };
-
+    useEffect(() => {
+        fetchUsers();
+    }, []);
     return (
         <div>
             <section className={managerStyles.userManagement}>
