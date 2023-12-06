@@ -3,6 +3,8 @@ import connection from '../../../backend/database';
 
 export default async function handler(req, res) {
   const { email } = req.body;
+  const { name } = req.body;
+  const points = 0;
 
   try {
     // Try to find the customer in the database
@@ -14,7 +16,7 @@ export default async function handler(req, res) {
       customerId = rows[0].customer_id;
     } else {
       // If the customer doesn't exist, create a new one
-      const result = await connection.query('INSERT INTO customer(customer_email) VALUES($1) RETURNING customer_id', [email]);
+      const result = await connection.query('INSERT INTO customer(customer_name, customer_points, customer_email) VALUES($1, $2, $3) RETURNING customer_id', [name, points, email]);
       customerId = result.rows[0].customer_id;
     }
 
