@@ -6,6 +6,7 @@ import Link from 'next/link';
 import navStyles from './components/NavBar.module.css';
 import managerStyles from './components/ManagerGUIStyle.module.css'
 import Chart from 'chart.js/auto';
+import { useSession } from 'next-auth/react';
 
 
 
@@ -90,6 +91,7 @@ function Manager() {
     });
     const [editingUser, setEditingUser] = useState(null);
 
+    const { data: session } = useSession();
 
     /////////////////////////////
     // back-end function below //
@@ -444,8 +446,9 @@ function Manager() {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
+                    employee_name: editingUser.employee_name,
                     employee_role: editingUser.employee_title,
-                    employee_email: editingUser.employee_email,
+                    employee_email: editingUser.employee_email
                 }),
             });
 
@@ -1429,6 +1432,7 @@ function Manager() {
                     </div>
                 )}
             </section>
+
         </div>
     );
 }
