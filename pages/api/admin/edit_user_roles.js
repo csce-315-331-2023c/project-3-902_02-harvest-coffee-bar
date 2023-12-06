@@ -19,12 +19,14 @@ export default async (req, res) => {
             UPDATE
                 employees
             SET
-                employee_title = $1
+                employee_name = $1,
+                employee_title = $2
             WHERE
-                employee_email = $2;
+                employee_email = $3;
         `;
 
         const editParams = [
+            req.body.employee_name,
             req.body.employee_role,
             req.body.employee_email
         ];
