@@ -6,6 +6,7 @@ import Link from 'next/link';
 import navStyles from './components/NavBar.module.css';
 import managerStyles from './components/ManagerGUIStyle.module.css'
 import Chart from 'chart.js/auto';
+import { useSession } from 'next-auth/react';
 
 
 
@@ -78,6 +79,10 @@ function Manager() {
     const [lowStock, setLowStock] = useState([]);
     const lowChartRef = useRef(null);
     const [isShowingLowStock, setShowingLowStock] = useState(false);
+
+    //user management section state
+    const { data: session } = useSession();
+    const userRole = session?.user?.role;
 
     /////////////////////////////
     // back-end function below //
@@ -199,6 +204,10 @@ function Manager() {
     //Front-end handling function for getInventoryByItem {
 
     const handleMenuItemClick = async (itemId) => {
+        if (event.target.tagName === 'BUTTON' || event.target.tagName === 'SELECT' || event.target.tagName === 'BUTTON' || event.target.tagName === 'OPTION') {
+            return;
+        }
+
         try {
             const inventoryData = await getInventoryByItem(itemId);
             const updatedInventory = { [itemId]: inventoryData };
@@ -224,6 +233,7 @@ function Manager() {
     //Front-end handling function for addIngredientsToMenuItem {
     const handleAddIngredientsToItemChange = (e) => {
         setAddIngredientsToItem({ ...addIngredientsToItem, [e.target.name]: e.target.value });
+
     };
 
     const submitAddIngredientsToItemForm = async (e, menu_item_id) => {
@@ -232,7 +242,6 @@ function Manager() {
 
         setAddIngredientsToItem({ ingredient_id: '', num_ingredients: '' });
         setShowAddIngredientsToItemForm(null);
-        //refresh the inventorylist -- need further implement
         handleMenuItemClick(menu_item_id);
     };
     //}
@@ -328,17 +337,6 @@ function Manager() {
         viewAllInInventory();
     }
 
-    const removeOrder = async (order_id) => {
-
-        var payload = {
-            order_id: order_id
-        }
-
-        await fetch(`${server}/api/manager/remove_order`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-        getSalesByTime(orderStartDate, orderEndDate);
-
-    }
-
     const handleStatusChange = async (menu_item_id, value) => {
         var is_active = true;
         if (value == "") {
@@ -364,6 +362,7 @@ function Manager() {
 
     }
 
+   
     /* STATISTICAL FUNCTIONS */
     const getOrdersByTime = async (start_time, end_time) => {
         setOrderData([]);
@@ -765,10 +764,9 @@ function Manager() {
     // Front-end Implement Below //
     ///////////////////////////////
     useEffect(() => {
-
         fetchMenuItems();
         viewAllInInventory();
-
+        fetchUsers();
     }, []);
 
 
@@ -785,7 +783,7 @@ function Manager() {
             </nav>
             <h1> Manager Dashboard </h1>
 
-            {/* Menu Items List Section */}
+            {/* Menu Items List*/}
             <section className={managerStyles.menuItemsList}>
                 <h2> Menu Items </h2>
                 <button onClick={toggleMenuVisibility}>
@@ -849,14 +847,13 @@ function Manager() {
                                 </form>
                             )}
                         </div>
+
                         <ul>
                             {menuItems.map((item) => (
                                 <li key={item.menu_item_id}>
                                     <div className={managerStyles.firstlineList}
-                                        // Need Back-end implement - dummy function of inventory for selected item
                                         onClick={() => handleMenuItemClick(item.menu_item_id)}>
                                         <span
-                                            // Need Back-end implement - dummy function of inventory for selected item
                                             onClick={() => handleMenuItemClick(item.menu_item_id)}>
                                             {item.menu_item_name} - ${item.price}
                                         </span>
@@ -883,19 +880,26 @@ function Manager() {
                                     <div className={managerStyles.addIngredientsToItemToMenuItemForm}>
                                         {showAddIngredientsToItemForm === item.menu_item_id && (
                                             <form onSubmit={(e) => submitAddIngredientsToItemForm(e, item.menu_item_id)}>
-                                                <input
-                                                    type="number"
+                                                <select
                                                     name="ingredient_id"
-                                                    placeholder="Ingredient ID"
                                                     value={addIngredientsToItem.ingredient_id}
                                                     onChange={handleAddIngredientsToItemChange}
-                                                />
+                                                    className={managerStyles.addInventoryToItemDropDown}
+                                                >
+                                                    <option>Select An Inventory</option>
+                                                    {inventoryItems.map((ingredient) => (
+                                                        <option key={ingredient.ingredient_id} value={ingredient.ingredient_id}>
+                                                            {ingredient.ingredient_name}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                                 <input
                                                     type="number"
                                                     name="num_ingredients"
                                                     placeholder="Number of Ingredients"
                                                     value={addIngredientsToItem.num_ingredients}
                                                     onChange={handleAddIngredientsToItemChange}
+                                                    className={managerStyles.addInventoryToItemInput}
                                                 />
                                                 <button type="submit">Submit</button>
                                                 <button onClick={() => setShowAddIngredientsToItemForm(null)}>Cancel</button>
@@ -953,18 +957,11 @@ function Manager() {
                         onClick={() => getOrdersByTime(orderStartDate, orderEndDate)}>
                         View Orders
                     </button>
-                    <ul>
+                    <ul className={managerStyles.salesDataList}>
                         {orderData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
-                            <li key={index}>
-                                <span>
-                                    Order-ID: {data.order_id} |  Total Price: {data.total_price} | Customer: {data.customer_name} - {data.customer_id} | Timestamp: {data.order_date}
-                                    <button
-                                        className={managerStyles.deleteButton}
-                                        onClick={() => removeOrder(data.order_id)}>
-                                        X
-                                    </button>
-                                </span>
+                            <li key={index} className={managerStyles.salesDataListItem}>
+                                Order-ID: {data.order_id} |  Total Price: {data.total_price} | Customer: {data.customer_name} - {data.customer_id} | Timestamp: {data.order_date}
                             </li>
                         ))}
                     </ul>
@@ -998,6 +995,9 @@ function Manager() {
                         onClick={() => getSalesByTime(startDate, endDate, selectedItem)}>
                         View Sales
                     </button>
+                    <div>
+                        {isShowingSalesData && <canvas ref={salesChartRef}></canvas>}
+                    </div>
                     <ul className={managerStyles.salesDataList}>
                         {salesData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
@@ -1007,7 +1007,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
-                {isShowingSalesData && <canvas ref={salesChartRef}></canvas>}
+
 
                 <br></br>
                 {/* Popular Item Pairs Div */}
@@ -1025,6 +1025,9 @@ function Manager() {
                         onClick={() => getWhatSellsTogether(PopularPairstartDate, PopularPairendDate)}>
                         View Pairs
                     </button>
+                    <div>
+                        {isShowingPopularPairs && <canvas ref={pairChartRef}></canvas>}
+                    </div>
                     <ul>
                         {popularPairsData.map((data, index) => (
                             //Need Back-end implement - list out sales. 
@@ -1034,7 +1037,7 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
-                {isShowingPopularPairs && <canvas ref={pairChartRef}></canvas>}
+
             </section>
 
             {/* Inventory List Section */}
@@ -1157,6 +1160,9 @@ function Manager() {
                         onClick={() => getLowStock()}>
                         View Alarm
                     </button>
+                    <div>
+                        {isShowingLowStock && <canvas className={managerStyles.lowStockChart} ref={lowChartRef}></canvas>}
+                    </div>
                     <ul>
                         {lowStock.map((report, index) => (
                             //Need Back-end implement - list out sales. 
@@ -1166,33 +1172,282 @@ function Manager() {
                         ))}
                     </ul>
                 </div>
-                {isShowingLowStock && <canvas ref={lowChartRef}></canvas>}
+
             </section>
-
-            {/* Employee Schedules Section
-            <section>
-                <h2>Employee Schedules</h2>
-                <button onClick={fetchEmployeeSchedules}>Fetch Schedules</button>
-                <table>
-                    <thead>
-                        <tr>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {employeeSchedules.map((schedule, index) => (
-                            <tr key={index}>
-                                <td>{schedule.employeeName}</td>
-                                <td>{schedule.role}</td>
-                                <td>{schedule.shiftStart}</td>
-                                <td>{schedule.shiftEnd}</td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </section>             */}
-
+                            
+            {/* User Managerment Section  */}
+            {userRole === 'Admin' && (
+                <UserManagement />
+            )}
         </div>
     );
 }
 
+function UserManagement() {
+    const [users, setUsers] = useState([]);
+    const [showUserManagement, setShowUserManagement] = useState(false);
+    const [showAddUserForm, setShowAddUserForm] = useState(false);
+    const [newUser, setNewUser] = useState({
+        employee_name: '',
+        employee_title: '',
+        employee_email: ''
+    });
+    const [editingUser, setEditingUser] = useState(null);
+
+    // User Management component content
+    
+    const fetchUsers = async () => {
+        try {
+            const response = await fetch(`${server}/api/admin/get_all_users`);
+            const data = await response.json();
+            setUsers(data);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    };
+
+    const toggleUserManagementVisibility = () => {
+        setShowUserManagement(!showUserManagement);
+        if (!showUserManagement) {
+            fetchUsers();
+        }
+    };
+
+    const handleAddUser = async () => {
+        try {
+            const response = await fetch(`${server}/api/admin/add_new_user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(newUser),
+            });
+
+            if (response.ok) {
+                setNewUser({ employee_name: '', employee_title: '', employee_email: '' });
+                setShowAddUserForm(false);
+                fetchUsers();
+            } else {
+                console.error('Failed to add user');
+            }
+        } catch (error) {
+            console.error('Error adding user:', error);
+        }
+    };
+    // Function to handle adding a new user {
+    const handleAddUserSubmit = (event) => {
+        event.preventDefault();
+        handleAddUser();
+    };
+
+    const handleShowAddUserForm = () => {
+        setShowAddUserForm(true);
+    };
+
+    const handleCancelAddUser = () => {
+        setShowAddUserForm(false);
+        setNewUser({ employee_name: '', employee_title: '', employee_email: '' }); // Reset form
+    };
+
+    const handleNewUserChange = (e) => {
+        setNewUser({ ...newUser, [e.target.name]: e.target.value });
+    };
+    //}
+
+    const handleEditUser = (userId) => {
+        const userToEdit = users.find(user => user.employee_id === userId);
+        if (userToEdit) {
+            setEditingUser(userToEdit);
+        }
+    };
+
+    // Function to handle editing a user
+    const handleEditUserSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch(`${server}/api/admin/edit_user_roles`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    employee_name: editingUser.employee_id,
+                    employee_name: editingUser.employee_name,
+                    employee_role: editingUser.employee_title,
+                    employee_email: editingUser.employee_email
+                }),
+            });
+
+            if (response.ok) {
+                setEditingUser(null);
+                fetchUsers();
+            } else {
+                console.error('Failed to edit user');
+            }
+        } catch (error) {
+            console.error('Error editing user:', error);
+        }
+    };
+    //}
+
+
+    // Function to handle deleting a user
+    const handleDeleteUser = async (userId) => {
+        // Implement delete user functionality
+        try {
+            const response = await fetch(`${server}/api/admin/delete_user`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ employee_id: userId }),
+            });
+
+            if (response.ok) {
+                fetchUsers();
+            } else {
+                console.error('Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
+
+    return (
+        <div>
+            <section className={managerStyles.userManagement}>
+                <h2>User Management</h2>
+                <button
+                    onClick={toggleUserManagementVisibility}>
+                    {showUserManagement ? 'Hide Users' : 'Show Users'}
+                </button>
+                {showUserManagement && (
+                    <div className={managerStyles.scrollableContainer}>
+                        <div className={managerStyles.addUserForm}>
+                            <button
+                                onClick={handleShowAddUserForm}>
+                                Add User
+                            </button>
+                            {showAddUserForm && (
+                                <form onSubmit={handleAddUserSubmit}>
+                                    <div>
+                                        <input
+                                            type="text"
+                                            name="employee_name"
+                                            value={newUser.employee_name}
+                                            onChange={handleNewUserChange}
+                                            placeholder="Name"
+                                            required
+                                        />
+                                    </div>
+                                    <div>
+                                        <select
+                                            name="employee_title"
+                                            value={newUser.employee_title}
+                                            onChange={handleNewUserChange}
+                                            required
+                                        >
+                                            <option value="">Select Title</option>
+                                            <option value="Admin">Admin</option>
+                                            <option value="Manager">Manager</option>
+                                            <option value="Cashier">Cashier</option>
+                                            <option value="Customer">Customer</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <input
+                                            type="email"
+                                            name="employee_email"
+                                            value={newUser.employee_email}
+                                            onChange={handleNewUserChange}
+                                            placeholder="Email"
+                                            required
+                                        />
+                                    </div>
+                                    <button
+                                        type="submit">
+                                        Submit
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={handleCancelAddUser}>
+                                        Cancel
+                                    </button>
+                                </form>
+                            )}
+                        </div>
+
+                        <ul>
+                            {users.map((user, index) => (
+                                <li key={index}>
+                                    <div className={managerStyles.nameLine}>
+                                        <div>
+                                            Name: {user.employee_name}
+                                        </div>
+                                        <div className={managerStyles.nameLineButton}>
+                                            <button
+                                                onClick={() => handleEditUser(user.employee_id)}>
+                                                Edit
+                                            </button>
+                                            <button
+                                                onClick={() => handleDeleteUser(user.employee_id)}>
+                                                Delete
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className={managerStyles.otherLine}>
+                                        Title: {user.employee_title}
+                                    </div>
+                                    <div className={managerStyles.otherLine}>
+                                        Email: {user.employee_email}
+                                    </div>
+                                    {editingUser && editingUser.employee_id === user.employee_id && (
+                                        <form onSubmit={handleEditUserSubmit}>
+                                            <div>
+                                                <input
+                                                    type="text"
+                                                    name="employee_name"
+                                                    value={editingUser.employee_name}
+                                                    onChange={e => setEditingUser({ ...editingUser, employee_name: e.target.value })}
+                                                    placeholder="Name"
+                                                    required
+                                                />
+                                            </div>
+                                            <div>
+                                                <select
+                                                    name="employee_title"
+                                                    value={editingUser.employee_title}
+                                                    onChange={e => setEditingUser({ ...editingUser, employee_title: e.target.value })}
+                                                    required
+                                                >
+                                                    <option value="">Select Title</option>
+                                                    <option value="Admin">Admin</option>
+                                                    <option value="Manager">Manager</option>
+                                                    <option value="Cashier">Cashier</option>
+                                                    <option value="Customer">Customer</option>
+                                                </select>
+                                            </div>
+                                            <div>
+                                                <input
+                                                    type="email"
+                                                    name="employee_email"
+                                                    value={editingUser.employee_email}
+                                                    onChange={e => setEditingUser({ ...editingUser, employee_email: e.target.value })}
+                                                    placeholder="Email"
+                                                    required
+                                                />
+                                            </div>
+                                            <button type="submit">Submit</button>
+                                            <button type="button" onClick={() => setEditingUser(null)}>Cancel</button>
+                                        </form>
+                                    )}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                )}
+            </section>
+        </div>
+    );
+}
 export default Manager;
